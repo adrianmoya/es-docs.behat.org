@@ -14,7 +14,9 @@ nav.toc {
     float:right;
     padding:15px 20px;
     background:#2a2a2a;
-    border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
     margin:0px 0px 15px 15px;
     width:200px;
 }
@@ -137,7 +139,9 @@ section.documentation .highlight {
     padding:15px;
     font-size:15px;
     font-family: monospace;
-    border-radius:0px 10px 0px 10px;
+    -moz-border-radius: 0px 10px 0px 10px;
+    -webkit-border-radius: 0px 10px 0px 10px;
+    border-radius: 0px 10px 0px 10px;
     background:#fff;
     color:#000;
 }
