@@ -117,11 +117,11 @@ First argument is a filter, like with feature hooks.
 
 Also, there's some interesting parameters in ``$event`` object:
 
-* ``environment`` - scenario environment object. This parameter available in both before & after hooks.
+* ``environment`` - scenario :doc:`environment` object. This parameter available in both before & after hooks. It returns same :doc:`environment` object, that gets passed as ``$world`` into every scenario step definition.
 * ``result`` - scenario result code (see ``Behat\Behat\Tester\StepTester`` code for further information). This parameter available only in after hooks.
 * ``skipped`` - boolean, that marks if scenario has skipped steps. This parameter available only in after hooks.
 
-You can get needed parameter with ``$event->getParameter('...')`` method call.
+You can get needed parameter with ``$event->get('...')`` method call.
 
 Step Hooks
 ----------
@@ -170,4 +170,4 @@ Also, there's some interesting parameters in ``$event`` object:
 * ``definition`` - matched definition or null. This parameter available only in after hooks.
 * ``snippet`` - snippet for definition if step undefined or null. This parameter available only in after hooks.
 
-You can get needed parameter with ``$event->getParameter('...')`` method call.
+You can get needed parameter with ``$event->get('...')`` method call.
