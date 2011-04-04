@@ -24,7 +24,7 @@ Notice, that like with step definitions or environment configs, we have global `
 
 Suite hooks doesn't have filtering specifier, so ``beforeSuite`` and ``afterSuite`` have only 1 argument which is your callback.
 
-Also note, that ``$event`` argument in callback. It's ``Symfony\Component\EventDispatcher\Event`` populated with ``Behat\Behat\DataCollector\LoggerDataCollector`` as subject, which you can get with:
+Also note ``$event`` argument in callback. It's ``Behat\Behat\Event\EventInterface`` instance. In case of ``beforeSuite`` and ``afterSuite`` hooks it would be `SuiteEvent <http://docs.behat.org/api/behat/behat/behat/event/suiteevent.html>`_ object:
 
 .. code-block:: php
 
@@ -32,7 +32,7 @@ Also note, that ``$event`` argument in callback. It's ``Symfony\Component\EventD
     // features/support/hooks.php
     
     $hooks->afterSuite(function($event) {
-        $dataCollector = $event->getSubject();
+        $dataCollector = $event->getLogger();
 
         // do something with information from dataCollector
     });
@@ -64,7 +64,7 @@ Feature Hooks
 
 Notice additional empty first argument to this hook type. This is filter. You can put there any of your ``--name`` or ``--tags`` filters and that hook will be runed only in specific features (that match filter).
 
-``$event``'s subject is ``Behat\Gherkin\Node\FeatureNode``:
+``$event`` is an instance of `FeatureEvent <http://docs.behat.org/api/behat/behat/behat/event/featureevent.html>`_:
 
 .. code-block:: php
 
@@ -72,7 +72,7 @@ Notice additional empty first argument to this hook type. This is filter. You ca
     // features/support/hooks.php
     
     $hooks->beforeFeature('', function($event) {
-        $feature = $event->getSubject();
+        $feature = $event->getFeature();
         $featureTitle = $feature->getTitle();
     });
 
@@ -103,7 +103,7 @@ Scenario Hooks
 
 First argument is a filter, like with feature hooks.
 
-``$event``'s subject is ``Behat\Gherkin\Node\ScenarioNode`` or ``Behat\Gherkin\Node\OutlineNode``:
+``$event`` is an instance of `ScenarioEvent <http://docs.behat.org/api/behat/behat/behat/event/scenarioevent.html>`_ or `OutlineExampleEvent <http://docs.behat.org/api/behat/behat/behat/event/outlineexampleevent.html>`_:
 
 .. code-block:: php
 
@@ -112,16 +112,14 @@ First argument is a filter, like with feature hooks.
 
     $hooks->afterScenario('', function($event) {
         // get scenario or outline:
-        $scenario = $event->getSubject();
+        $scenario = $event instanceof Behat\Behat\Event\ScenarioEvent ? $event->getScenario() : $event->getOutline();
     });
 
-Also, there's some interesting parameters in ``$event`` object:
+Also, there's some interesting getters in scenario ``$event`` objects:
 
-* ``environment`` - scenario :doc:`environment` object. This parameter available in both before & after hooks. It returns same :doc:`environment` object, that gets passed as ``$world`` into every scenario step definition.
-* ``result`` - scenario result code (see ``Behat\Behat\Tester\StepTester`` code for further information). This parameter available only in after hooks.
-* ``skipped`` - boolean, that marks if scenario has skipped steps. This parameter available only in after hooks.
-
-You can get needed parameter with ``$event->get('...')`` method call.
+* ``getEnvironment()`` - scenario :doc:`environment` object. This parameter available in both before & after hooks. It returns same :doc:`environment` object, that gets passed as ``$world`` into every scenario step definition.
+* ``getResult()`` - scenario result code (see ``Behat\Behat\Tester\StepTester`` code for further information). This parameter available only in after hooks.
+* ``isSkipped()`` - boolean, that marks if scenario has skipped steps. This parameter available only in after hooks.
 
 Step Hooks
 ----------
@@ -150,7 +148,7 @@ Step Hooks
 
 First argument is a filter, like with feature hooks.
 
-``$event``'s subject is ``Behat\Gherkin\Node\StepNode``:
+``$event`` is an instance of `StepEvent <http://docs.behat.org/api/behat/behat/behat/event/stepevent.html>`_:
 
 .. code-block:: php
 
@@ -162,12 +160,10 @@ First argument is a filter, like with feature hooks.
         $step = $event->getSubject();
     });
 
-Also, there's some interesting parameters in ``$event`` object:
+Also, there's some interesting getters in steps ``$event`` object:
 
-* ``environment`` - scenario environment object. This parameter available in both before & after hooks.
-* ``result`` - step result code (see ``Behat\Behat\Tester\StepTester`` code for further information). This parameter available only in after hooks.
-* ``exception`` - exception instance or null. This parameter available only in after hooks.
-* ``definition`` - matched definition or null. This parameter available only in after hooks.
-* ``snippet`` - snippet for definition if step undefined or null. This parameter available only in after hooks.
-
-You can get needed parameter with ``$event->get('...')`` method call.
+* ``getEnvironment()`` - scenario environment object. This parameter available in both before & after hooks.
+* ``getResult()`` - step result code (see ``Behat\Behat\Tester\StepTester`` code for further information). This parameter available only in after hooks.
+* ``getException()`` - exception instance or null. This parameter available only in after hooks.
+* ``getDefinition()`` - matched definition or null. This parameter available only in after hooks.
+* ``getSnippet()`` - snippet for definition if step undefined or null. This parameter available only in after hooks.
