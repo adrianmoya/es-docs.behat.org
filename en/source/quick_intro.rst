@@ -5,11 +5,11 @@ Behat is an `open source <http://creativecommons.org/licenses/MIT/>`_ `behavior 
 
 Behat was inspired by Ruby's `Cucumber <http://cukes.info/>`_ project and especially it's syntax part (Gherkin). It tries to be like Cucumber with input (Feature files) and output (console formatters), but in core, it built from the ground on the shoulders of giants:
 
-* Symfony Dependency Injection Container component
-* Symfony Event Dispatcher component
-* Symfony Console component
-* Symfony Finder component
-* Symfony Translation component
+* `Symfony Dependency Injection Container component <https://github.com/symfony/DependencyInjection>`_
+* `Symfony Event Dispatcher component <https://github.com/symfony/EventDispatcher>`_
+* `Symfony Console component <https://github.com/symfony/Console>`_
+* `Symfony Finder component <https://github.com/symfony/Finder>`_
+* `Symfony Translation component <https://github.com/symfony/Translation>`_
 
 Unlike any other php testing framework that tests applications inside out. Behat is testing applications `outside in <http://blog.dannorth.net/whats-in-a-story/>`_. It means, that Behat works only with your application's input/output. If you want to test your models - use unit testing framework instead, Behat created for behavior testing (but can be used for anything +) ).
 

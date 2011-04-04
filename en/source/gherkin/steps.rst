@@ -210,6 +210,29 @@ This translations will be used to match your localized features. For example, th
 
 will print all available steps in russian (if has translations).
 
+Named step regexps
+------------------
+
+In some cases, you might need to use named regex arguments instead of default positioned ones. Behat allows this from version 1.1:
+
+.. code-block:: php
+
+    <?php
+    
+    $steps->Given('/^(?P<arg2>\d+) and (?P<arg1>\d+)$/', function($world, $arg2, $arg1) {});
+
+In this case arguments will be mapped accordingly to their matcher names. This means, that upper example is totally equivalent and will work same as this one:
+
+.. code-block:: php
+
+    <?php
+    
+    $steps->Given('/^(?P<arg2>\d+) and (?P<arg1>\d+)$/', function($world, $arg1, $arg2) {});
+
+.. note::
+
+    Don't mess named arguments with non-named ones. In most cases this will work, but in some particular ones will lead to strange bugs and unmantained and broken features!
+
 Steps Organization
 ------------------
 

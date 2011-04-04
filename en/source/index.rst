@@ -44,3 +44,4 @@ Learn Behat with the topical guides:
     behat/step_to_step_calls
     behat/transformations
     behat/formatters
+    behat/configuration
