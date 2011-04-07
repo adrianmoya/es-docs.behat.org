@@ -67,7 +67,7 @@ In your step definition, there’s no need to find this text and match it in you
     <?php
     // features/steps/pystringarg_steps.php
 
-    $steps->Given('/^a blog post named "([^\"]*)" with Markdown body$/', function($world, $title, $markdown) {
+    $steps->Given('/^a blog post named "(.*?)" with Markdown body$/', function($world, $title, $markdown) {
         Post::create(array('title' => $title, 'body' => (string) $markdown));
     });
 
