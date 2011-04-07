@@ -79,7 +79,7 @@ Lets add "hello, world" before each feature in output:
         {
             $this->writeln('hello, world');
 
-            parent::printStepName($step, $definition, $color);
+            parent::printFeatureName($feature);
         }
     }
 

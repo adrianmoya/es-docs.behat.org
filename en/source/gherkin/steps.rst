@@ -91,7 +91,7 @@ Step definitions are defined in PHP files under ``features/steps/*.php``. Here i
         // Some PHP code here
     });
 
-A step definition is a simple callback tied to custom regex. Step definitions can take 1 or more arguments, identified by groups in the Regexp (and an equal number of arguments to the callback plus 1). "plus 1" is a ``$world`` :doc:`../behat/environment` object argument. :doc:`../behat/environment` is a container object, that gets shared between single scenario/background steps.
+A step definition is a simple callback tied to custom regex. Step definitions can take 1 or more arguments, identified by groups in the Regexp (and an equal number of arguments to the callback plus 1). "plus 1" is a ``$world`` :doc:`../behat/environment` object argument. :doc:`../behat/environment` is a container object shared across a scenario (and the associated background) steps.
 
 Then there are Steps. Steps are declared in your ``features/*.feature`` files. Here is an example:
 
@@ -192,7 +192,7 @@ Sometimes, you might need to provide multiple languages of your step definitions
           </trans-unit>
           <trans-unit id="i-have-clicked-plus">
             <source>/^I have clicked "+"$/</source>
-            <target>/^Я нажал "([^"]*)"$/</target>
+            <target>/^Я нажал "+"$/</target>
           </trans-unit>
           <trans-unit id="i-should-see">
             <source>/^I should see (\d+) on the screen$/</source>
@@ -219,19 +219,19 @@ In some cases, you might need to use named regex arguments instead of default po
 
     <?php
     
-    $steps->Given('/^(?P<arg2>\d+) and (?P<arg1>\d+)$/', function($world, $arg2, $arg1) {});
+    $steps->Given('/^(?P<who>\w+) did (?P<what>\w+)$/', function($world, $who, $what) {});
 
-In this case arguments will be mapped accordingly to their matcher names. This means, that upper example is totally equivalent and will work same as this one:
+In this case arguments will be mapped accordingly to their matcher names. This means, that the privous example is equivalent to the following:
 
 .. code-block:: php
 
     <?php
     
-    $steps->Given('/^(?P<arg2>\d+) and (?P<arg1>\d+)$/', function($world, $arg1, $arg2) {});
+    $steps->Given('/^(?P<what>\w+) was done by (?P<who>\w+)$/', function($world, $who, $what) {});
 
 .. note::
 
-    Don't mess named arguments with non-named ones. In most cases this will work, but in some particular ones will lead to strange bugs and unmantained and broken features!
+    Don't mix named arguments with non-named ones. This would lead to unpredictable results!
 
 Steps Organization
 ------------------

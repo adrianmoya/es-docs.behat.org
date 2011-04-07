@@ -11,7 +11,7 @@ It’s recommended that you put ``Transform`` code in the same file as the step 
     // features/steps/trans_steps.php
 
     $steps->Transform('/^user \w+$/', function($arg) {
-        preg_match('/(\w+)$/', $arg, $matches);
+        preg_match('/\w+$/', $arg, $matches);
 
         return new User($matches[0]);
     });

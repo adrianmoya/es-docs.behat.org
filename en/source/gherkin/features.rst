@@ -47,9 +47,9 @@ Step definitions can also take parameters:
 
 This step definition uses a regular expression with one match group – ``(\d+)``. (It matches any sequence of digits). Therefore, it matches the first line of the scenario. The value of each matched group sent to definition callback as a string. You must take care to have the same number of regular expression groups and callback arguments. Since callback arguments are always strings, you have to do any type conversions inside the callback, or use :doc:`../behat/transformations`.
 
-Notice that first argument to callback is always ``$world``. It’s shared between single scenario steps :doc:`../behat/environment` object (or container).
+Notice that the first argument to the callback is always ``$world``. It’s shared between single scenario steps :doc:`../behat/environment` object (or container).
 
-When Behat prints the results of the running features it will underline all step arguments so that it’s easier to see what part of a step was actually recognised as an argument. It will also print the path and line of the matching step definition. This makes it easy to go from a feature file to any step definition.
+When Behat prints the results of the running features it will underline all the step arguments so that it’s easier to see what part of a step was actually recognised as an argument. It will also print the path and the line of the matching step definition. This makes going from a feature file to any step definition easy.
 
 Running Features
 ----------------

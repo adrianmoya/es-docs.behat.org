@@ -63,13 +63,13 @@ First configuration block is ``paths``. Parameters under this configuration bloc
 
 As you can see, ``steps``, ``steps_i18n``, ``bootstrap``, ``environment`` and ``hooks`` parameters accepts arrays. It means, that behat can look inside multiple folders/paths to find proper step definition or environment object if you need so.
 
-Also, notice this strange ``%behat.paths.features%`` and ``%%BEHAT_BASE_PATH%%`` variables. This strings is predefined configuration variable, that you can use to build very flexible configurations:
+Also, notice the ``%behat.paths.features%`` and ``%%BEHAT_BASE_PATH%%`` placeholders. These strings are predefined configuration variables and constants, that you can use to build very flexible configurations:
 
-* variable, that consist from upper-case letters and starts/ends with ``%%`` is a constant. Default constants are:
+* A placeholder that consists of upper-case letters and starts/ends with ``%%`` is a constant. Default constants are:
     1. ``%%BEHAT_BASE_PATH%%`` - current base path (specified as ``feature`` argument to behat command).
     2. ``%%BEHAT_WORK_PATH%%`` - current work path, from which behat was called.
     3. ``%%BEHAT_CONFIG_PATH%%`` - configuration file directory path.
-* variable, that consist from lower-case letters and starts/ends with single ``%`` is a variable. This variables is your current configuration parameters, which you can use to nest configurations. Usable variables are:
+* A placeholder that consists of lower-case letters and starts/ends with single ``%`` is a variable. These variables are your current configuration parameters, which you can use to nest configurations. Usable variables are:
     1. ``%behat.paths.features%`` - default or specified by you features path.
     2. ``%behat.paths.support%`` - default or specified by you support path.
 
