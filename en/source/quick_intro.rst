@@ -23,8 +23,8 @@ The simpliest way to install it through PEAR:
 .. code-block:: bash
 
     pear channel-discover pear.behat.org
-    pear install behat/gherkin-beta
-    pear install behat/behat-beta
+    pear install behat/gherkin
+    pear install behat/behat
 
 You can also clone the project with Git by running:
 
