@@ -57,7 +57,7 @@ Behat is a tool that can execute plain-text functional descriptions as automated
 
 While Behat can be thought of as a “testing” tool, the intent of the tool is to support BDD. This means that the “features” (plain text descriptions with scenarios) are typically written before anything else and verified by business analysts, domain experts, etc. non technical stakeholders. The production code is then written outside in, to make the stories pass.
 
-Basic Behat test environment directory looks like that:
+The basic Behat test environment directory looks like this:
 
 .. code-block:: bash
 
