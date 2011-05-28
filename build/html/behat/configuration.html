@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; Behat v1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/scrolls.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/behat.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Behat v1.1.0 documentation" href="../index.html" />
+    <link rel="prev" title="Formatters" href="formatters.html" /> 
+  </head>
+  <body>
+    <header>
+        <a id="logo" href="http://behat.org">Behat</a>
+        <nav>
+            <ul>
+                <li><a href="http://behat.org">main</a></li>
+                <li class="active"><a href="http://docs.behat.org">docs</a></li>
+                <li><a href="http://pear.behat.org">pear</a></li>
+                <li><a href="https://github.com/Behat">github</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="docs">
+
+        <nav class="toc">
+            <h3>Navigation</h3>
+            <ul class="nav">
+                <li><a href="../index.html">Behat Documentation</a></li>
+                    <li><a href="formatters.html">Formatters</a> (prev)</li>
+                    <li>
+                        <a href="#">
+                            Configuration
+                        </a> (cur)
+                    </li>
+            </ul>
+
+            <h3>Table Of Contents</h3>
+            <ul>
+<li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#default-behat-yml">Default behat.yml</a></li>
+<li><a class="reference internal" href="#custom-configuration-file">Custom configuration file</a></li>
+<li><a class="reference internal" href="#id1">Configuration</a><ul>
+<li><a class="reference internal" href="#paths">Paths</a></li>
+<li><a class="reference internal" href="#filters">Filters</a></li>
+<li><a class="reference internal" href="#formatter">Formatter</a></li>
+<li><a class="reference internal" href="#environment">Environment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#profiles">Profiles</a></li>
+<li><a class="reference internal" href="#imports">Imports</a></li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+
+        <section class="documentation">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>From version 1.1 behat has very powerful configuration system with which you can setup different test profiles and configure Behat from start to the end.</p>
+<div class="section" id="default-behat-yml">
+<h2>Default behat.yml<a class="headerlink" href="#default-behat-yml" title="Permalink to this headline">¶</a></h2>
+<p>By default, behat will look for file called <tt class="docutils literal"><span class="pre">behat.yml</span></tt> or <tt class="docutils literal"><span class="pre">config/behat.yml</span></tt> in current working directory. This file (if exists) is configuration file for behat.</p>
+</div>
+<div class="section" id="custom-configuration-file">
+<h2>Custom configuration file<a class="headerlink" href="#custom-configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>But if you want to specify custom configuration file (<tt class="docutils literal"><span class="pre">behat.yml.dist</span></tt> for example), you can do it with <tt class="docutils literal"><span class="pre">--config</span></tt> parameter (or it&#8217;s <tt class="docutils literal"><span class="pre">-c</span></tt> shortcut):</p>
+<div class="highlight-bash"><div class="highlight"><pre>behat --config behat.yml.dist
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Configuration<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>All configuration parameters are defined under profile name root (<tt class="docutils literal"><span class="pre">default:</span></tt> for example). Profile is just a custom name, which you can use to fastly switch testing configuration throught <tt class="docutils literal"><span class="pre">--profile</span></tt> parameter.</p>
+<p>Default profile is <tt class="docutils literal"><span class="pre">default</span></tt>. All other profiles inherit parameters from <tt class="docutils literal"><span class="pre">default</span></tt> one. If you don&#8217;t need any profile other than default - define your parameters as follows:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># behat.yml</span>
+<span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<div class="section" id="paths">
+<h3>Paths<a class="headerlink" href="#paths" title="Permalink to this headline">¶</a></h3>
+<p>First configuration block is <tt class="docutils literal"><span class="pre">paths</span></tt>. Parameters under this configuration block tells behat where to find your features, definitions and support files:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># behat.yml</span>
+<span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">paths</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">features</span><span class="p-Indicator">:</span>   <span class="s">&#39;%%BEHAT_BASE_PATH%%&#39;</span>
+        <span class="l-Scalar-Plain">support</span><span class="p-Indicator">:</span>    <span class="s">&#39;%behat.paths.features%/support&#39;</span>
+        <span class="l-Scalar-Plain">steps</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="s">&#39;%behat.paths.features%/steps&#39;</span>
+        <span class="l-Scalar-Plain">steps_i18n</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="s">&#39;%behat.paths.features%/steps/i18n&#39;</span>
+        <span class="l-Scalar-Plain">bootstrap</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="s">&#39;%behat.paths.support%/bootstrap.php&#39;</span>
+        <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="s">&#39;%behat.paths.support%/env.php&#39;</span>
+        <span class="l-Scalar-Plain">hooks</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="s">&#39;%behat.paths.support%/hooks.php&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">features</span></tt> parameter defines where behat will look for your <tt class="docutils literal"><span class="pre">*.feature</span></tt> files.</li>
+<li><tt class="docutils literal"><span class="pre">support</span></tt> parameter defines where behat will look for your support files (<tt class="docutils literal"><span class="pre">env.php</span></tt>, <tt class="docutils literal"><span class="pre">hooks.php</span></tt> and others).</li>
+<li><tt class="docutils literal"><span class="pre">steps</span></tt> defines where behat will look your step definitions.</li>
+<li><tt class="docutils literal"><span class="pre">steps_i18n</span></tt> defines where behat will look your step definitions translations (in xliff).</li>
+<li><tt class="docutils literal"><span class="pre">bootstrap</span></tt> defines list of botstraping scripts.</li>
+<li><tt class="docutils literal"><span class="pre">environment</span></tt> defines list of environment configuration files.</li>
+<li><tt class="docutils literal"><span class="pre">hooks</span></tt> defines hooks definition files list.</li>
+</ul>
+<p>As you can see, <tt class="docutils literal"><span class="pre">steps</span></tt>, <tt class="docutils literal"><span class="pre">steps_i18n</span></tt>, <tt class="docutils literal"><span class="pre">bootstrap</span></tt>, <tt class="docutils literal"><span class="pre">environment</span></tt> and <tt class="docutils literal"><span class="pre">hooks</span></tt> parameters accepts arrays. It means, that behat can look inside multiple folders/paths to find proper step definition or environment object if you need so.</p>
+<p>Also, notice the <tt class="docutils literal"><span class="pre">%behat.paths.features%</span></tt> and <tt class="docutils literal"><span class="pre">%%BEHAT_BASE_PATH%%</span></tt> placeholders. These strings are predefined configuration variables and constants, that you can use to build very flexible configurations:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>A placeholder that consists of upper-case letters and starts/ends with <tt class="docutils literal"><span class="pre">%%</span></tt> is a constant. Default constants are:</dt>
+<dd><ol class="first last arabic simple">
+<li><tt class="docutils literal"><span class="pre">%%BEHAT_BASE_PATH%%</span></tt> - current base path (specified as <tt class="docutils literal"><span class="pre">feature</span></tt> argument to behat command).</li>
+<li><tt class="docutils literal"><span class="pre">%%BEHAT_WORK_PATH%%</span></tt> - current work path, from which behat was called.</li>
+<li><tt class="docutils literal"><span class="pre">%%BEHAT_CONFIG_PATH%%</span></tt> - configuration file directory path.</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>A placeholder that consists of lower-case letters and starts/ends with single <tt class="docutils literal"><span class="pre">%</span></tt> is a variable. These variables are your current configuration parameters, which you can use to nest configurations. Usable variables are:</dt>
+<dd><ol class="first last arabic simple">
+<li><tt class="docutils literal"><span class="pre">%behat.paths.features%</span></tt> - default or specified by you features path.</li>
+<li><tt class="docutils literal"><span class="pre">%behat.paths.support%</span></tt> - default or specified by you support path.</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="filters">
+<h3>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h3>
+<p>Another very useful configuration block is <tt class="docutils literal"><span class="pre">filters</span></tt> block. This block defines default filters (name or tag) for your features. It means, that if you type same filters again and again from run to run, then it would be better if you define them as parameters:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># behat.yml</span>
+<span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">filters</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>   <span class="s">&#39;@wip&#39;</span>
+</pre></div>
+</div>
+<p>This filter parameters (<tt class="docutils literal"><span class="pre">name</span></tt> and <tt class="docutils literal"><span class="pre">tags</span></tt>) accept same strings as behat <tt class="docutils literal"><span class="pre">--name</span></tt> or <tt class="docutils literal"><span class="pre">--tags</span></tt> params does.</p>
+</div>
+<div class="section" id="formatter">
+<h3>Formatter<a class="headerlink" href="#formatter" title="Permalink to this headline">¶</a></h3>
+<p>If you need to customize your output formatter - <tt class="docutils literal"><span class="pre">formatter</span></tt> block is right for you:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># behat.yml</span>
+<span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">formatter</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span>                   <span class="s">&#39;pretty&#39;</span>
+        <span class="l-Scalar-Plain">decorated</span><span class="p-Indicator">:</span>              <span class="l-Scalar-Plain">true</span>
+        <span class="l-Scalar-Plain">verbose</span><span class="p-Indicator">:</span>                <span class="l-Scalar-Plain">false</span>
+        <span class="l-Scalar-Plain">time</span><span class="p-Indicator">:</span>                   <span class="l-Scalar-Plain">true</span>
+        <span class="l-Scalar-Plain">language</span><span class="p-Indicator">:</span>               <span class="s">&#39;en&#39;</span>
+        <span class="l-Scalar-Plain">output_path</span><span class="p-Indicator">:</span>            <span class="l-Scalar-Plain">null</span>
+        <span class="l-Scalar-Plain">multiline_arguments</span><span class="p-Indicator">:</span>    <span class="l-Scalar-Plain">true</span>
+        <span class="l-Scalar-Plain">parameters</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt> defines output formatter name to use for your features by default. You can write class name here, so behat will use your custom class as default output formatter, but be careful - this class should be accessible by behat and implement <a class="reference external" href="http://docs.behat.org/api/behat/behat/behat/formatter/formatterinterface.html">FormatterInterface</a>, in other case behat will throw exception.</li>
+<li><tt class="docutils literal"><span class="pre">decorated</span></tt> defines whether you want to use colors in your output. That&#8217;s simple.</li>
+<li><tt class="docutils literal"><span class="pre">verbose</span></tt> defines whether you want to see full exception stack traces in your output or not.</li>
+<li><tt class="docutils literal"><span class="pre">time</span></tt> defines whether you want to see timer at the end of your formatter outpuy.</li>
+<li><tt class="docutils literal"><span class="pre">language</span></tt> defines formatter language.</li>
+<li><tt class="docutils literal"><span class="pre">output_path</span></tt> defines output path. If this parameters specified - behat will write your features into specified path instead of stdout.</li>
+<li><tt class="docutils literal"><span class="pre">multiline_arguments</span></tt> defines whether you want to see multiline arguments (tables and pystrings) in pretty formatter output.</li>
+<li><tt class="docutils literal"><span class="pre">parameters</span></tt> define list of additional parameters, that can be supported by specified custom formatter. But be careful - default formatters will throw exceptions if you&#8217;ll try to pass unsupported parameter to them.</li>
+</ul>
+</div>
+<div class="section" id="environment">
+<h3>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">env.php</span></tt> is very powerful configuration mechanism. But sometimes, it&#8217;s not enough and you need to use your own environment class instead of default one or pass some environment parameters through <tt class="docutils literal"><span class="pre">behat.yml</span></tt> configuration. That&#8217;s what <tt class="docutils literal"><span class="pre">environment</span></tt> block for:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># behat.yml</span>
+<span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span>              <span class="s">&#39;Behat\Behat\Environment\Environment&#39;</span>
+        <span class="l-Scalar-Plain">parameters</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">start_url</span><span class="p-Indicator">:</span>      <span class="s">&#39;http://test.mink.loc&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">class</span></tt> defines which class you want to use as environment. This class should be accessible by behat and implement <a class="reference external" href="http://docs.behat.org/api/behat/behat/behat/environment/environmentinterface.html">EnvironmentInterface</a>.</li>
+<li><tt class="docutils literal"><span class="pre">parameters</span></tt> parameters is a simple parameters hash, that will be passed into environment <tt class="docutils literal"><span class="pre">setParameter</span></tt> setters. You can get environment parameters with <tt class="docutils literal"><span class="pre">getParameter</span></tt> call on environment object.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="profiles">
+<h2>Profiles<a class="headerlink" href="#profiles" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, you might need to define different test running profiles for your test suite. Profiles will help you with that. Let&#8217;s say we need 2 different profiles, that share common configurations, but use different formatters. Our <tt class="docutils literal"><span class="pre">behat.yml</span></tt> will looks like that:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># behat.yml</span>
+<span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span>      <span class="s">&#39;Your\Custom\EnvironmentClass&#39;</span>
+<span class="l-Scalar-Plain">wip</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">filters</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>       <span class="s">&#39;@wip&#39;</span>
+    <span class="l-Scalar-Plain">formatter</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span>       <span class="s">&#39;progress&#39;</span>
+<span class="l-Scalar-Plain">ci</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">formatter</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span>        <span class="s">&#39;junit&#39;</span>
+        <span class="l-Scalar-Plain">output_path</span><span class="p-Indicator">:</span> <span class="s">&#39;/var/temp/junit&#39;</span>
+</pre></div>
+</div>
+<p>This file defines 2 additional profiles (additional to default). Every profile will use <tt class="docutils literal"><span class="pre">Your\Custom\EnvironmentClass</span></tt> as environment object, but <tt class="docutils literal"><span class="pre">wip</span></tt> profile will run only scenarios with WorkInProgress (<tt class="docutils literal"><span class="pre">&#64;wip</span></tt>) tag and will output them with <tt class="docutils literal"><span class="pre">progress</span></tt> formatter and <tt class="docutils literal"><span class="pre">ci</span></tt> will run all your features and output them with <tt class="docutils literal"><span class="pre">junit</span></tt> formatter into <tt class="docutils literal"><span class="pre">/var/temp/junit</span></tt> path. That simple!</p>
+<p>To run custom profile, use <tt class="docutils literal"><span class="pre">--profile</span></tt> parameter:</p>
+<div class="highlight-bash"><div class="highlight"><pre>behat --profile wip
+behat --profile ci
+</pre></div>
+</div>
+</div>
+<div class="section" id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you might want to share your configuration between different projects and their test suites. <tt class="docutils literal"><span class="pre">imports</span></tt> block comes to rescue:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># behat.yml</span>
+imports:
+    - <span class="s1">&#39;some_installed_pear_package_or_lib/behat.yml&#39;</span>
+    - <span class="s1">&#39;/full/path/to/custom_behat_config.yml&#39;</span>
+</pre></div>
+</div>
+<p>All files from <tt class="docutils literal"><span class="pre">imports</span></tt> block will be loaded by behat and merged into your <tt class="docutils literal"><span class="pre">behat.yml</span></tt> configs.</p>
+</div>
+</div>
+
+
+        </section>
+
+        <footer>
+            <nav>
+                    &laquo; <a href="formatters.html">Formatters</a> |
+                    <a href="#">
+                        Configuration
+                    </a>
+            </nav>
+        </footer>
+
+    </section>
+
+    <footer>
+        <dl>
+            <dt>Docs</dt>
+            <dd><a href="http://docs.behat.org/en/quick_intro.html">Quick Intro</a></dd>
+            <dd><a href="http://docs.behat.org/en/index.html">Behat</a></dd>
+            <dd><a href="http://docs.behat.org/api/gherkin/index.html">Gherkin API</a></dd>
+            <dd><a href="http://docs.behat.org/api/behat/index.html">Behat API</a></dd>
+        </dl>
+        <dl>
+            <dt>Plugins</dt>
+            <dd><a href="http://symfony2bundles.org/Behat/BehatBundle">BehatBundle</a></dd>
+            <dd><a href="https://github.com/Behat/sfBehatPlugin">sfBehatPlugin</a></dd>
+        </dl>
+        <dl>
+            <dt>Pear</dt>
+            <dd><a href="http://pear.everzet.com/">Gherkin</a></dd>
+            <dd><a href="http://pear.everzet.com/">Behat</a></dd>
+        </dl>
+        <dl>
+            <dt>GitHub</dt>
+            <dd><a href="https://github.com/Behat/Gherkin">Gherkin</a></dd>
+            <dd><a href="https://github.com/Behat/Behat">Behat</a></dd>
+        </dl>
+
+        <div class="clear"></div>
+
+        <div class="sponsor">
+            <span>sponsored by</span>
+            <a class="knp" href="http://www.knplabs.com">knpLabs, Symfony developers</a>
+        </div>
+    </footer>
+
+  </body>
+</html>

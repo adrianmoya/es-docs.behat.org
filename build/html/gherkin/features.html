@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Features &mdash; Behat v1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/scrolls.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/behat.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Behat v1.1.0 documentation" href="../index.html" />
+    <link rel="next" title="Scenarios" href="scenarios.html" />
+    <link rel="prev" title="Gherkin DSL" href="index.html" /> 
+  </head>
+  <body>
+    <header>
+        <a id="logo" href="http://behat.org">Behat</a>
+        <nav>
+            <ul>
+                <li><a href="http://behat.org">main</a></li>
+                <li class="active"><a href="http://docs.behat.org">docs</a></li>
+                <li><a href="http://pear.behat.org">pear</a></li>
+                <li><a href="https://github.com/Behat">github</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="docs">
+
+        <nav class="toc">
+            <h3>Navigation</h3>
+            <ul class="nav">
+                <li><a href="../index.html">Behat Documentation</a></li>
+                    <li><a href="index.html">Gherkin DSL</a> (prev)</li>
+                    <li>
+                        <a href="#">
+                            Features
+                        </a> (cur)
+                    </li>
+                    <li><a href="scenarios.html">Scenarios</a> (next)</li>
+            </ul>
+
+            <h3>Table Of Contents</h3>
+            <ul>
+<li><a class="reference internal" href="#">Features</a><ul>
+<li><a class="reference internal" href="#step-definitions">Step Definitions</a></li>
+<li><a class="reference internal" href="#running-features">Running Features</a><ul>
+<li><a class="reference internal" href="#using-cli-command">Using CLI Command</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+
+        <section class="documentation">
+            
+  <div class="section" id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<p>Every <tt class="docutils literal"><span class="pre">.feature</span></tt> file conventionally consists of single feature. Line starting with keyword <tt class="docutils literal"><span class="pre">Feature:</span></tt> followed by free indented text starts a feature. Feature usually contains a list of scenarios. You can write whatever you want up until the first scenario, which starts with the word <tt class="docutils literal"><span class="pre">Scenario:</span></tt> (or localized equivalent) on a new line. You can use <a class="reference internal" href="tags.html"><em>Tags</em></a> to group features and scenarios together independent of your file and directory structure.</p>
+<p>Every scenario consists of a list of steps, which must start with one of the keywords <tt class="docutils literal"><span class="pre">Given</span></tt>, <tt class="docutils literal"><span class="pre">When</span></tt>, <tt class="docutils literal"><span class="pre">Then</span></tt>, <tt class="docutils literal"><span class="pre">But</span></tt> or <tt class="docutils literal"><span class="pre">And</span></tt> (or localized one). Behat treats them all the same, but you shouldn’t. Here is an example:</p>
+<div class="highlight-gherkin"><div class="highlight"><pre><span class="k">Feature:</span><span class="nf"> Serve coffee</span>
+<span class="nf">  In order to earn money</span>
+<span class="nf">  Customers should be able to</span>
+<span class="nf">  buy coffee at all times</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Buy last coffee</span>
+<span class="k">    Given </span><span class="nf">there are </span><span class="s">1</span><span class="nf"> coffees left in the machine</span>
+<span class="nf">    </span><span class="k">And </span><span class="nf">I have deposited </span><span class="s">1</span><span class="nf">$</span>
+<span class="nf">    </span><span class="k">When </span><span class="nf">I press the coffee button</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I should be served a coffee</span>
+</pre></div>
+</div>
+<p>In addition to <a class="reference internal" href="scenarios.html"><em>Scenarios</em></a>, feature may contain a <a class="reference internal" href="backgrounds.html"><em>Backgrounds</em></a> &amp; <a class="reference internal" href="outlines.html"><em>Outlines</em></a>.</p>
+<div class="section" id="step-definitions">
+<h2>Step Definitions<a class="headerlink" href="#step-definitions" title="Permalink to this headline">¶</a></h2>
+<p>For each step Behat will will look for a matching <strong>step definition</strong>. A step definition is written in PHP. Each step definition is a PHP callable, tighten to specific regular expression. Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// features/steps/coffee_steps.php</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Then</span><span class="p">(</span><span class="s1">&#39;/^I should be served coffee$/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assertEquals</span><span class="p">(</span><span class="s1">&#39;coffee&#39;</span><span class="p">,</span> <span class="nv">$world</span><span class="o">-&gt;</span><span class="na">dispensedDrink</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Step definitions can also take parameters:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// features/step/coffeeSteps.php</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Given</span><span class="p">(</span><span class="s1">&#39;/^there are (\d+) coffees left in the machine$/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">,</span> <span class="nv">$number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$world</span><span class="o">-&gt;</span><span class="na">machine</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Machine</span><span class="p">((</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$number</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>This step definition uses a regular expression with one match group – <tt class="docutils literal"><span class="pre">(\d+)</span></tt>. (It matches any sequence of digits). Therefore, it matches the first line of the scenario. The value of each matched group sent to definition callback as a string. You must take care to have the same number of regular expression groups and callback arguments. Since callback arguments are always strings, you have to do any type conversions inside the callback, or use <a class="reference internal" href="../behat/transformations.html"><em>Step Argument Transformations</em></a>.</p>
+<p>Notice that the first argument to the callback is always <tt class="docutils literal"><span class="pre">$world</span></tt>. It’s shared between single scenario steps <a class="reference internal" href="../behat/environment.html"><em>Environment</em></a> object (or container).</p>
+<p>When Behat prints the results of the running features it will underline all the step arguments so that it’s easier to see what part of a step was actually recognised as an argument. It will also print the path and the line of the matching step definition. This makes going from a feature file to any step definition easy.</p>
+</div>
+<div class="section" id="running-features">
+<h2>Running Features<a class="headerlink" href="#running-features" title="Permalink to this headline">¶</a></h2>
+<p>There are several ways to run your features. This page lists the most common ones. Any of these techniques also lets you define common command line options in a <tt class="docutils literal"><span class="pre">behat.yml</span></tt> file.</p>
+<div class="section" id="using-cli-command">
+<h3>Using CLI Command<a class="headerlink" href="#using-cli-command" title="Permalink to this headline">¶</a></h3>
+<p>Assuming you’ve installed Behat as a PEAR package, run this at a command prompt to see the options for running features:</p>
+<div class="highlight-bash"><div class="highlight"><pre>behat -h
+</pre></div>
+</div>
+<p>For example:</p>
+<p>will run the scenario defined at line 44 of the authenticate_user feature, format it as HTML and pipe it to the features.html file for viewing in a browser.</p>
+<p>will run the scenario(s) named “Failed login”</p>
+<p>You can also use <a class="reference internal" href="tags.html"><em>Tags</em></a> to specify what to run.</p>
+</div>
+</div>
+</div>
+
+
+        </section>
+
+        <footer>
+            <nav>
+                    &laquo; <a href="index.html">Gherkin DSL</a> |
+                    <a href="#">
+                        Features
+                    </a>
+                    | <a href="scenarios.html">Scenarios</a> &raquo;
+            </nav>
+        </footer>
+
+    </section>
+
+    <footer>
+        <dl>
+            <dt>Docs</dt>
+            <dd><a href="http://docs.behat.org/en/quick_intro.html">Quick Intro</a></dd>
+            <dd><a href="http://docs.behat.org/en/index.html">Behat</a></dd>
+            <dd><a href="http://docs.behat.org/api/gherkin/index.html">Gherkin API</a></dd>
+            <dd><a href="http://docs.behat.org/api/behat/index.html">Behat API</a></dd>
+        </dl>
+        <dl>
+            <dt>Plugins</dt>
+            <dd><a href="http://symfony2bundles.org/Behat/BehatBundle">BehatBundle</a></dd>
+            <dd><a href="https://github.com/Behat/sfBehatPlugin">sfBehatPlugin</a></dd>
+        </dl>
+        <dl>
+            <dt>Pear</dt>
+            <dd><a href="http://pear.everzet.com/">Gherkin</a></dd>
+            <dd><a href="http://pear.everzet.com/">Behat</a></dd>
+        </dl>
+        <dl>
+            <dt>GitHub</dt>
+            <dd><a href="https://github.com/Behat/Gherkin">Gherkin</a></dd>
+            <dd><a href="https://github.com/Behat/Behat">Behat</a></dd>
+        </dl>
+
+        <div class="clear"></div>
+
+        <div class="sponsor">
+            <span>sponsored by</span>
+            <a class="knp" href="http://www.knplabs.com">knpLabs, Symfony developers</a>
+        </div>
+    </footer>
+
+  </body>
+</html>

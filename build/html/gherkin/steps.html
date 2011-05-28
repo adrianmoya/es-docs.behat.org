@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Steps &amp; Step Definitions &mdash; Behat v1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/scrolls.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/behat.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Behat v1.1.0 documentation" href="../index.html" />
+    <link rel="next" title="Backgrounds" href="backgrounds.html" />
+    <link rel="prev" title="Scenarios" href="scenarios.html" /> 
+  </head>
+  <body>
+    <header>
+        <a id="logo" href="http://behat.org">Behat</a>
+        <nav>
+            <ul>
+                <li><a href="http://behat.org">main</a></li>
+                <li class="active"><a href="http://docs.behat.org">docs</a></li>
+                <li><a href="http://pear.behat.org">pear</a></li>
+                <li><a href="https://github.com/Behat">github</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="docs">
+
+        <nav class="toc">
+            <h3>Navigation</h3>
+            <ul class="nav">
+                <li><a href="../index.html">Behat Documentation</a></li>
+                    <li><a href="scenarios.html">Scenarios</a> (prev)</li>
+                    <li>
+                        <a href="#">
+                            Steps &amp; Step Definitions
+                        </a> (cur)
+                    </li>
+                    <li><a href="backgrounds.html">Backgrounds</a> (next)</li>
+            </ul>
+
+            <h3>Table Of Contents</h3>
+            <ul>
+<li><a class="reference internal" href="#">Steps &amp; Step Definitions</a><ul>
+<li><a class="reference internal" href="#steps">Steps</a><ul>
+<li><a class="reference internal" href="#given">Given</a></li>
+<li><a class="reference internal" href="#when">When</a></li>
+<li><a class="reference internal" href="#then">Then</a></li>
+<li><a class="reference internal" href="#and-but">And, But</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#step-definitions">Step Definitions</a><ul>
+<li><a class="reference internal" href="#successful">Successful</a></li>
+<li><a class="reference internal" href="#undefined">Undefined</a></li>
+<li><a class="reference internal" href="#pending">Pending</a></li>
+<li><a class="reference internal" href="#failed">Failed</a></li>
+<li><a class="reference internal" href="#skipped">Skipped</a></li>
+<li><a class="reference internal" href="#ambiguous">Ambiguous</a></li>
+<li><a class="reference internal" href="#redundant">Redundant</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#step-definition-localization">Step Definition Localization</a></li>
+<li><a class="reference internal" href="#named-step-regexps">Named step regexps</a></li>
+<li><a class="reference internal" href="#steps-organization">Steps Organization</a><ul>
+<li><a class="reference internal" href="#grouping">Grouping</a></li>
+<li><a class="reference internal" href="#step-state">Step state</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+
+        <section class="documentation">
+            
+  <div class="section" id="steps-step-definitions">
+<h1>Steps &amp; Step Definitions<a class="headerlink" href="#steps-step-definitions" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="features.html"><em>Features</em></a> consist of steps, also known as Givens, Whens and Thens.</p>
+<p>Behat doesn’t technically distinguish between these three kind of steps. However, we strongly recommend that you do! These words have been carefully selected for their purpose, and you should know what the purpose is to get into the BDD mindset.</p>
+<p>Robert C. Martin has written a <a class="reference external" href="http://blog.objectmentor.com/articles/2008/11/27/the-truth-about-bdd">great post</a> about BDD’s Given-When-Then concept where he thinks of them as a finite state machine.</p>
+<div class="section" id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="given">
+<h3>Given<a class="headerlink" href="#given" title="Permalink to this headline">¶</a></h3>
+<p>The purpose of givens is to <strong>put the system in a known state</strong> before the user (or external system) starts interacting with the system (in the When steps). Avoid talking about user interaction in givens. If you had worked with usecases, you would call this preconditions.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li>Create records (model instances) / set up the database state.</li>
+<li>It’s ok to call into the layer “inside” the UI layer here (in symfony: talk to the models).</li>
+<li>Log in a user (An exception to the no-interaction recommendation. Things that “happened earlier” are ok).</li>
+</ul>
+<p>And for all the symfony users out there – we recommend using a Given with a multiline table argument set up records instead of fixtures. This way you can read the scenario and make sense out of it without having to look elsewhere (at the fixtures).</p>
+</div>
+<div class="section" id="when">
+<h3>When<a class="headerlink" href="#when" title="Permalink to this headline">¶</a></h3>
+<p>The purpose of When steps is to <strong>describe the key action</strong> the user performs (or, using Robert C. Martin’s metaphor, the state transition).</p>
+<p>Examples:</p>
+<ul class="simple">
+<li>Interact with a web page (BehatBundle implements web steps, that should mostly go into When steps).</li>
+<li>Interact with some other user interface element.</li>
+<li>Developing a library? Kicking off some kind of action that has an observable effect somewhere else.</li>
+</ul>
+</div>
+<div class="section" id="then">
+<h3>Then<a class="headerlink" href="#then" title="Permalink to this headline">¶</a></h3>
+<p>The purpose of Then steps is to <strong>observe outcomes</strong>. The observations should be related to the business value/benefit in your feature description. The observations should also be on some kind of output – that is something that comes out of the system (report, user interface, message) and not something that is deeply buried inside it (that has no business value).</p>
+<p>Examples:</p>
+<ul class="simple">
+<li>Verify that something related to the Given+When is (or is not) in the output</li>
+<li>Check that some external system has received the expected message (was an email with specific content sent?)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">While it might be tempting to implement Then steps to just look in the database – resist the temptation. You should only verify outcome that is observable for the user (or external system) and databases usually are not.</p>
+</div>
+</div>
+<div class="section" id="and-but">
+<h3>And, But<a class="headerlink" href="#and-but" title="Permalink to this headline">¶</a></h3>
+<p>If you have several givens, whens or thens you can write:</p>
+<div class="highlight-gherkin"><div class="highlight"><pre><span class="k">Scenario:</span><span class="nf"> Multiple Givens</span>
+<span class="k">  Given </span><span class="nf">one thing</span>
+<span class="nf">  </span><span class="k">Given </span><span class="nf">an other thing</span>
+<span class="nf">  </span><span class="k">Given </span><span class="nf">yet an other thing</span>
+<span class="nf">  </span><span class="k">When </span><span class="nf">I open my eyes</span>
+<span class="nf">  </span><span class="k">Then </span><span class="nf">I see something</span>
+<span class="nf">  </span><span class="k">Then </span><span class="nf">I don&#39;t see something else</span>
+</pre></div>
+</div>
+<p>Or you can make it read more fluently by writing:</p>
+<div class="highlight-gherkin"><div class="highlight"><pre><span class="k">Scenario:</span><span class="nf"> Multiple Givens</span>
+<span class="k">  Given </span><span class="nf">one thing</span>
+<span class="nf">    </span><span class="k">And </span><span class="nf">an other thing</span>
+<span class="nf">    </span><span class="k">And </span><span class="nf">yet an other thing</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I open my eyes</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I see something</span>
+<span class="nf">    </span><span class="k">But </span><span class="nf">I don&#39;t see something else</span>
+</pre></div>
+</div>
+<p>To Behat steps beginning with And or But are exactly the same kind of steps as all the others.</p>
+</div>
+</div>
+<div class="section" id="step-definitions">
+<h2>Step Definitions<a class="headerlink" href="#step-definitions" title="Permalink to this headline">¶</a></h2>
+<p>Step definitions are defined in PHP files under <tt class="docutils literal"><span class="pre">features/steps/*.php</span></tt>. Here is a simple example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// features/steps/elephants_steps.php</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Given</span><span class="p">(</span><span class="s1">&#39;/^I have (\d+) elephants in my belly$/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">,</span> <span class="nv">$count</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Some PHP code here</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>A step definition is a simple callback tied to custom regex. Step definitions can take 1 or more arguments, identified by groups in the Regexp (and an equal number of arguments to the callback plus 1). &#8220;plus 1&#8221; is a <tt class="docutils literal"><span class="pre">$world</span></tt> <a class="reference internal" href="../behat/environment.html"><em>Environment</em></a> object argument. <a class="reference internal" href="../behat/environment.html"><em>Environment</em></a> is a container object shared across a scenario (and the associated background) steps.</p>
+<p>Then there are Steps. Steps are declared in your <tt class="docutils literal"><span class="pre">features/*.feature</span></tt> files. Here is an example:</p>
+<div class="highlight-gherkin"><div class="highlight"><pre><span class="k">Given </span><span class="nf">I have </span><span class="s">93</span><span class="nf"> elephants in my belly</span>
+</pre></div>
+</div>
+<p>A step is analogous to a callback invocation. In this example, you’re “calling” the step definition above with one argument – the string “93”. Behat matches the Step against the Step Definition’s Regexp and takes all of the matches from that match and passes them to the callback (after <tt class="docutils literal"><span class="pre">$world</span></tt>, ofcourse).</p>
+<p>Step Definitions start with an <a class="reference external" href="http://www.merriam-webster.com/dictionary/given">adjective</a> or an <a class="reference external" href="http://www.merriam-webster.com/dictionary/when">adverb</a>, and can be expressed in any of Behat’s supported languages. All Step definitions are loaded (and defined) before Behat starts to execute the features plain text.</p>
+<p>When Behat executes the plain text, it will for each step look for a registered Step Definition with a matching Regexp. If it finds one it will execute its callback, passing all groups from the Regexp match as arguments to the callback (after <tt class="docutils literal"><span class="pre">$world</span></tt>, ofcourse).</p>
+<p>The adjective/adverb has <strong>no</strong> significance when Behat is registering or looking for Step Definitions.</p>
+<div class="section" id="successful">
+<h3>Successful<a class="headerlink" href="#successful" title="Permalink to this headline">¶</a></h3>
+<p>When Behat finds a matching Step Definition it will execute it. If the block in the step definition doesn’t raise an Exception, the step is marked as passed (green). What you return from a Step Definition has no significance what so ever. Only Exceptions or their absence matters.</p>
+</div>
+<div class="section" id="undefined">
+<h3>Undefined<a class="headerlink" href="#undefined" title="Permalink to this headline">¶</a></h3>
+<p>When Behat can’t find a matching Step Definition the step gets marked as yellow, and all subsequent steps in the scenario are skipped. If your test suite has undefined steps – Behat will still exit with <tt class="docutils literal"><span class="pre">0</span></tt> code. But if you&#8217;ll specify <tt class="docutils literal"><span class="pre">--strict</span></tt> option, then Behat will exit with <tt class="docutils literal"><span class="pre">1</span></tt> (fail).</p>
+</div>
+<div class="section" id="pending">
+<h3>Pending<a class="headerlink" href="#pending" title="Permalink to this headline">¶</a></h3>
+<p>When a Step Definition’s callback throws the <tt class="docutils literal"><span class="pre">Behat\Behat\Exception\Pending</span></tt>, the step is marked as yellow (as with undefined ones), reminding you that you have work to do. If your test suite has undefined steps – Behat will still exit with <tt class="docutils literal"><span class="pre">0</span></tt> code. But if you&#8217;ll specify <tt class="docutils literal"><span class="pre">--strict</span></tt> option, then Behat will exit with <tt class="docutils literal"><span class="pre">1</span></tt> (fail).</p>
+</div>
+<div class="section" id="failed">
+<h3>Failed<a class="headerlink" href="#failed" title="Permalink to this headline">¶</a></h3>
+<p>When a Step Definition’s callback is executed and raises an Exception, the step is marked as red. What you return from a Step Definition has no significance what so ever. Returning null or false will not cause a step definition to fail. If suite has failed steps - Behat will return <tt class="docutils literal"><span class="pre">1</span></tt> to console.</p>
+</div>
+<div class="section" id="skipped">
+<h3>Skipped<a class="headerlink" href="#skipped" title="Permalink to this headline">¶</a></h3>
+<p>Steps that follow undefined, pending or failed steps are never executed (even if there is a matching Step Definition), and are marked cyan.</p>
+</div>
+<div class="section" id="ambiguous">
+<h3>Ambiguous<a class="headerlink" href="#ambiguous" title="Permalink to this headline">¶</a></h3>
+<p>Consider these step definitions:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// features/steps/amb_steps.php</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Given</span><span class="p">(</span><span class="s1">&#39;/Three (.*) mice/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">,</span> <span class="nv">$disability</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">});</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Given</span><span class="p">(</span><span class="s1">&#39;/Three blind (.*)/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">,</span> <span class="nv">$animal</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>And a plain text step:</p>
+<div class="highlight-gherkin"><div class="highlight"><pre><span class="k">Given </span><span class="nf">Three blind mice</span>
+</pre></div>
+</div>
+<p>Behat can’t make a decision about what Step Definition to execute, and wil raise a <tt class="docutils literal"><span class="pre">Behat\Behat\Exception\Ambiguous</span></tt> exception telling you to fix the ambiguity.</p>
+</div>
+<div class="section" id="redundant">
+<h3>Redundant<a class="headerlink" href="#redundant" title="Permalink to this headline">¶</a></h3>
+<p>In Behat you’re not allowed to use a regexp more than once in a Step Definition (even across files, even with different code inside the Proc), so the following would cause a <tt class="docutils literal"><span class="pre">Behat\Behat\Exception\Redundant</span></tt> error:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// features/steps/redundant_steps.php</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Given</span><span class="p">(</span><span class="s1">&#39;/Three (.*) mice/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">,</span> <span class="nv">$disability</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// some code</span>
+<span class="p">});</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Given</span><span class="p">(</span><span class="s1">&#39;/Three (.*) mice/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">,</span> <span class="nv">$disability</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// some other code</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="step-definition-localization">
+<h2>Step Definition Localization<a class="headerlink" href="#step-definition-localization" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, you might need to provide multiple languages of your step definitions. For example, when you&#8217;re writing some assertion library with bundled Behat steps. In this case, Behat supports definition translations. To translate your definitions, create <tt class="docutils literal"><span class="pre">features/steps/i18n</span></tt> folder and place regex translastions there in <a class="reference external" href="http://en.wikipedia.org/wiki/XLIFF">XLIFF</a> format:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- features/steps/i18n/ru.xliff ---&gt;</span>
+<span class="nt">&lt;xliff</span> <span class="na">version=</span><span class="s">&quot;1.2&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;urn:oasis:names:tc:xliff:document:1.2&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;file</span> <span class="na">original=</span><span class="s">&quot;global&quot;</span> <span class="na">source-language=</span><span class="s">&quot;en&quot;</span> <span class="na">target-language=</span><span class="s">&quot;ru&quot;</span> <span class="na">datatype=</span><span class="s">&quot;plaintext&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;header</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+      <span class="nt">&lt;trans-unit</span> <span class="na">id=</span><span class="s">&quot;i-have-entered&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;source&gt;</span>/^I have entered (\d+) into calculator$/<span class="nt">&lt;/source&gt;</span>
+        <span class="nt">&lt;target&gt;</span>/^Я набрал число (\d+) на калькуляторе$/<span class="nt">&lt;/target&gt;</span>
+      <span class="nt">&lt;/trans-unit&gt;</span>
+      <span class="nt">&lt;trans-unit</span> <span class="na">id=</span><span class="s">&quot;i-have-clicked-plus&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;source&gt;</span>/^I have clicked &quot;+&quot;$/<span class="nt">&lt;/source&gt;</span>
+        <span class="nt">&lt;target&gt;</span>/^Я нажал &quot;+&quot;$/<span class="nt">&lt;/target&gt;</span>
+      <span class="nt">&lt;/trans-unit&gt;</span>
+      <span class="nt">&lt;trans-unit</span> <span class="na">id=</span><span class="s">&quot;i-should-see&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;source&gt;</span>/^I should see (\d+) on the screen$/<span class="nt">&lt;/source&gt;</span>
+        <span class="nt">&lt;target&gt;</span>/^Я должен увидеть на экране (\d+)$/<span class="nt">&lt;/target&gt;</span>
+      <span class="nt">&lt;/trans-unit&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;/file&gt;</span>
+<span class="nt">&lt;/xliff&gt;</span>
+</pre></div>
+</div>
+<p>This translations will be used to match your localized features. For example, this is russian translation &amp; it will be used in all features, written in <tt class="docutils literal"><span class="pre">#</span> <span class="pre">language:</span> <span class="pre">ru</span></tt>. Also, Behat&#8217;s <tt class="docutils literal"><span class="pre">--steps</span></tt> option accepts additional <tt class="docutils literal"><span class="pre">--lang</span></tt> option in which you can specify language to see available steps:</p>
+<div class="highlight-bash"><div class="highlight"><pre>behat --steps --lang<span class="o">=</span>ru
+</pre></div>
+</div>
+<p>will print all available steps in russian (if has translations).</p>
+</div>
+<div class="section" id="named-step-regexps">
+<h2>Named step regexps<a class="headerlink" href="#named-step-regexps" title="Permalink to this headline">¶</a></h2>
+<p>In some cases, you might need to use named regex arguments instead of default positioned ones. Behat allows this from version 1.1:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Given</span><span class="p">(</span><span class="s1">&#39;/^(?P&lt;who&gt;\w+) did (?P&lt;what&gt;\w+)$/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">,</span> <span class="nv">$who</span><span class="p">,</span> <span class="nv">$what</span><span class="p">)</span> <span class="p">{});</span>
+</pre></div>
+</div>
+<p>In this case arguments will be mapped accordingly to their matcher names. This means, that the privous example is equivalent to the following:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+
+<span class="nv">$steps</span><span class="o">-&gt;</span><span class="na">Given</span><span class="p">(</span><span class="s1">&#39;/^(?P&lt;what&gt;\w+) was done by (?P&lt;who&gt;\w+)$/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$world</span><span class="p">,</span> <span class="nv">$who</span><span class="p">,</span> <span class="nv">$what</span><span class="p">)</span> <span class="p">{});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Don&#8217;t mix named arguments with non-named ones. This would lead to unpredictable results!</p>
+</div>
+</div>
+<div class="section" id="steps-organization">
+<h2>Steps Organization<a class="headerlink" href="#steps-organization" title="Permalink to this headline">¶</a></h2>
+<p>How do you name step definition files? What to put in each step definition? What not to put in step definitions? Here are some guidelines that will lead to better scenarios.</p>
+<div class="section" id="grouping">
+<h3>Grouping<a class="headerlink" href="#grouping" title="Permalink to this headline">¶</a></h3>
+<p>Technically it doesn’t matter how you name your step definition files and what step definitions you put in what file. You <em>could</em> have one giant file called allSteps.php and put all your step definitions there. That would be messy.</p>
+<p>We recommend creating a <tt class="docutils literal"><span class="pre">*_steps.php</span></tt> file for each domain concept. For example, a good rule of thumb is to have one file for each major model/database table. In a Curriculum Vitae application we might have:</p>
+<ul class="simple">
+<li>features/steps/employee_steps.php</li>
+<li>features/steps/education_steps.php</li>
+<li>features/steps/experience_steps.php</li>
+<li>features/steps/authentication_steps.php</li>
+</ul>
+<p>The three first ones would define all the <tt class="docutils literal"><span class="pre">Given</span></tt>, <tt class="docutils literal"><span class="pre">When</span></tt>, <tt class="docutils literal"><span class="pre">Then</span></tt> step definitions related to creating, reading, updating and deleting the various models. The last one defines step definitions related to logging in and out.</p>
+</div>
+<div class="section" id="step-state">
+<h3>Step state<a class="headerlink" href="#step-state" title="Permalink to this headline">¶</a></h3>
+<p>It’s possible to keep object state in <tt class="docutils literal"><span class="pre">$world-&gt;variables</span></tt> inside your step definitions. Be careful about this as it might make your steps more tightly coupled and harder to reuse. There is no absolute rule here – sometimes it’s ok to use <tt class="docutils literal"><span class="pre">$world-&gt;variables</span></tt>.</p>
+</div>
+</div>
+</div>
+
+
+        </section>
+
+        <footer>
+            <nav>
+                    &laquo; <a href="scenarios.html">Scenarios</a> |
+                    <a href="#">
+                        Steps &amp; Step Definitions
+                    </a>
+                    | <a href="backgrounds.html">Backgrounds</a> &raquo;
+            </nav>
+        </footer>
+
+    </section>
+
+    <footer>
+        <dl>
+            <dt>Docs</dt>
+            <dd><a href="http://docs.behat.org/en/quick_intro.html">Quick Intro</a></dd>
+            <dd><a href="http://docs.behat.org/en/index.html">Behat</a></dd>
+            <dd><a href="http://docs.behat.org/api/gherkin/index.html">Gherkin API</a></dd>
+            <dd><a href="http://docs.behat.org/api/behat/index.html">Behat API</a></dd>
+        </dl>
+        <dl>
+            <dt>Plugins</dt>
+            <dd><a href="http://symfony2bundles.org/Behat/BehatBundle">BehatBundle</a></dd>
+            <dd><a href="https://github.com/Behat/sfBehatPlugin">sfBehatPlugin</a></dd>
+        </dl>
+        <dl>
+            <dt>Pear</dt>
+            <dd><a href="http://pear.everzet.com/">Gherkin</a></dd>
+            <dd><a href="http://pear.everzet.com/">Behat</a></dd>
+        </dl>
+        <dl>
+            <dt>GitHub</dt>
+            <dd><a href="https://github.com/Behat/Gherkin">Gherkin</a></dd>
+            <dd><a href="https://github.com/Behat/Behat">Behat</a></dd>
+        </dl>
+
+        <div class="clear"></div>
+
+        <div class="sponsor">
+            <span>sponsored by</span>
+            <a class="knp" href="http://www.knplabs.com">knpLabs, Symfony developers</a>
+        </div>
+    </footer>
+
+  </body>
+</html>
