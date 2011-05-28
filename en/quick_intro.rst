@@ -1,4 +1,4 @@
-Quick Intro to Behat
+Quick Guide to Behat
 ====================
 
 Behat is an `open source <http://creativecommons.org/licenses/MIT/>`_ `behavior driven development <http://en.wikipedia.org/wiki/Behavior_Driven_Development>`_ framework for php 5.3.
@@ -11,14 +11,20 @@ Behat was inspired by Ruby's `Cucumber <http://cukes.info/>`_ project and especi
 * `Symfony Finder component <https://github.com/symfony/Finder>`_
 * `Symfony Translation component <https://github.com/symfony/Translation>`_
 
-Unlike any other php testing framework that tests applications inside out. Behat is testing applications `outside in <http://blog.dannorth.net/whats-in-a-story/>`_. It means, that Behat works only with your application's input/output. If you want to test your models - use unit testing framework instead, Behat created for behavior testing (but can be used for anything +) ).
+Unlike any other php testing framework that tests applications inside out.
+Behat is testing applications `outside in <http://blog.dannorth.net/whats-in-a-story/>`_.
+It means, that Behat works only with your application's input/output. If you
+want to test your models - use unit testing framework instead, Behat created
+for behavior testing (but can be used for anything +) ).
 
-Install
--------
+Installation
+------------
 
-There's many ways to install Behat to your system, but first, check first and only requirement of it: you must have php 5.3.1+ installed. If you have - continue reading, if not - install it first.
+There's many ways to install Behat to your system, but first, check first
+and only requirement of it: you must have php 5.3.1+ installed. If you have -
+continue reading, if not - install it first.
 
-The simpliest way to install it through PEAR:
+The simplest way to install it through PEAR:
 
 .. code-block:: bash
 
@@ -33,12 +39,15 @@ You can also clone the project with Git by running:
     git clone git://github.com/Behat/Behat.git && cd Behat
     git submodule update --init
 
-After downloading - just run ``path/to/Behat/bin/behat`` or simply ``behat`` (if you installed Behat through PEAR) from console.
+After downloading - just run ``path/to/Behat/bin/behat`` or simply ``behat``
+(if you installed Behat through PEAR) from console.
 
 Basics
 ------
 
-Behat is a tool that can execute plain-text functional descriptions as automated tests. The language that Behat (and Ruby Cucumber) understands is called Gherkin. Here is an example:
+Behat is a tool that can execute plain-text functional descriptions as automated
+tests. The language that Behat (and Ruby Cucumber) understands is called Gherkin.
+Here is an example:
 
 .. code-block:: gherkin
 
@@ -55,7 +64,11 @@ Behat is a tool that can execute plain-text functional descriptions as automated
           | A001        |
           | B205        |
 
-While Behat can be thought of as a “testing” tool, the intent of the tool is to support BDD. This means that the “features” (plain text descriptions with scenarios) are typically written before anything else and verified by business analysts, domain experts, etc. non technical stakeholders. The production code is then written outside in, to make the stories pass.
+While Behat can be thought of as a “testing” tool, the intent of the tool
+is to support BDD. This means that the “features” (plain text descriptions
+with scenarios) are typically written before anything else and verified by
+business analysts, domain experts, etc. non technical stakeholders. The production
+code is then written outside in, to make the stories pass.
 
 The basic Behat test environment directory looks like this:
 
