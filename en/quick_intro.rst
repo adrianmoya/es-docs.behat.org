@@ -1,36 +1,68 @@
 Quick Guide to Behat
 ====================
 
-Behat is an `open source <http://creativecommons.org/licenses/MIT/>`_ `behavior driven development <http://en.wikipedia.org/wiki/Behavior_Driven_Development>`_ framework for php 5.3.
+Welcome to Behat! Behat is a tool that makes `behavior driven development`_
+(BDD) possible. With BDD, you write human-readable stories that describe
+the behavior of your application. These stories can then be run as actual
+tests against your application. And yes, it's as cool as it sounds!
 
-Behat was inspired by Ruby's `Cucumber <http://cukes.info/>`_ project and especially it's syntax part (Gherkin). It tries to be like Cucumber with input (Feature files) and output (console formatters), but in core, it built from the ground on the shoulders of giants:
+For example, imagine you've been hired to built the famous ``ls`` UNIX command.
+A stakeholder may say to you:
 
-* `Symfony Dependency Injection Container component <https://github.com/symfony/DependencyInjection>`_
-* `Symfony Event Dispatcher component <https://github.com/symfony/EventDispatcher>`_
-* `Symfony Console component <https://github.com/symfony/Console>`_
-* `Symfony Finder component <https://github.com/symfony/Finder>`_
-* `Symfony Translation component <https://github.com/symfony/Translation>`_
+.. code-block:: gherkin
 
-Unlike any other php testing framework that tests applications inside out.
-Behat is testing applications `outside in <http://blog.dannorth.net/whats-in-a-story/>`_.
-It means, that Behat works only with your application's input/output. If you
-want to test your models - use unit testing framework instead, Behat created
-for behavior testing (but can be used for anything +) ).
+    Scenario:
+      Given I am in a directory "test"
+      And I have a file named "foo"
+      And I have a file named "bar"
+      When I run "ls"
+      Then I should get:
+        """
+        bar
+        foo
+        """
+
+In this tutorial, we'll show you how Behat can execute this simple story
+as a test that verifies that the ``ls`` commands works as described.
+
+That's it! Behat can be used to test anything, including web-related behavior
+via the `Mink`_ library.
+
+.. note::
+
+    If you want to learn more about the philosophy of testing the "behavior"
+    of your application, see `What's in a Story?`_
+
+.. note::
+
+    Behat was inspired by Ruby's `Cucumber`_ project.
 
 Installation
 ------------
 
-There's many ways to install Behat to your system, but first, check first
-and only requirement of it: you must have php 5.3.1+ installed. If you have -
-continue reading, if not - install it first.
+Behat is an executable that you'll run from the command line to execute your
+stories as tests. Before you begin, ensure that you have at least PHP 5.3.1
+installed.
 
-The simplest way to install it through PEAR:
+Method #1 (PEAR)
+~~~~~~~~~~~~~~~~
+
+The simplest way to install Behat is through PEAR:
 
 .. code-block:: bash
 
     pear channel-discover pear.behat.org
     pear install behat/gherkin
     pear install behat/behat
+
+You can now execute Behat simply by running the ``behat`` command:
+
+.. code-block:: bash
+
+    behat
+
+Method #2 (Git)
+~~~~~~~~~~~~~~~
 
 You can also clone the project with Git by running:
 
@@ -39,36 +71,219 @@ You can also clone the project with Git by running:
     git clone git://github.com/Behat/Behat.git && cd Behat
     git submodule update --init
 
-After downloading - just run ``path/to/Behat/bin/behat`` or simply ``behat``
-(if you installed Behat through PEAR) from console.
+After downloading, you can execute behat by running:
 
-Basics
-------
+.. code-block:: bash
 
-Behat is a tool that can execute plain-text functional descriptions as automated
-tests. The language that Behat (and Ruby Cucumber) understands is called Gherkin.
-Here is an example:
+    ./path/to/Behat/bin/behat
+
+Basic Usage
+-----------
+
+In this example, we'll rewind several decades and pretend we're building
+the original UNIX ``ls`` command. Create a new directory and setup behat
+inside that directory:
+
+.. code-block:: bash
+
+    mkdir test_ls
+    cd test_ls
+    behat --init
+
+The ``behat --init`` will create a ``features/`` directory with some basic
+things to get your started.
+
+Define your Feature
+~~~~~~~~~~~~~~~~~~~
+
+Everything in Behat always starts with a *feature* that you want to describe
+and then implement. In this example, the feature will be the ``ls`` command,
+which can be thought of as one feature of the whole UNIX system. Since the
+feature is the ``ls`` command, start by creating a ``features/ls.feature``
+file:
 
 .. code-block:: gherkin
 
-    Feature: Search courses 
-      In order to ensure better utilization of courses 
-      Potential students should be able to search for courses 
+    Feature: ls
+      In order to see the directory structure
+      As a UNIX user
+      I need to be able to list the current directory's contents
 
-      Scenario: Search by topic 
-        Given there are 240 courses which do not have the topic "biology" 
-        And there are 2 courses A001, B205 that each have "biology" as one of the topics
-        When I search for "biology" 
-        Then I should see the following courses:
-          | Course code |
-          | A001        |
-          | B205        |
+Every feature starts with this same format: a line naming the feature, followed
+by three lines that describe the benefit, the role the feature itself. These
+lines aren't actually important to Behat or your eventual test, but they
+are good practice when defining your feature.
 
-While Behat can be thought of as a “testing” tool, the intent of the tool
-is to support BDD. This means that the “features” (plain text descriptions
-with scenarios) are typically written before anything else and verified by
-business analysts, domain experts, etc. non technical stakeholders. The production
-code is then written outside in, to make the stories pass.
+Define a Scenario
+~~~~~~~~~~~~~~~~~
+
+Next, add the following scenario to the end of the ``features/ls.feature``
+file:
+
+.. code-block:: gherkin
+
+    Scenario:
+      Given I am in a directory "test"
+      And I have a file named "foo"
+      And I have a file named "bar"
+      When I run "ls"
+      Then I should get:
+        """
+        bar
+        foo
+        """
+
+.. tip::
+
+    The special ``"""`` syntax seen on the last few lines is just a special
+    syntax for defining steps on multiple lines. Don't worry about it too
+    much for now.
+
+Each feature is defined by one or more "scenarios", which explain how that
+feature should act under different conditions. This is the part that will
+be transformed into a test. Each scenario always follows the same basic format:
+
+.. code-block:: gherkin
+
+    Scenario:
+      Given [some context]
+      And [more context]
+      When [some event]
+      Then [outcome]
+      AND [another outcome]
+
+Executing Behat
+~~~~~~~~~~~~~~~
+
+You've now defined the feature and one scenario for that feature. You're
+ready to see Behat in action! Try executing Behat from inside your ``test_ls``
+directory:
+
+.. code-block:: bash
+
+    behat
+
+If everything worked correctly, you should see something like this:
+
+.. image:: /images/behat/ls_no_defined_steps.png
+   :align: center
+
+Writing your Steps
+~~~~~~~~~~~~~~~~~~
+
+Behat automatically finds the ``features/ls.feature`` file and tries to execute
+its ``Scenario`` as a test. However, we haven't told Behat what to do with
+statements like ``Given I am in a directory "test"``, which cases an error.
+Behat works by matching each statement of a ``Scenario`` to a list of regular
+expression "steps" that you define. In other words, it's your job to tell
+Behat what to do when it sees ``Given I am in a directory "test"``. Fortunately,
+Behat helps you out by printing the regular expression that you probably
+need in order to create that step:
+
+.. code-block:: text
+
+    You can implement step definitions for undefined steps with these snippets:
+
+    $steps->Given('/^I am in a directory "([^"]*)"$/', function($world, $arg1) {
+        throw new \Behat\Behat\Exception\Pending();
+    });
+
+Let's use Behat's advice and add the following to the ``features/steps/steps.php``
+file:
+
+.. code-block:: php
+
+    <?php
+    # features/steps/steps.php
+
+    $steps->Given('/^I am in a directory "([^"]*)"$/', function($world, $dir) {
+        if (!file_exists($dir)) {
+            mkdir($dir);
+        }
+        chdir($dir);
+    });
+
+Basically, we've started with the regular expression suggested by Behat, which
+makes the value inside the quotations (e.g. "test") available as the ``$dir``
+variable. Inside the method, we simple create the directory and move into it.
+
+Repeat this for the other three missing steps so that your ``steps.php``
+file looks like this:
+
+.. code-block:: php
+
+    <?php
+
+    $steps->Given('/^I am in a directory "([^"]*)"$/', function($world, $dir) {
+        if (!file_exists($dir)) {
+            mkdir($dir);
+        }
+        chdir($dir);
+    });
+
+    $steps->Given('/^I have a file named "([^"]*)"$/', function($world, $file) {
+        touch($file);
+    });
+
+    $steps->When('/^I run "([^"]*)"$/', function($world, $command) {
+        exec($command, $output);
+        $world->output = trim(implode("\n", $output));
+    });
+
+    $steps->Then('/^I should get:$/', function($world, $string) {
+        if ((string) $string !== $world->output) {
+            throw new Exception("Actual output is:\n" . $world->output);
+        }
+    });
+
+Great! Now that you've defined all of your steps, run Behat again:
+
+.. code-block:: bash
+
+    behat
+
+.. image:: /images/behat/ls_passing_one_step.png
+   :align: center
+
+Success! Behat executed each of your steps - creating a new directory with
+two files and running the ``ls`` command - and compared the result to the
+expected result.
+
+Of course, now that you've defined your basic steps, adding more scenarios
+is easy. For example, add the following to your ``features/ls.feature`` file:
+
+.. code-block:: gherkin
+
+    Scenario:
+      Given I am in a directory "test"
+      And I have a file named "foo"
+      And I have a file named ".bar"
+      When I run "ls -a"
+      Then I should get:
+        """
+        .
+        ..
+        .bar
+        foo
+        """
+
+Run Behat again. This time, it'll run two tests, and both will pass.
+
+.. image:: /images/behat/ls_passing_two_steps.png
+   :align: center
+
+That's it! Now that you've got a few steps defined, you can probably dream
+up lots of different scenarios to write for the ``ls`` command. Of course,
+this same basic idea could be used to test web applications, and Behat integrates
+beautifully with a library called `Mink`_ to do just that.
+
+Of course, there's still lot's more to learn, including more about the Gherkin
+syntax and the ``$world`` variable that's available inside each step function.
+
+Some more Behat Basics
+----------------------
+
+When you run ``behat --init``, it sets up a directory that looks like this:
 
 The basic Behat test environment directory looks like this:
 
@@ -81,88 +296,142 @@ The basic Behat test environment directory looks like this:
            |-- bootstrap.php
            |-- env.php
 
-And it can be splitted into 3 main areas:
+Everything related to Behat will live inside the ``features`` directory, which
+is composed of three basic areas:
 
-1. ``features`` - root test directory. Feature files are placed here.
-2. ``features/steps`` - step definitions directory. Step definitions (php scripts) lay here.
-3. ``features/support`` - support directory. Support scripts (environment, path definition) created here.
+1. ``features/`` - Behat looks for ``*.feature`` files here to execute
+2. ``features/steps/`` - Behat loads all ``*.php`` files here as "steps"
+3. ``features/support/`` - This directory contains two files that help you configure Behat
 
-Core of the tests in Behat is features. Features are placed in ``features`` directory and are plain text files.
+Inside the ``feature/support/`` directory, there are two files:
 
-Behat parses feature files and tries to find appropriate step definition for each step from ``features/steps`` folder (step definitions path).
+* ``bootstrap.php`` This file is run once per Behat execution. You should
+  use it to initialize anything needed for Behat to run your application.
 
-Every step definition is simple php-callable with access to shared between batch steps (scenarios) environment object, that can be configured inside ``features/support/env.php``.
+* ``env.php`` This file is run once per Scenario test and can be used to
+  set variables on the ``$world`` variable. In other words, if you need any
+  external variables or objects to be available inside your steps, set those
+  variables here.
 
-And if environment config requires some libraries to work (PHPUnit for example) - includes are placed inside ``features/support/bootstrap.php``.
+More about Feature
+------------------
 
-Feature
--------
+As you've already seen, a feature is a simple, readable plain text file,
+in a format called Gherkin. Each feature file follows a few basic rules:
 
-Feature file is your Behat entry point. That's where you start working on your project. Here's content of basic feature ``features/math.feature``:
+1. Every ``*.feature`` file conventionally consists of single feature.
 
-.. code-block:: gherkin
+2. A line starting with the keyword ``Feature:`` followed by three indented
+   lines defines the start of a new e feature.
 
-    Feature: Addition 
-      In order to avoid silly mistakes 
-      As a math idiot 
-      I want to be told the sum of two numbers 
+3. A feature usually contains a list of scenarios. You can write whatever
+   you want up until the first scenario: this text will become the feature
+   description.
 
-      Scenario: Add two numbers 
-        Given I have entered 50 into the calculator
-          And I have entered 70 into the calculator
-         When I press add
-         Then The result should be 120 on the screen
+4. Each scenario starts with either the ``Scenario:`` or ``Scenario Outline:`` keywords.
+   Each scenario consists of steps, which must start with one of the following
+   keywords: ``Given``, ``When``, ``Then``, ``But`` or ``And``. Behat treats
+   each of these keywords the same, but you should use them as intended for
+   consistent scenarios.
 
-As you can see, feature is a simple, readable plain text file. Every feature is written in `DSL <http://en.wikipedia.org/wiki/Domain-specific_language>`_ called **Gherkin**, that firstly was introduced in Ruby's `Cucumber <http://cukes.info/>`_.
+.. tip::
 
-1. every ``*.feature`` file conventionally consists of single feature.
-2. line starting with keyword ``Feature:`` (or localized one) followed by free indented text starts a feature.
-3. feature usually contains a list of scenarios. You can write whatever you want up until the first scenario and this text will become feature description.
-4. every scenario starts from ``Scenario:`` or ``Scenario Outline:`` keywords (or localized equivalent). Each scenario consists of steps, which must start with one of the ``Given``, ``When``, ``Then``, ``But`` or ``And`` keywords (or localized one). Behat treats all this step types the same, but you shouldn’t!
+    Behat also allows you to write your features in your native language.
+    In other words, instead of writing ``Feature``, ``Scenario`` or ``Given``,
+    you can use your native language by configuring Behat to use one of its
+    many supported languages.
 
-Step Definition
----------------
+More about Steps
+----------------
 
-For each step Behat will look for a matching step definition. A step definition is written in php. Each step definition consists of a keyword, a regular expression, and a callback. Example ``features/steps/math.php``:
+For each step, Behat will look for a matching step definition by matching
+the text of the step against the regular expression defined by each step.
+
+A step definition is written in php and consists of a keyword, a regular
+expression, and a callback. For example:
 
 .. code-block:: php
 
-    <?php 
+    <?php
+    # features/steps/steps.php
 
-    $steps->Given('/^I have entered (\d+) into the calculator$/', function($world, $arg1) { 
-        throw new Behat\Behat\Exception\Pending('Write code later'); 
+    $steps->Given('/^I am in a directory "([^"]*)"$/', function($world, $dir) {
+        if (!file_exists($dir)) {
+            mkdir($dir);
+        }
+        chdir($dir);
     });
 
-1. ``$steps`` is a global DefinitionDispatcher object, available in all step definition files. Calling ``->Given`` on it will define new ``Given`` (but this will match ``When``/``Then``/``And`` keyworded steps too) step.
-2. ``'/^I have entered (\d+) into the calculator$/'`` - regex matcher for step. All search patterns (``(\d+)``) will become callback arguments (``$arg1``).
-3. First callback argument (``$world``) is always reserved for environment object. Environment object created before every scenario run and shared between scenario steps.
-4. Step definition body is simple php code. **Failed** step is a step, which definition execution throws an exception. So, if step execution doesn't throw exceptions - step **passes**.
+A few pointers:
 
-Environment
------------
+1. ``$steps`` is a global ``DefinitionDispatcher`` object, available in all
+   step definition files. Calling ``->Given`` on it will allow you to define
+   a step (though in reality this would match any ``When``/``Then``/``And``
+   keywords as well).
+   
+2. All search patterns in the regular expression (e.g. ``([^"]*)``) will become
+   callback arguments in the function (``$dir``).
 
-Behat creates environment object for each scenario and passes reference to it into each step definition.
+3. The first callback argument, ``$world``,, is always reserved for environment
+   object. The environment object is created before each scenario is run,
+   but is shared between each step inside that scenario.
 
-So, if you want to calculate/accumulate or just share variables between steps definitions - use ``$world`` container for that.
+4. If, inside a step, you need to tell Behat that some sort of "failure" has
+   occurred, you should throw an exception:
 
-But what if you need some definitions being connected in each world? Use environment configurator for that:
+.. code-block:: php
+
+   <?php
+   
+   $steps->Then('/^I should get:$/', function($world, $string) {
+       if ((string) $string !== $world->output) {
+           throw new Exception("Actual output is:\n" . $world->output);
+       }
+   });
+
+The Environment Object: ``$world``
+----------------------------------
+
+Behat creates an environment object for each scenario and passes that same
+object to each step within the scenario. So, if you want to share variables
+between steps, you can easily do that (see the full example above).
+
+But what if you need some variable or object to be available inside *every*
+step or every scenario? To do this, use the ``features/support/env.php``
+file.
+
+For example, suppose we want to allow each step to execute a real HTTP request
+using the PHP library `Goutte`_.
 
 .. code-block:: php
 
     <?php
     // features/support/env.php
 
-    require 'paths.php'; 
+    // Create the web client
+    $world->client = new \Goutte\Client;
+    $world->response = null;
+    $world->form = array();
 
-    // Create WebClient behavior 
-    $world->client = new \Goutte\Client; 
-    $world->response = null; 
-    $world->form = array(); 
-
-    // Helpful closures 
+    // add a "visit" closure function
     $world->visit = function($link) use($world) { 
         $world->response = $world->client->request('GET', $link); 
     };
+
+Now, inside any step, you can do the following:
+
+.. code-block:: php
+    <?php
+
+    $steps->Given('/^I visit "([^"]*)" in my browser$/', function($world, $url) {
+        $world->visit($url);
+    });
+
+    $steps->Then('/^The page should contain "([^"]*)"$/', function($world, $string) {
+        if (false === strpos($world->response->getContent(), $string) {
+            throw new Exception(sprintf('String "%s" not found on the page', $string));
+        }
+    });
 
 This file will be executed on each environment object creation. ``$world`` variable is an environment object itself, which works like variable holder for all your scenario values & parameters.
 
@@ -196,3 +465,9 @@ To see other available commands, use:
     behat -h
 
 Now you know all you need to get started with Behat. You can start using BDD in your projects right now or continue to read full guide.
+
+.. _`behavior driven development`: http://en.wikipedia.org/wiki/Behavior_Driven_Development
+.. _`Mink`: https://github.com/behat/mink
+.. _`What's in a Story`: http://blog.dannorth.net/whats-in-a-story/
+.. _`Cucumber`: http://cukes.info/
+.. _`Goutte`: https://github.com/fabpot/goutte
