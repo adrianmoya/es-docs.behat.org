@@ -11,7 +11,12 @@ A stakeholder may say to you:
 
 .. code-block:: gherkin
 
-    Scenario:
+    Feature: ls
+      In order to see the directory structure
+      As a UNIX user
+      I need to be able to list the current directory's contents
+
+    Scenario: List 2 files in a directory
       Given I am in a directory "test"
       And I have a file named "foo"
       And I have a file named "bar"
@@ -52,7 +57,6 @@ The simplest way to install Behat is through PEAR:
 .. code-block:: bash
 
     pear channel-discover pear.behat.org
-    pear install behat/gherkin
     pear install behat/behat
 
 You can now execute Behat simply by running the ``behat`` command:
@@ -86,8 +90,8 @@ inside that directory:
 
 .. code-block:: bash
 
-    mkdir test_ls
-    cd test_ls
+    mkdir ls_project
+    cd ls_project
     behat --init
 
 The ``behat --init`` will create a ``features/`` directory with some basic
@@ -110,9 +114,10 @@ file:
       I need to be able to list the current directory's contents
 
 Every feature starts with this same format: a line naming the feature, followed
-by three lines that describe the benefit, the role the feature itself. These
-lines aren't actually important to Behat or your eventual test, but they
-are good practice when defining your feature.
+by three lines that describe the benefit, the role and the feature itself.
+This section is required, but its contents aren't actually important to Behat
+or your eventual test. They are, however, important to write correctly so
+that your features are consistent and readable by other people.
 
 Define a Scenario
 ~~~~~~~~~~~~~~~~~
@@ -122,7 +127,7 @@ file:
 
 .. code-block:: gherkin
 
-    Scenario:
+    Scenario: List 2 files in a directory
       Given I am in a directory "test"
       And I have a file named "foo"
       And I have a file named "bar"
@@ -145,18 +150,34 @@ be transformed into a test. Each scenario always follows the same basic format:
 
 .. code-block:: gherkin
 
-    Scenario:
+    Scenario: Some description of the scenario
+      Given [some context]
+      When [some event]
+      Then [outcome]
+
+Each part of the scenario - the *context*, the *event*,  and the *outcome* -
+can be extended by adding the ``And`` or ``But`` keyword:
+
+.. code-block:: gherkin
+
+    Scenario: Some description of the scenario
       Given [some context]
       And [more context]
       When [some event]
+      And [second event occurs]
       Then [outcome]
-      AND [another outcome]
+      And [another outcome]
+      But [another outcome]
+
+There's no actual difference between, for example, using ``Then``, ``And``
+or ``But``. These keywords are all made available so that your scenarios
+are natural and readable.
 
 Executing Behat
 ~~~~~~~~~~~~~~~
 
 You've now defined the feature and one scenario for that feature. You're
-ready to see Behat in action! Try executing Behat from inside your ``test_ls``
+ready to see Behat in action! Try executing Behat from inside your ``ls_project``
 directory:
 
 .. code-block:: bash
@@ -165,7 +186,7 @@ directory:
 
 If everything worked correctly, you should see something like this:
 
-.. image:: /images/behat/ls_no_defined_steps.png
+.. image:: /images/ls_no_defined_steps.png
    :align: center
 
 Writing your Steps
@@ -236,13 +257,20 @@ file looks like this:
         }
     });
 
+.. note::
+
+    When you specify multi-line step arguments - like we did using the triple
+    quotation syntax (``"""``) in the above scenario, the value passed into
+    the step function (e.g. ``$string``) is actually an object, which can
+    be converted into a string using ``(string) $string)``.
+
 Great! Now that you've defined all of your steps, run Behat again:
 
 .. code-block:: bash
 
     behat
 
-.. image:: /images/behat/ls_passing_one_step.png
+.. image:: /images/ls_passing_one_step.png
    :align: center
 
 Success! Behat executed each of your steps - creating a new directory with
@@ -254,7 +282,7 @@ is easy. For example, add the following to your ``features/ls.feature`` file:
 
 .. code-block:: gherkin
 
-    Scenario:
+    Scenario: List 2 files in a directory with the -a option
       Given I am in a directory "test"
       And I have a file named "foo"
       And I have a file named ".bar"
@@ -269,7 +297,7 @@ is easy. For example, add the following to your ``features/ls.feature`` file:
 
 Run Behat again. This time, it'll run two tests, and both will pass.
 
-.. image:: /images/behat/ls_passing_two_steps.png
+.. image:: /images/ls_passing_two_steps.png
    :align: center
 
 That's it! Now that you've got a few steps defined, you can probably dream
@@ -306,7 +334,7 @@ is composed of three basic areas:
 Inside the ``feature/support/`` directory, there are two files:
 
 * ``bootstrap.php`` This file is run once per Behat execution. You should
-  use it to initialize anything needed for Behat to run your application.
+  use it to initialize and require anything needed for Behat to run your application.
 
 * ``env.php`` This file is run once per Scenario test and can be used to
   set variables on the ``$world`` variable. In other words, if you need any
@@ -321,18 +349,18 @@ in a format called Gherkin. Each feature file follows a few basic rules:
 
 1. Every ``*.feature`` file conventionally consists of single feature.
 
-2. A line starting with the keyword ``Feature:`` followed by three indented
-   lines defines the start of a new e feature.
+2. A line starting with the keyword ``Feature:`` followed by its title and
+   three indented lines defines the start of a new e feature.
 
 3. A feature usually contains a list of scenarios. You can write whatever
    you want up until the first scenario: this text will become the feature
    description.
 
-4. Each scenario starts with either the ``Scenario:`` or ``Scenario Outline:`` keywords.
-   Each scenario consists of steps, which must start with one of the following
-   keywords: ``Given``, ``When``, ``Then``, ``But`` or ``And``. Behat treats
-   each of these keywords the same, but you should use them as intended for
-   consistent scenarios.
+4. Each scenario starts with the ``Scenario:`` keyword followed by a short
+   description of the scenario. Under each scenario is a list of steps, which
+   must start with one of the following keywords: ``Given``, ``When``, ``Then``,
+   ``But`` or ``And``. Behat treats each of these keywords the same, but you
+   should use them as intended for consistent scenarios.
 
 .. tip::
 
@@ -340,6 +368,16 @@ in a format called Gherkin. Each feature file follows a few basic rules:
     In other words, instead of writing ``Feature``, ``Scenario`` or ``Given``,
     you can use your native language by configuring Behat to use one of its
     many supported languages.
+    
+    To check if your language is supported and to see the available keywords,
+    run:
+    
+    .. code-block:: bash
+    
+        behat --usage --lang YOUR_LANG
+
+    Supported languages include ``fr``, ``es``, ``it`` and, of course, the
+    english pirate dialect ``en-pirate``.
 
 More about Steps
 ----------------
@@ -389,6 +427,9 @@ A few pointers:
        }
    });
 
+In the same way, any step that does *not* throw an exception will be seen
+by Behat as "passing". 
+
 The Environment Object: ``$world``
 ----------------------------------
 
@@ -421,6 +462,7 @@ using the PHP library `Goutte`_.
 Now, inside any step, you can do the following:
 
 .. code-block:: php
+
     <?php
 
     $steps->Given('/^I visit "([^"]*)" in my browser$/', function($world, $url) {
@@ -433,9 +475,14 @@ Now, inside any step, you can do the following:
         }
     });
 
-This file will be executed on each environment object creation. ``$world`` variable is an environment object itself, which works like variable holder for all your scenario values & parameters.
+The Bootstrap File
+------------------
 
-But what if we need to use some 3rd party libraries in ``env.php``? It's unefficient to require them before each scenario, so Behat has bootstrapping script support:
+But what if you need to use some 3rd party libraries in ``env.php``? In the
+previous example, the `Goutte`_ library must be already available in the
+``env.php`` file. Another library you might need to use is `PHPUnit`_. In
+either case, you can use the ``features/support/bootstrap.php`` file - which
+is executed only once - to load the libraries you need:
 
 .. code-block:: php
 
@@ -445,29 +492,35 @@ But what if we need to use some 3rd party libraries in ``env.php``? It's uneffic
     require_once 'PHPUnit/Autoload.php';
     require_once 'PHPUnit/Framework/Assert/Functions.php';
 
-This file will be evaluated by Behat before feature tests even run ;-)
+The ``behat`` Command Line Tool
+-------------------------------
 
-CLI
----
+Behat comes with a powerful console utility responsible for executing the
+Behat tests. The utility comes with a wide array of options.
 
-Behat comes bundled with powerfull console runner, called... behat.
-
-To see current Behat version, run:
-
-.. code-block:: bash
-
-    behat -V
-
-To see other available commands, use:
+To see options and usage for the utility, run:
 
 .. code-block:: bash
 
     behat -h
 
-Now you know all you need to get started with Behat. You can start using BDD in your projects right now or continue to read full guide.
+What's Next?
+------------
+
+Congratulations! You now know everything you need in order to get started
+with behavior driven development and Behat. From here, you can learn more
+about the :doc:`Gherkin</gherkin/index>` syntax or learn how to test your
+web applications by using Behat with Mink.
+
+* `Testing Web Applications with Mink`_
+* :doc:`Configuration<behat/configuration>`
+* :doc:`Pre and Post Suite Hooks</behat/hooks>`
+* :doc:`Tagging Features</gherkin/tags>`
 
 .. _`behavior driven development`: http://en.wikipedia.org/wiki/Behavior_Driven_Development
 .. _`Mink`: https://github.com/behat/mink
-.. _`What's in a Story`: http://blog.dannorth.net/whats-in-a-story/
+.. _`What's in a Story?`: http://blog.dannorth.net/whats-in-a-story/
 .. _`Cucumber`: http://cukes.info/
 .. _`Goutte`: https://github.com/fabpot/goutte
+.. _`PHPUnit`: http://phpunit.de
+.. _`Testing Web Applications with Mink`: https://github.com/behat/mink
