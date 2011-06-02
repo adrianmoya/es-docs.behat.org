@@ -56,6 +56,7 @@ Guides
 Learn Behat with the topical guides:
 
 .. toctree::
+    :maxdepth: 1
 
     gherkin/index
     gherkin/features
