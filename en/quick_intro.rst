@@ -1,9 +1,9 @@
 Quick Intro to Behat
 ====================
 
-Behat is an `open source <http://creativecommons.org/licenses/MIT/>`_ `behavior driven development <http://en.wikipedia.org/wiki/Behavior_Driven_Development>`_ framework for php 5.3.
+Behat is an `open source <http://creativecommons.org/licenses/MIT/>`_ `behavior driven development <http://en.wikipedia.org/wiki/Behavior_Driven_Development>`_ framework for PHP 5.3.
 
-Behat was inspired by Ruby's `Cucumber <http://cukes.info/>`_ project and especially it's syntax part (Gherkin). It tries to be like Cucumber with input (Feature files) and output (console formatters), but in core, it built from the ground on the shoulders of giants:
+Behat was inspired by Ruby's `Cucumber <http://cukes.info/>`_ project and especially its syntax part (Gherkin). It tries to be like Cucumber with input (Feature files) and output (console formatters), but in the core, it's built from the ground on the shoulders of giants:
 
 * `Symfony Dependency Injection Container component <https://github.com/symfony/DependencyInjection>`_
 * `Symfony Event Dispatcher component <https://github.com/symfony/EventDispatcher>`_
@@ -11,14 +11,14 @@ Behat was inspired by Ruby's `Cucumber <http://cukes.info/>`_ project and especi
 * `Symfony Finder component <https://github.com/symfony/Finder>`_
 * `Symfony Translation component <https://github.com/symfony/Translation>`_
 
-Unlike any other php testing framework that tests applications inside out. Behat is testing applications `outside in <http://blog.dannorth.net/whats-in-a-story/>`_. It means, that Behat works only with your application's input/output. If you want to test your models - use unit testing framework instead, Behat created for behavior testing (but can be used for anything +) ).
+Unlike any other PHP testing framework that tests applications inside out, Behat is testing applications `outside in <http://blog.dannorth.net/whats-in-a-story/>`_. It means that Behat works only with your application's input/output. If you want to test your models, use a unit testing framework instead. Behat was created for behavior testing (but can be used for anything +) ).
 
 Install
 -------
 
-There's many ways to install Behat to your system, but first, check first and only requirement of it: you must have php 5.3.1+ installed. If you have - continue reading, if not - install it first.
+There are many ways to install Behat on your system, but the only requirement is that you must have PHP 5.3.1+ installed. If you have - continue reading, if not - install it first.
 
-The simpliest way to install it through PEAR:
+The simplest way to install Behat is through PEAR:
 
 .. code-block:: bash
 
@@ -33,7 +33,7 @@ You can also clone the project with Git by running:
     git clone git://github.com/Behat/Behat.git && cd Behat
     git submodule update --init
 
-After downloading - just run ``path/to/Behat/bin/behat`` or simply ``behat`` (if you installed Behat through PEAR) from console.
+After downloading, just run ``path/to/Behat/bin/behat`` or simply ``behat`` (if you installed Behat through PEAR) from the console.
 
 Basics
 ------
@@ -68,24 +68,24 @@ The basic Behat test environment directory looks like this:
            |-- bootstrap.php
            |-- env.php
 
-And it can be splitted into 3 main areas:
+And it can be split into 3 main areas:
 
 1. ``features`` - root test directory. Feature files are placed here.
-2. ``features/steps`` - step definitions directory. Step definitions (php scripts) lay here.
-3. ``features/support`` - support directory. Support scripts (environment, path definition) created here.
+2. ``features/steps`` - step definitions directory. Step definitions (PHP scripts) lie here.
+3. ``features/support`` - support directory. Support scripts (environment, path definition) are created here.
 
-Core of the tests in Behat is features. Features are placed in ``features`` directory and are plain text files.
+The core of the tests in Behat are features. Features are placed in the ``features`` directory and are plain text files.
 
-Behat parses feature files and tries to find appropriate step definition for each step from ``features/steps`` folder (step definitions path).
+Behat parses feature files and tries to find an appropriate step definition for each step from the ``features/steps`` folder (step definitions path).
 
-Every step definition is simple php-callable with access to shared between batch steps (scenarios) environment object, that can be configured inside ``features/support/env.php``.
+Every step definition is a simple PHP-callable with access to a shared environment object.  This object is shared between batch steps (scenarios), and can be configured inside the ``features/support/env.php`` file.
 
-And if environment config requires some libraries to work (PHPUnit for example) - includes are placed inside ``features/support/bootstrap.php``.
+And if the environment config requires some libraries to work (PHPUnit for example), the includes are placed inside ``features/support/bootstrap.php``.
 
 Feature
 -------
 
-Feature file is your Behat entry point. That's where you start working on your project. Here's content of basic feature ``features/math.feature``:
+The feature file is your Behat entry point. That's where you start working on your project. Here's the content of a basic feature, ``features/math.feature``:
 
 .. code-block:: gherkin
 
@@ -100,17 +100,17 @@ Feature file is your Behat entry point. That's where you start working on your p
          When I press add
          Then The result should be 120 on the screen
 
-As you can see, feature is a simple, readable plain text file. Every feature is written in `DSL <http://en.wikipedia.org/wiki/Domain-specific_language>`_ called **Gherkin**, that firstly was introduced in Ruby's `Cucumber <http://cukes.info/>`_.
+As you can see, a feature is a simple, readable plain text file. Every feature is written in a `DSL <http://en.wikipedia.org/wiki/Domain-specific_language>`_ called **Gherkin**, that was first introduced in Ruby's `Cucumber <http://cukes.info/>`_.
 
-1. every ``*.feature`` file conventionally consists of single feature.
-2. line starting with keyword ``Feature:`` (or localized one) followed by free indented text starts a feature.
-3. feature usually contains a list of scenarios. You can write whatever you want up until the first scenario and this text will become feature description.
-4. every scenario starts from ``Scenario:`` or ``Scenario Outline:`` keywords (or localized equivalent). Each scenario consists of steps, which must start with one of the ``Given``, ``When``, ``Then``, ``But`` or ``And`` keywords (or localized one). Behat treats all this step types the same, but you shouldn’t!
+1. Every ``*.feature`` file conventionally consists of a single feature.
+2. A line starting with the keyword ``Feature:`` (or localized one) followed by free indented text starts a feature.
+3. A feature usually contains a list of scenarios. You can write whatever you want up until the first scenario and this text will become the feature description.
+4. Every scenario starts from the ``Scenario:`` or ``Scenario Outline:`` keywords (or localized equivalent). Each scenario consists of steps, which must start with one of the ``Given``, ``When``, ``Then``, ``But`` or ``And`` keywords (or a localized one). Behat treats all these step types the same, but you shouldn’t!
 
 Step Definition
 ---------------
 
-For each step Behat will look for a matching step definition. A step definition is written in php. Each step definition consists of a keyword, a regular expression, and a callback. Example ``features/steps/math.php``:
+For each step Behat will look for a matching step definition. A step definition is written in PHP. Each step definition consists of a keyword, a regular expression, and a callback. Example ``features/steps/math.php``:
 
 .. code-block:: php
 
@@ -120,19 +120,19 @@ For each step Behat will look for a matching step definition. A step definition 
         throw new Behat\Behat\Exception\Pending('Write code later'); 
     });
 
-1. ``$steps`` is a global DefinitionDispatcher object, available in all step definition files. Calling ``->Given`` on it will define new ``Given`` (but this will match ``When``/``Then``/``And`` keyworded steps too) step.
-2. ``'/^I have entered (\d+) into the calculator$/'`` - regex matcher for step. All search patterns (``(\d+)``) will become callback arguments (``$arg1``).
-3. First callback argument (``$world``) is always reserved for environment object. Environment object created before every scenario run and shared between scenario steps.
-4. Step definition body is simple php code. **Failed** step is a step, which definition execution throws an exception. So, if step execution doesn't throw exceptions - step **passes**.
+1. ``$steps`` is a global DefinitionDispatcher object, available in all step definition files. Calling ``->Given`` on it will define a new ``Given`` (but this will match ``When``/``Then``/``And`` keyworded steps too) step.
+2. ``'/^I have entered (\d+) into the calculator$/'`` - this is a regex matcher for the step. All search patterns (``(\d+)``) will become callback arguments (``$arg1``).
+3. The first callback argument (``$world``) is always reserved for the environment object. The environment object is created before every scenario is run and is shared between scenario steps.
+4. The step definition body is simple PHP code. A **failed** step is a step whose execution throws an exception. So, if the step execution doesn't throw any exceptions, the step **passes**.
 
 Environment
 -----------
 
-Behat creates environment object for each scenario and passes reference to it into each step definition.
+Behat creates an environment object for each scenario and passes a reference to it into each step definition (``$world`` in the examples above).
 
-So, if you want to calculate/accumulate or just share variables between steps definitions - use ``$world`` container for that.
+So, if you want to calculate/accumulate or just share variables between steps definitions, use the ``$world`` container for this.
 
-But what if you need some definitions being connected in each world? Use environment configurator for that:
+But what if you need some definitions to be available in each world? Use the environment configurator instead:
 
 .. code-block:: php
 
@@ -151,9 +151,9 @@ But what if you need some definitions being connected in each world? Use environ
         $world->response = $world->client->request('GET', $link); 
     };
 
-This file will be executed on each environment object creation. ``$world`` variable is an environment object itself, which works like variable holder for all your scenario values & parameters.
+This file will be executed on each environment object creation. The ``$world`` variable is an environment object itself, which works like a variable holder for all your scenario values & parameters.
 
-But what if we need to use some 3rd party libraries in ``env.php``? It's unefficient to require them before each scenario, so Behat has bootstrapping script support:
+But what if we need to use some 3rd party libraries in ``env.php``? It's inefficient to require them before each scenario, so Behat has bootstrapping script support:
 
 .. code-block:: php
 
@@ -163,14 +163,14 @@ But what if we need to use some 3rd party libraries in ``env.php``? It's uneffic
     require_once 'PHPUnit/Autoload.php';
     require_once 'PHPUnit/Framework/Assert/Functions.php';
 
-This file will be evaluated by Behat before feature tests even run ;-)
+This file will be evaluated by Behat before feature tests are even run ;-)
 
 CLI
 ---
 
-Behat comes bundled with powerfull console runner, called... behat.
+Behat comes bundled with a powerful console runner, called... behat.
 
-To see current Behat version, run:
+To see the current Behat version, run:
 
 .. code-block:: bash
 
@@ -182,4 +182,4 @@ To see other available commands, use:
 
     behat -h
 
-Now you know all you need to get started with Behat. You can start using BDD in your projects right now or continue to read full guide.
+Now you know all you need to get started with Behat. You can start using BDD in your projects right now or continue to read the full guide.
