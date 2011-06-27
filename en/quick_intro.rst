@@ -57,7 +57,7 @@ The simplest way to install Behat is through PEAR:
 .. code-block:: bash
 
     pear channel-discover pear.behat.org
-    pear install behat/behat
+    pear install behat/behat-beta
 
 You can now execute Behat simply by running the ``behat`` command:
 
@@ -65,7 +65,20 @@ You can now execute Behat simply by running the ``behat`` command:
 
     behat
 
-Method #2 (Git)
+Method #2 (PHAR)
+~~~~~~~~~~~~~~~~
+
+Also, you can use behat phar package:
+
+.. code-block:: bash
+
+    wget https://github.com/downloads/Behat/Behat/behat-2.0.0beta4.phar
+
+Now you can execute Behat by simply running phar archive through ``php``:
+
+    php behat-2.0.0beta4.phar
+
+Method #3 (Git)
 ~~~~~~~~~~~~~~~
 
 You can also clone the project with Git by running:
@@ -189,8 +202,8 @@ If everything worked correctly, you should see something like this:
 .. image:: /images/ls_no_defined_steps.png
    :align: center
 
-Writing your Steps
-~~~~~~~~~~~~~~~~~~
+Writing your Step definitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Behat automatically finds the ``features/ls.feature`` file and tries to execute
 its ``Scenario`` as a test. However, we haven't told Behat what to do with
@@ -199,63 +212,104 @@ Behat works by matching each statement of a ``Scenario`` to a list of regular
 expression "steps" that you define. In other words, it's your job to tell
 Behat what to do when it sees ``Given I am in a directory "test"``. Fortunately,
 Behat helps you out by printing the regular expression that you probably
-need in order to create that step:
+need in order to create that step definition:
 
 .. code-block:: text
 
     You can implement step definitions for undefined steps with these snippets:
 
-    $steps->Given('/^I am in a directory "([^"]*)"$/', function($world, $arg1) {
-        throw new \Behat\Behat\Exception\Pending();
-    });
+        /**
+         * @Given /^I am in a directory "([^"]*)"$/
+         */
+        public function iAmInADirectory($argument1)
+        {
+            throw new Pending();
+        }
 
-Let's use Behat's advice and add the following to the ``features/steps/steps.php``
+Let's use Behat's advice and add the following to the ``features/bootstrap/FeatureContext.php``
 file:
 
 .. code-block:: php
 
     <?php
-    # features/steps/steps.php
+    # features/bootstrap/FeatureContext.php
 
-    $steps->Given('/^I am in a directory "([^"]*)"$/', function($world, $dir) {
-        if (!file_exists($dir)) {
-            mkdir($dir);
+    use Behat\Behat\Context\BehatContext,
+        Behat\Behat\Exception\Pending;
+    use Behat\Gherkin\Node\PyStringNode,
+        Behat\Gherkin\Node\TableNode;
+
+    class FeatureContext extends BehatContext
+    {
+        /**
+         * @Given /^I am in a directory "([^"]*)"$/
+         */
+        public function iAmInADirectory($dir)
+        {
+            if (!file_exists($dir)) {
+                mkdir($dir);
+            }
+            chdir($dir);
         }
-        chdir($dir);
-    });
+    }
+
+.. note::
+
+    Every Behat steps gets stored and will be executed inside object called
+    ``FeatureContex``. Every scenario will get it's own ``FeatureContext``
+    instance - Behat will init one before each scenario.
 
 Basically, we've started with the regular expression suggested by Behat, which
 makes the value inside the quotations (e.g. "test") available as the ``$dir``
 variable. Inside the method, we simple create the directory and move into it.
 
-Repeat this for the other three missing steps so that your ``steps.php``
+Repeat this for the other three missing steps so that your ``FeatureContext.php``
 file looks like this:
 
 .. code-block:: php
 
     <?php
+    # features/bootstrap/FeatureContext.php
 
-    $steps->Given('/^I am in a directory "([^"]*)"$/', function($world, $dir) {
-        if (!file_exists($dir)) {
-            mkdir($dir);
+    use Behat\Behat\Context\BehatContext,
+        Behat\Behat\Exception\Pending;
+    use Behat\Gherkin\Node\PyStringNode,
+        Behat\Gherkin\Node\TableNode;
+
+    class FeatureContext extends BehatContext
+    {
+        private $output;
+
+        /** @Given /^I am in a directory "([^"]*)"$/ */
+        public function iAmInADirectory($dir)
+        {
+            if (!file_exists($dir)) {
+                mkdir($dir);
+            }
+            chdir($dir);
         }
-        chdir($dir);
-    });
 
-    $steps->Given('/^I have a file named "([^"]*)"$/', function($world, $file) {
-        touch($file);
-    });
-
-    $steps->When('/^I run "([^"]*)"$/', function($world, $command) {
-        exec($command, $output);
-        $world->output = trim(implode("\n", $output));
-    });
-
-    $steps->Then('/^I should get:$/', function($world, $string) {
-        if ((string) $string !== $world->output) {
-            throw new Exception("Actual output is:\n" . $world->output);
+        /** @Given /^I have a file named "([^"]*)"$/ */
+        public function iHaveAFileNamed($file)
+        {
+            touch($file);
         }
-    });
+
+        /** @When /^I run "([^"]*)"$/ */
+        public function iRun($command)
+        {
+            exec($command, $output);
+            $this->output = trim(implode("\n", $output));
+        }
+
+        /** @Then /^I should get:$/ */
+        public function iShouldGet(PyStringNode $string)
+        {
+            if ((string) $string !== $this->output) {
+                throw new Exception("Actual output is:\n" . $this->output);
+            }
+        }
+    }
 
 .. note::
 
@@ -318,28 +372,15 @@ The basic Behat test environment directory looks like this:
 .. code-block:: bash
 
     |-- features
-       `-- steps
-       |   `-- math_steps.php
-       `-- support
-           |-- bootstrap.php
-           |-- env.php
+       `-- bootstrap
+           `-- FeatureContext.php
 
 Everything related to Behat will live inside the ``features`` directory, which
 is composed of three basic areas:
 
 1. ``features/`` - Behat looks for ``*.feature`` files here to execute
-2. ``features/steps/`` - Behat loads all ``*.php`` files here as "steps"
-3. ``features/support/`` - This directory contains two files that help you configure Behat
-
-Inside the ``feature/support/`` directory, there are two files:
-
-* ``bootstrap.php`` This file is run once per Behat execution. You should
-  use it to initialize and require anything needed for Behat to run your application.
-
-* ``env.php`` This file is run once per Scenario test and can be used to
-  set variables on the ``$world`` variable. In other words, if you need any
-  external variables or objects to be available inside your steps, set those
-  variables here.
+2. ``features/bootstrap/`` - This directory contains two files that help you configure Behat
+3. ``features/bootstrap/FeatureContext`` - This file is context class in which every scenario step will get executed
 
 More about Feature
 ------------------
@@ -374,7 +415,7 @@ in a format called Gherkin. Each feature file follows a few basic rules:
     
     .. code-block:: bash
     
-        behat --usage --lang YOUR_LANG
+        behat --story-syntax --lang YOUR_LANG
 
     Supported languages include ``fr``, ``es``, ``it`` and, of course, the
     english pirate dialect ``en-pirate``.
@@ -383,7 +424,8 @@ More about Steps
 ----------------
 
 For each step, Behat will look for a matching step definition by matching
-the text of the step against the regular expression defined by each step.
+the text of the step against the regular expression defined by each step
+definition.
 
 A step definition is written in php and consists of a keyword, a regular
 expression, and a callback. For example:
@@ -391,28 +433,38 @@ expression, and a callback. For example:
 .. code-block:: php
 
     <?php
-    # features/steps/steps.php
+    # features/bootstrap/FeatureContext.php
 
-    $steps->Given('/^I am in a directory "([^"]*)"$/', function($world, $dir) {
-        if (!file_exists($dir)) {
-            mkdir($dir);
+    use Behat\Behat\Context\BehatContext,
+        Behat\Behat\Exception\Pending;
+    use Behat\Gherkin\Node\PyStringNode,
+        Behat\Gherkin\Node\TableNode;
+
+    class FeatureContext extends BehatContext
+    {
+        /**
+         * @Given /^I am in a directory "([^"]*)"$/
+         */
+        public function iAmInADirectory($dir)
+        {
+            if (!file_exists($dir)) {
+                mkdir($dir);
+            }
+            chdir($dir);
         }
-        chdir($dir);
-    });
+    }
 
 A few pointers:
 
-1. ``$steps`` is a global ``DefinitionDispatcher`` object, available in all
-   step definition files. Calling ``->Given`` on it will allow you to define
-   a step (though in reality this would match any ``When``/``Then``/``And``
-   keywords as well).
-   
-2. All search patterns in the regular expression (e.g. ``([^"]*)``) will become
-   callback arguments in the function (``$dir``).
+1. ``@Given`` is a definition keyword. There are 3 supported keywords in
+   annotations: ``@Given``/``@When``/``@Then``. Definition keywords were added
+   just to give more clean feel for definitions (in reality all step
+   definitions would match any keyworded definition).
 
-3. The first callback argument, ``$world``,, is always reserved for environment
-   object. The environment object is created before each scenario is run,
-   but is shared between each step inside that scenario.
+2. The text after keyword is a regex.
+
+3. All search patterns in the regular expression (e.g. ``([^"]*)``) will become
+   method arguments (``$dir``).
 
 4. If, inside a step, you need to tell Behat that some sort of "failure" has
    occurred, you should throw an exception:
@@ -420,77 +472,35 @@ A few pointers:
 .. code-block:: php
 
    <?php
-   
-   $steps->Then('/^I should get:$/', function($world, $string) {
-       if ((string) $string !== $world->output) {
-           throw new Exception("Actual output is:\n" . $world->output);
+   # features/bootstrap/FeatureContext.php
+
+   use Behat\Behat\Context\BehatContext,
+       Behat\Behat\Exception\Pending;
+   use Behat\Gherkin\Node\PyStringNode,
+       Behat\Gherkin\Node\TableNode;
+
+   class FeatureContext extends BehatContext
+   {
+       /**
+        * @Then /^I should get:$/
+        */
+       public function iShouldGet(PyStringNode $string)
+       {
+           if ((string) $string !== $this->output) {
+               throw new Exception("Actual output is:\n" . $this->output);
+           }
        }
-   });
+   }
 
 In the same way, any step that does *not* throw an exception will be seen
 by Behat as "passing". 
 
-The Environment Object: ``$world``
-----------------------------------
+The Context Class: ``FeatureContext``
+-------------------------------------
 
-Behat creates an environment object for each scenario and passes that same
-object to each step within the scenario. So, if you want to share variables
-between steps, you can easily do that (see the full example above).
-
-But what if you need some variable or object to be available inside *every*
-step or every scenario? To do this, use the ``features/support/env.php``
-file.
-
-For example, suppose we want to allow each step to execute a real HTTP request
-using the PHP library `Goutte`_.
-
-.. code-block:: php
-
-    <?php
-    // features/support/env.php
-
-    // Create the web client
-    $world->client = new \Goutte\Client;
-    $world->response = null;
-    $world->form = array();
-
-    // add a "visit" closure function
-    $world->visit = function($link) use($world) { 
-        $world->response = $world->client->request('GET', $link); 
-    };
-
-Now, inside any step, you can do the following:
-
-.. code-block:: php
-
-    <?php
-
-    $steps->Given('/^I visit "([^"]*)" in my browser$/', function($world, $url) {
-        $world->visit($url);
-    });
-
-    $steps->Then('/^The page should contain "([^"]*)"$/', function($world, $string) {
-        if (false === strpos($world->response->getContent(), $string) {
-            throw new Exception(sprintf('String "%s" not found on the page', $string));
-        }
-    });
-
-The Bootstrap File
-------------------
-
-But what if you need to use some 3rd party libraries in ``env.php``? In the
-previous example, the `Goutte`_ library must be already available in the
-``env.php`` file. Another library you might need to use is `PHPUnit`_. In
-either case, you can use the ``features/support/bootstrap.php`` file - which
-is executed only once - to load the libraries you need:
-
-.. code-block:: php
-
-    <?php
-    // features/support/bootstrap.php
-
-    require_once 'PHPUnit/Autoload.php';
-    require_once 'PHPUnit/Framework/Assert/Functions.php';
+Behat creates an context object for each scenario and executes all scenario
+steps in that same object. So, if you want to share variables between steps,
+you can easily do that with instance variables (see the full example above).
 
 The ``behat`` Command Line Tool
 -------------------------------
