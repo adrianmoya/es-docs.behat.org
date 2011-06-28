@@ -56,14 +56,14 @@ The simplest way to install Behat is through PEAR:
 
 .. code-block:: bash
 
-    pear channel-discover pear.behat.org
-    pear install behat/behat-beta
+    $ pear channel-discover pear.behat.org
+    $ pear install behat/behat-beta
 
 You can now execute Behat simply by running the ``behat`` command:
 
 .. code-block:: bash
 
-    behat
+    $ behat
 
 Method #2 (PHAR)
 ~~~~~~~~~~~~~~~~
@@ -72,11 +72,13 @@ Also, you can use behat phar package:
 
 .. code-block:: bash
 
-    wget https://github.com/downloads/Behat/Behat/behat-2.0.0beta4.phar
+    $ wget https://github.com/downloads/Behat/Behat/behat-2.0.0beta4.phar
 
 Now you can execute Behat by simply running phar archive through ``php``:
 
-    php behat-2.0.0beta4.phar
+.. code-block:: bash
+
+    $ php behat-2.0.0beta4.phar
 
 Method #3 (Git)
 ~~~~~~~~~~~~~~~
@@ -85,14 +87,14 @@ You can also clone the project with Git by running:
 
 .. code-block:: bash
 
-    git clone git://github.com/Behat/Behat.git && cd Behat
-    git submodule update --init
+    $ git clone git://github.com/Behat/Behat.git && cd Behat
+    $ git submodule update --init
 
 After downloading, you can execute behat by running:
 
 .. code-block:: bash
 
-    ./path/to/Behat/bin/behat
+    $ ./path/to/Behat/bin/behat
 
 Basic Usage
 -----------
@@ -103,9 +105,9 @@ inside that directory:
 
 .. code-block:: bash
 
-    mkdir ls_project
-    cd ls_project
-    behat --init
+    $ mkdir ls_project
+    $ cd ls_project
+    $ behat --init
 
 The ``behat --init`` will create a ``features/`` directory with some basic
 things to get your started.
@@ -176,9 +178,9 @@ can be extended by adding the ``And`` or ``But`` keyword:
     Scenario: Some description of the scenario
       Given [some context]
         And [more context]
-      When [some event]
+       When [some event]
         And [second event occurs]
-      Then [outcome]
+       Then [outcome]
         And [another outcome]
         But [another outcome]
 
@@ -195,7 +197,7 @@ directory:
 
 .. code-block:: bash
 
-    behat
+    $ behat
 
 If everything worked correctly, you should see something like this:
 
@@ -316,7 +318,7 @@ Great! Now that you've defined all of your steps, run Behat again:
 
 .. code-block:: bash
 
-    behat
+    $ behat
 
 .. image:: /images/ls_passing_one_step.png
    :align: center
@@ -413,7 +415,7 @@ in a format called Gherkin. Each feature file follows a few basic rules:
     
     .. code-block:: bash
     
-        behat --story-syntax --lang YOUR_LANG
+        $ behat --story-syntax --lang YOUR_LANG
 
     Supported languages include (but are not limited to) ``fr``, ``es``, ``it``
     and, of course, the english pirate dialect ``en-pirate``.
@@ -511,7 +513,7 @@ To see options and usage for the utility, run:
 
 .. code-block:: bash
 
-    behat -h
+    $ behat -h
 
 One of the handiest things it does it to show you all of the step definitions
 that you have configured in your system. This is an easy way to recall exactly
@@ -519,7 +521,7 @@ how a step you defined earlier is worded:
 
 .. code-block:: bash
 
-    behat --definitions
+    $ behat --definitions
 
 What's Next?
 ------------
