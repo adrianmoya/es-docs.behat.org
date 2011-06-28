@@ -379,10 +379,10 @@ is composed of three basic areas:
 1. ``features/`` - Behat looks for ``*.feature`` files here to execute
 
 2. ``features/bootstrap/`` - Every ``*.php`` file in that directory will
-   be autoloaded by Behat before any actual action happen
+   be autoloaded by Behat before any actual steps are executed
 
 3. ``features/bootstrap/FeatureContext.php`` - This file is the context
-   class in which every scenario step will get executed
+   class in which every scenario step will be executed
 
 More about Features
 -------------------
