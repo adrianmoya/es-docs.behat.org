@@ -6,7 +6,7 @@ Welcome to Behat! Behat is a tool that makes `behavior driven development`_
 the behavior of your application. These stories can then be run as actual
 tests against your application. And yes, it's as cool as it sounds!
 
-For example, imagine you've been hired to built the famous ``ls`` UNIX command.
+For example, imagine you've been hired to build the famous ``ls`` UNIX command.
 A stakeholder may say to you:
 
 .. code-block:: gherkin
@@ -128,9 +128,9 @@ file:
 
 Every feature starts with this same format: a line naming the feature, followed
 by three lines that describe the benefit, the role and the feature itself.
-This section is required, but its contents aren't actually important to Behat
-or your eventual test. They are, however, important to write correctly so
-that your features are consistent and readable by other people.
+And while this section is required, its contents aren't actually important
+to Behat or your eventual test. This section is important, however, so that
+each feature is described consistently and is readable by other people.
 
 Define a Scenario
 ~~~~~~~~~~~~~~~~~
@@ -142,8 +142,8 @@ file:
 
     Scenario: List 2 files in a directory
       Given I am in a directory "test"
-      And I have a file named "foo"
-      And I have a file named "bar"
+        And I have a file named "foo"
+        And I have a file named "bar"
       When I run "ls"
       Then I should get:
         """
@@ -175,16 +175,16 @@ can be extended by adding the ``And`` or ``But`` keyword:
 
     Scenario: Some description of the scenario
       Given [some context]
-      And [more context]
+        And [more context]
       When [some event]
-      And [second event occurs]
+        And [second event occurs]
       Then [outcome]
-      And [another outcome]
-      But [another outcome]
+        And [another outcome]
+        But [another outcome]
 
-There's no actual difference between, for example, using ``Then``, ``And``
-or ``But``. These keywords are all made available so that your scenarios
-are natural and readable.
+There's no actual difference between, ``Then``, ``And`` ``But`` or any of
+the other words that start each line. These keywords are all made available
+so that your scenarios are natural and readable.
 
 Executing Behat
 ~~~~~~~~~~~~~~~
@@ -207,7 +207,7 @@ Writing your Step definitions
 
 Behat automatically finds the ``features/ls.feature`` file and tries to execute
 its ``Scenario`` as a test. However, we haven't told Behat what to do with
-statements like ``Given I am in a directory "test"``, which cases an error.
+statements like ``Given I am in a directory "test"``, which causes an error.
 Behat works by matching each statement of a ``Scenario`` to a list of regular
 expression "steps" that you define. In other words, it's your job to tell
 Behat what to do when it sees ``Given I am in a directory "test"``. Fortunately,
@@ -227,7 +227,7 @@ need in order to create that step definition:
         }
 
 Let's use Behat's advice and add the following to the ``features/bootstrap/FeatureContext.php``
-file:
+file, renaming ``$argument1`` to ``$dir``, simply for clarity:
 
 .. code-block:: php
 
@@ -252,12 +252,6 @@ file:
             chdir($dir);
         }
     }
-
-.. note::
-
-    Every Behat steps gets stored and will be executed inside object called
-    ``FeatureContex``. Every scenario will get it's own ``FeatureContext``
-    instance - Behat will init one before each scenario.
 
 Basically, we've started with the regular expression suggested by Behat, which
 makes the value inside the quotations (e.g. "test") available as the ``$dir``
@@ -332,7 +326,8 @@ two files and running the ``ls`` command - and compared the result to the
 expected result.
 
 Of course, now that you've defined your basic steps, adding more scenarios
-is easy. For example, add the following to your ``features/ls.feature`` file:
+is easy. For example, add the following to your ``features/ls.feature`` file
+so that you now have two scenarios defined:
 
 .. code-block:: gherkin
 
@@ -360,14 +355,12 @@ this same basic idea could be used to test web applications, and Behat integrate
 beautifully with a library called `Mink`_ to do just that.
 
 Of course, there's still lot's more to learn, including more about the Gherkin
-syntax and the ``$world`` variable that's available inside each step function.
+syntax (the language use in the ``ls.feature`` file).
 
 Some more Behat Basics
 ----------------------
 
 When you run ``behat --init``, it sets up a directory that looks like this:
-
-The basic Behat test environment directory looks like this:
 
 .. code-block:: bash
 
@@ -379,19 +372,24 @@ Everything related to Behat will live inside the ``features`` directory, which
 is composed of three basic areas:
 
 1. ``features/`` - Behat looks for ``*.feature`` files here to execute
-2. ``features/bootstrap/`` - This directory contains two files that help you configure Behat
-3. ``features/bootstrap/FeatureContext`` - This file is context class in which every scenario step will get executed
 
-More about Feature
-------------------
+2. ``features/bootstrap/`` - This directory contains two files that help you
+   configure Behat
+
+3. ``features/bootstrap/FeatureContext`` - This file is the context class
+   in which every scenario step will get executed
+
+More about Features
+-------------------
 
 As you've already seen, a feature is a simple, readable plain text file,
 in a format called Gherkin. Each feature file follows a few basic rules:
 
-1. Every ``*.feature`` file conventionally consists of single feature.
+1. Every ``*.feature`` file conventionally consists of a single "feature"
+   (like the ``ls`` command or *user registration*).
 
 2. A line starting with the keyword ``Feature:`` followed by its title and
-   three indented lines defines the start of a new e feature.
+   three indented lines defines the start of a new feature.
 
 3. A feature usually contains a list of scenarios. You can write whatever
    you want up until the first scenario: this text will become the feature
@@ -417,15 +415,15 @@ in a format called Gherkin. Each feature file follows a few basic rules:
     
         behat --story-syntax --lang YOUR_LANG
 
-    Supported languages include ``fr``, ``es``, ``it`` and, of course, the
-    english pirate dialect ``en-pirate``.
+    Supported languages include (but are not limited to) ``fr``, ``es``, ``it``
+    and, of course, the english pirate dialect ``en-pirate``.
 
 More about Steps
 ----------------
 
-For each step, Behat will look for a matching step definition by matching
-the text of the step against the regular expression defined by each step
-definition.
+For each step (e.g. ``Given I am in a directory "test"``), Behat will look
+for a matching step definition by matching the text of the step against the
+regular expressions defined by each step definition.
 
 A step definition is written in php and consists of a keyword, a regular
 expression, and a callback. For example:
@@ -457,11 +455,11 @@ expression, and a callback. For example:
 A few pointers:
 
 1. ``@Given`` is a definition keyword. There are 3 supported keywords in
-   annotations: ``@Given``/``@When``/``@Then``. Definition keywords were added
-   just to give more clean feel for definitions (in reality all step
-   definitions would match any keyworded definition).
+   annotations: ``@Given``/``@When``/``@Then``. These three definition keywords
+   are actually equivalent, but all three are available so that your step
+   definition remains readable.
 
-2. The text after keyword is a regex.
+2. The text after the keyword is the regular expression (e.g. ``/^I am in a directory "([^"]*)"$/``).
 
 3. All search patterns in the regular expression (e.g. ``([^"]*)``) will become
    method arguments (``$dir``).
@@ -499,8 +497,9 @@ The Context Class: ``FeatureContext``
 -------------------------------------
 
 Behat creates an context object for each scenario and executes all scenario
-steps in that same object. So, if you want to share variables between steps,
-you can easily do that with instance variables (see the full example above).
+steps inside that same object. In other words, if you want to share variables
+between steps, you can easily do that by setting property values on the context
+object itself (which was shown in the previous example).
 
 The ``behat`` Command Line Tool
 -------------------------------
@@ -513,6 +512,14 @@ To see options and usage for the utility, run:
 .. code-block:: bash
 
     behat -h
+
+One of the handiest things it does it to show you all of the steps that you
+have configured in your system. This is an easy way to recall exactly how
+a step you defined earlier is worded:
+
+.. code-block:: bash
+
+    behat --steps
 
 What's Next?
 ------------
