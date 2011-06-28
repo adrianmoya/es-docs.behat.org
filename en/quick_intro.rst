@@ -315,7 +315,7 @@ file looks like this:
     quotation syntax (``"""``) in the above scenario, the value passed into
     the step function (e.g. ``$string``) is actually an object, which can
     be converted into a string using ``(string) $string`` or
-    ``$string->__toString()``.
+    ``$string->getRaw()``.
 
 Great! Now that you've defined all of your steps, run Behat again:
 
