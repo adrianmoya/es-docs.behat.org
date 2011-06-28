@@ -57,7 +57,7 @@ The simplest way to install Behat is through PEAR:
 .. code-block:: bash
 
     $ pear channel-discover pear.behat.org
-    $ pear install behat/behat-beta
+    $ pear install behat/behat
 
 You can now execute Behat simply by running the ``behat`` command:
 
@@ -94,7 +94,7 @@ After downloading, you can execute behat by running:
 
 .. code-block:: bash
 
-    $ ./path/to/Behat/bin/behat
+    $ ./path/to/Behat/bin/behat.php
 
 Basic Usage
 -----------
