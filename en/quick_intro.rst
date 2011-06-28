@@ -375,11 +375,11 @@ is composed of three basic areas:
 
 1. ``features/`` - Behat looks for ``*.feature`` files here to execute
 
-2. ``features/bootstrap/`` - This directory contains two files that help you
-   configure Behat
+2. ``features/bootstrap/`` - Every ``*.php`` file in that directory will
+   be autoloaded by Behat before any actual action happen
 
-3. ``features/bootstrap/FeatureContext`` - This file is the context class
-   in which every scenario step will get executed
+3. ``features/bootstrap/FeatureContext.php`` - This file is the context
+   class in which every scenario step will get executed
 
 More about Features
 -------------------
