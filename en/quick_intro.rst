@@ -513,13 +513,13 @@ To see options and usage for the utility, run:
 
     behat -h
 
-One of the handiest things it does it to show you all of the steps that you
-have configured in your system. This is an easy way to recall exactly how
-a step you defined earlier is worded:
+One of the handiest things it does it to show you all of the step definitions
+that you have configured in your system. This is an easy way to recall exactly
+how a step you defined earlier is worded:
 
 .. code-block:: bash
 
-    behat --steps
+    behat --definitions
 
 What's Next?
 ------------
