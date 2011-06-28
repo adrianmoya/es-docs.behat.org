@@ -72,13 +72,13 @@ Also, you can use behat phar package:
 
 .. code-block:: bash
 
-    $ wget https://github.com/downloads/Behat/Behat/behat-2.0.0beta4.phar
+    $ wget https://github.com/downloads/Behat/Behat/behat-2.0.0.phar
 
 Now you can execute Behat by simply running phar archive through ``php``:
 
 .. code-block:: bash
 
-    $ php behat-2.0.0beta4.phar
+    $ php behat-2.0.0.phar
 
 Method #3 (Git)
 ~~~~~~~~~~~~~~~
@@ -302,7 +302,9 @@ file looks like this:
         public function iShouldGet(PyStringNode $string)
         {
             if ((string) $string !== $this->output) {
-                throw new Exception("Actual output is:\n" . $this->output);
+                throw new Exception(
+                    "Actual output is:\n" . $this->output
+                );
             }
         }
     }
@@ -487,7 +489,9 @@ A few pointers:
        public function iShouldGet(PyStringNode $string)
        {
            if ((string) $string !== $this->output) {
-               throw new Exception("Actual output is:\n" . $this->output);
+               throw new Exception(
+                   "Actual output is:\n" . $this->output
+               );
            }
        }
    }
