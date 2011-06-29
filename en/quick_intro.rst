@@ -237,6 +237,7 @@ file, renaming ``$argument1`` to ``$dir``, simply for clarity:
 .. code-block:: php
 
     # features/bootstrap/FeatureContext.php
+
     use Behat\Behat\Context\BehatContext,
         Behat\Behat\Exception\Pending;
     use Behat\Gherkin\Node\PyStringNode,
@@ -266,6 +267,7 @@ file looks like this:
 .. code-block:: php
 
     # features/bootstrap/FeatureContext.php
+
     use Behat\Behat\Context\BehatContext,
         Behat\Behat\Exception\Pending;
     use Behat\Gherkin\Node\PyStringNode,
