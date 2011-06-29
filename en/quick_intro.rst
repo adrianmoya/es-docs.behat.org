@@ -123,6 +123,7 @@ file:
 
 .. code-block:: gherkin
 
+    # features/ls.feature
     Feature: ls
       In order to see the directory structure
       As a UNIX user
@@ -142,6 +143,8 @@ file:
 
 .. code-block:: gherkin
 
+    # features/ls.feature
+    ...
     Scenario: List 2 files in a directory
       Given I am in a directory "test"
       And I have a file named "foo"
@@ -233,9 +236,7 @@ file, renaming ``$argument1`` to ``$dir``, simply for clarity:
 
 .. code-block:: php
 
-    <?php
     # features/bootstrap/FeatureContext.php
-
     use Behat\Behat\Context\BehatContext,
         Behat\Behat\Exception\Pending;
     use Behat\Gherkin\Node\PyStringNode,
@@ -264,9 +265,7 @@ file looks like this:
 
 .. code-block:: php
 
-    <?php
     # features/bootstrap/FeatureContext.php
-
     use Behat\Behat\Context\BehatContext,
         Behat\Behat\Exception\Pending;
     use Behat\Gherkin\Node\PyStringNode,
@@ -336,6 +335,8 @@ so that you now have two scenarios defined:
 
 .. code-block:: gherkin
 
+    # features/ls.feature
+    ...
     Scenario: List 2 files in a directory with the -a option
       Given I am in a directory "test"
       And I have a file named "foo"
@@ -435,26 +436,15 @@ expression, and a callback. For example:
 
 .. code-block:: php
 
-    <?php
-    # features/bootstrap/FeatureContext.php
-
-    use Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\Pending;
-    use Behat\Gherkin\Node\PyStringNode,
-        Behat\Gherkin\Node\TableNode;
-
-    class FeatureContext extends BehatContext
+    /**
+     * @Given /^I am in a directory "([^"]*)"$/
+     */
+    public function iAmInADirectory($dir)
     {
-        /**
-         * @Given /^I am in a directory "([^"]*)"$/
-         */
-        public function iAmInADirectory($dir)
-        {
-            if (!file_exists($dir)) {
-                mkdir($dir);
-            }
-            chdir($dir);
+        if (!file_exists($dir)) {
+            mkdir($dir);
         }
+        chdir($dir);
     }
 
 A few pointers:
@@ -474,26 +464,15 @@ A few pointers:
 
 .. code-block:: php
 
-   <?php
-   # features/bootstrap/FeatureContext.php
-
-   use Behat\Behat\Context\BehatContext,
-       Behat\Behat\Exception\Pending;
-   use Behat\Gherkin\Node\PyStringNode,
-       Behat\Gherkin\Node\TableNode;
-
-   class FeatureContext extends BehatContext
+   /**
+    * @Then /^I should get:$/
+    */
+   public function iShouldGet(PyStringNode $string)
    {
-       /**
-        * @Then /^I should get:$/
-        */
-       public function iShouldGet(PyStringNode $string)
-       {
-           if ((string) $string !== $this->output) {
-               throw new Exception(
-                   "Actual output is:\n" . $this->output
-               );
-           }
+       if ((string) $string !== $this->output) {
+           throw new Exception(
+               "Actual output is:\n" . $this->output
+           );
        }
    }
 

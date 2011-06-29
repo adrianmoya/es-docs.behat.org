@@ -12,6 +12,10 @@
 # serve to show the default.
 
 import sys, os
+from sphinx.highlighting import lexers 
+from pygments.lexers.web import PhpLexer 
+
+lexers['php'] = PhpLexer(startinline=True)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
