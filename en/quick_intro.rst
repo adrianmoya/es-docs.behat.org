@@ -143,8 +143,6 @@ file:
 
 .. code-block:: gherkin
 
-    # features/ls.feature
-    ...
     Scenario: List 2 files in a directory
       Given I am in a directory "test"
       And I have a file named "foo"
@@ -236,7 +234,7 @@ file, renaming ``$argument1`` to ``$dir``, simply for clarity:
 
 .. code-block:: php
 
-    # features/bootstrap/FeatureContext.php
+    <?php # features/bootstrap/FeatureContext.php
 
     use Behat\Behat\Context\BehatContext,
         Behat\Behat\Exception\Pending;
@@ -266,7 +264,7 @@ file looks like this:
 
 .. code-block:: php
 
-    # features/bootstrap/FeatureContext.php
+    <?php # features/bootstrap/FeatureContext.php
 
     use Behat\Behat\Context\BehatContext,
         Behat\Behat\Exception\Pending;
@@ -337,8 +335,6 @@ so that you now have two scenarios defined:
 
 .. code-block:: gherkin
 
-    # features/ls.feature
-    ...
     Scenario: List 2 files in a directory with the -a option
       Given I am in a directory "test"
       And I have a file named "foo"
