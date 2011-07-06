@@ -47,6 +47,7 @@ To become *Behat'er* in 20 minutes, just dive into the quick-start guide and
 enjoy!
 
 .. toctree::
+    :maxdepth: 2
 
     quick_intro
 
