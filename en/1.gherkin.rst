@@ -235,7 +235,7 @@ your scenarios but after your beforeScenario hooks (:doc:`3.hooks`).
 Steps
 -----
 
-`Features`_ consist of steps, also known as *Givens*, *Whens* and *Thens*.
+`Features`_ consist of steps, also known as `Givens`_, `Whens`_ and `Thens`_.
 
 Behat doesn’t technically distinguish between these three kind of steps.
 However, we strongly recommend that you do! These words have been carefully
@@ -246,8 +246,8 @@ Robert C. Martin has written a `great post <http://blog.objectmentor.com/article
 about BDD’s Given-When-Then concept where he thinks of them as a finite state
 machine.
 
-Given
-~~~~~
+Givens
+~~~~~~
 
 The purpose of givens is to **put the system in a known state** before the user
 (or external system) starts interacting with the system (in the When steps).
@@ -289,8 +289,8 @@ read the scenario and make sense out of it without having to look elsewhere
       | everzet  | 123456   | everzet@knplabs.com |
       | fabpot   | 22@222   | fabpot@symfony.com  |
 
-When
-~~~~
+Whens
+~~~~~
 
 The purpose of When steps is to **describe the key action** the user performs
 (or, using Robert C. Martin’s metaphor, the state transition).
@@ -315,8 +315,8 @@ The purpose of When steps is to **describe the key action** the user performs
 
             When I call "ls -la"
 
-Then
-~~~~
+Thens
+~~~~~
 
 The purpose of Then steps is to **observe outcomes**. The observations should
 be related to the business value/benefit in your feature description. The
