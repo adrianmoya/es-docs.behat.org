@@ -49,7 +49,7 @@ enjoy!
 .. toctree::
     :maxdepth: 2
 
-    quick_intro
+    0.quick_intro
 
 Guides
 ------
@@ -59,20 +59,12 @@ Learn Behat with the topical guides:
 .. toctree::
     :maxdepth: 1
 
-    gherkin/index
-    gherkin/features
-    gherkin/scenarios
-    gherkin/steps
-    gherkin/backgrounds
-    gherkin/outlines
-    behat/environment
-    gherkin/arguments
-    gherkin/tags
-    behat/hooks
-    behat/step_to_step_calls
-    behat/transformations
-    behat/formatters
-    behat/configuration
+    1.gherkin
+    2.definitions
+    3.hooks
+    4.context
+    5.cli
+    6.formatters
 
 More about Behavior Driven Development
 --------------------------------------

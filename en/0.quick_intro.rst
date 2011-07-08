@@ -1,4 +1,4 @@
-Quick Guide to Behat
+Quick Intro to Behat
 ====================
 
 Welcome to Behat! Behat is a tool that makes `behavior driven development`_
@@ -514,9 +514,8 @@ about the :doc:`Gherkin</gherkin/index>` syntax or learn how to test your
 web applications by using Behat with Mink.
 
 * `Testing Web Applications with Mink`_
-* :doc:`Configuration<behat/configuration>`
-* :doc:`Pre and Post Suite Hooks</behat/hooks>`
-* :doc:`Tagging Features</gherkin/tags>`
+* :doc:`1.gherkin`
+* :doc:`5.cli`
 
 .. _`behavior driven development`: http://en.wikipedia.org/wiki/Behavior_Driven_Development
 .. _`Mink`: https://github.com/behat/mink
