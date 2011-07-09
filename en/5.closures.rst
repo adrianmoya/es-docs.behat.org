@@ -1,0 +1,4 @@
+Closures as Definitions and Hooks
+=================================
+
+

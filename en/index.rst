@@ -63,8 +63,9 @@ Learn Behat with the topical guides:
     2.definitions
     3.hooks
     4.context
-    5.cli
-    6.formatters
+    5.closures
+    6.cli
+    7.formatters
 
 More about Behavior Driven Development
 --------------------------------------
