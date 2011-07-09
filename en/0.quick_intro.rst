@@ -516,7 +516,7 @@ web applications by using Behat with Mink.
 
 * `Testing Web Applications with Mink`_
 * :doc:`1.gherkin`
-* :doc:`5.cli`
+* :doc:`6.cli`
 
 .. _`behavior driven development`: http://en.wikipedia.org/wiki/Behavior_Driven_Development
 .. _`Mink`: https://github.com/behat/mink
