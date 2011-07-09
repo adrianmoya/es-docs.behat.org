@@ -16,16 +16,16 @@ A stakeholder may say to you:
       As a UNIX user
       I need to be able to list the current directory's contents
 
-    Scenario: List 2 files in a directory
-      Given I am in a directory "test"
-      And I have a file named "foo"
-      And I have a file named "bar"
-      When I run "ls"
-      Then I should get:
-        """
-        bar
-        foo
-        """
+      Scenario: List 2 files in a directory
+        Given I am in a directory "test"
+        And I have a file named "foo"
+        And I have a file named "bar"
+        When I run "ls"
+        Then I should get:
+          """
+          bar
+          foo
+          """
 
 In this tutorial, we'll show you how Behat can execute this simple story
 as a test that verifies that the ``ls`` commands works as described.
