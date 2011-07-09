@@ -359,7 +359,7 @@ this same basic idea could be used to test web applications, and Behat integrate
 beautifully with a library called `Mink`_ to do just that.
 
 Of course, there's still lot's more to learn, including more about the
-:doc:`Gherkin syntax <1.gherkin>` (the language used in the ``ls.feature``
+:doc:`Gherkin syntax </guides/1.gherkin>` (the language used in the ``ls.feature``
 file).
 
 Some more Behat Basics
@@ -511,12 +511,12 @@ What's Next?
 
 Congratulations! You now know everything you need in order to get started
 with behavior driven development and Behat. From here, you can learn more
-about the :doc:`Gherkin<1.gherkin>` syntax or learn how to test your
+about the :doc:`Gherkin</guides/1.gherkin>` syntax or learn how to test your
 web applications by using Behat with Mink.
 
 * `Testing Web Applications with Mink`_
-* :doc:`1.gherkin`
-* :doc:`6.cli`
+* :doc:`/guides/1.gherkin`
+* :doc:`/guides/6.cli`
 
 .. _`behavior driven development`: http://en.wikipedia.org/wiki/Behavior_Driven_Development
 .. _`Mink`: https://github.com/behat/mink

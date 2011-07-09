@@ -49,7 +49,7 @@ enjoy!
 .. toctree::
     :maxdepth: 2
 
-    0.quick_intro
+    quick_intro
 
 Guides
 ------
@@ -59,13 +59,23 @@ Learn Behat with the topical guides:
 .. toctree::
     :maxdepth: 1
 
-    1.gherkin
-    2.definitions
-    3.hooks
-    4.context
-    5.closures
-    6.cli
-    7.formatters
+    guides/1.gherkin
+    guides/2.definitions
+    guides/3.hooks
+    guides/4.context
+    guides/5.closures
+    guides/6.cli
+    guides/7.formatters
+
+Cookbook
+--------
+
+Learn specific solutions for specific needs:
+
+.. toctree::
+    :maxdepth: 1
+
+    cookbook/migrate_from_1x_to_20
 
 More about Behavior Driven Development
 --------------------------------------

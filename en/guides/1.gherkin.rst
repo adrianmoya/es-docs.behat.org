@@ -10,7 +10,7 @@ Gherkin serves two purposes – documentation and automated tests. A third, bonu
 feature, is that when it yells at you in red, it’s talking to you, using real,
 human language to tell you what code you should write.
 
-If you're still new to Behat, jump into the :doc:`0.quick_intro` first and then
+If you're still new to Behat, jump into the :doc:`/quick_intro` first and then
 come back here to learn more about Gherkin.
 
 Gherkin Syntax
@@ -62,7 +62,7 @@ through the above example:
 When you executing the feature, the trailing portion of each step (the part
 after the keywords like ``Given``, ``And``, ``When``, etc) is matched to
 a regular expression, which executes a PHP callback function. You can read more
-about steps matching and execution in :doc:`2.definitions`.
+about steps matching and execution in :doc:`/guides/2.definitions`.
 
 Features
 --------
@@ -210,7 +210,7 @@ Backgrounds
 Backgrounds allows you to add some context to all scenarios in a single
 feature. A Background is like an untitled scenario, containing a number of
 steps. The difference is when it is run. The background is run before each of
-your scenarios but after your beforeScenario hooks (:doc:`3.hooks`).
+your scenarios but after your beforeScenario hooks (:doc:`/guides/3.hooks`).
 
 .. code-block:: gherkin
 
