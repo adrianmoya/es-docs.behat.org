@@ -65,7 +65,6 @@ Learn Behat with the topical guides:
     guides/4.context
     guides/5.closures
     guides/6.cli
-    guides/7.formatters
 
 Cookbook
 --------
