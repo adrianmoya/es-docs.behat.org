@@ -1,4 +1,4 @@
-Running Features - ``FeatureContext`` Class
+Testing Features - ``FeatureContext`` Class
 ===========================================
 
 We've already used this strange ``FeatureContext`` class as a home for our
