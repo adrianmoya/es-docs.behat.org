@@ -1,4 +1,731 @@
 Defining Reusable Actions - Step Definitions
 ============================================
 
+:doc:`Gherkin language</guides/1.gherkin>` provides a way to describe your
+application behavior in business readable language. But how to test, that
+described behavior is actually implemented? How to test, that our application
+satisfies our business expectations, described in feature scenarios? Behat
+provides a way to map 1-to-1 your scenario steps (actions) to actual pieces of
+php code, called step definitions:
 
+.. code-block:: php
+
+    /**
+     * @When /^I do something with "([^"]*)"$/
+     */
+    public function iDoSomethingWith($argument)
+    {
+        // do something with $argument
+    }
+
+Definitions Home - ``FeatureContext`` Class
+-------------------------------------------
+
+Step definitions are just usual php methods. Instance methods in special class,
+called :doc:`Feature Context</guides/4.context>`. This class can be easily
+created for you by running ``behat`` with special ``--init`` option from your
+project's directory:
+
+.. code-block:: bash
+
+    $ behat --init
+
+After you'll run this command, Behat will sets up a ``features`` directory
+inside your project:
+
+.. image:: /images/behat--init.png
+   :align: center
+
+Newly created ``features/bootstrap/FeatureContext.php`` will have inital
+context class code for you to start with:
+
+.. code-block:: php
+
+    <?php # features/bootstrap/FeatureContext.php
+
+    use Behat\Behat\Context\ClosuredContextInterface,
+        Behat\Behat\Context\TranslatedContextInterface,
+        Behat\Behat\Context\BehatContext,
+        Behat\Behat\Exception\Pending;
+    use Behat\Gherkin\Node\PyStringNode,
+        Behat\Gherkin\Node\TableNode;
+
+    class FeatureContext extends BehatContext
+    {
+        // Your definitions will live here
+    }
+
+All step definitions and :doc:`hooks</guides/3.hooks>`, necessary for project's
+behavior testing will live as usual methods inside this class.
+
+Creating Your First Step Definition
+-----------------------------------
+
+The main goal for step definitions is to be executed when matching step is
+runned in Behat. But method existence itself is not enough for Behat to be able
+to find one specific method among the entire set of defined actions in
+``FeatureContext`` class. Behat needs a way to check that concrete class method
+is suitable for concrete step in some scenario. Behat does this using regular
+expressions matching mechanism. Every step definition has specific regular
+expression, bound to it, with which Behat compares every single step in every
+scenario before running it. When definition with regexp, matching specific step
+found - Behat executes this definition method, that simple.
+
+The way Behat bounds specific regex to ``FeatureContext`` method is phpDoc
+annotations:
+
+.. code-block:: php
+
+    /**
+     * @When /^I do something with "([^"]*)"$/
+     */
+    public function someMethod($methodArgument) {}
+
+Let's take a closer look at this strange code:
+
+1. ``@When`` is a definition keyword. There are 3 supported keywords in
+   annotations: ``@Given``/``@When``/``@Then``. These three definition keywords
+   are actually equivalent, but all three are available so that your step
+   definition remains readable.
+
+2. The text after the keyword is the regular expression (e.g.
+   ``/^I am in a directory "([^"]*)"$/``).
+
+3. All search patterns in the regular expression (e.g. ``([^"]*)``) will become
+   method arguments (``$methodArgument``).
+
+.. note::
+
+    Notice, that comment block actually starts from ``/**``, not usual ``/*``.
+    It's important for Behat to be able to parse such comments as annotations!
+
+As you might see, resulting definition regex is quite general and this actual
+method will be called for all ``... I do something with "..."`` steps,
+including:
+
+.. code-block:: gherkin
+
+    Given I do something with "string1"
+     When I do something with "some other string"
+     Then I do something with "smile :-)"
+
+The only real difference between those steps in eyes of Behat is the text
+inside double quotes. And this text will be passed into same old definition
+method as different ``$methodArgument`` argument values. In example above, our
+``FeatureContext::someMethod()`` will be called three times:
+
+1. ``->someMethod( $methodArgument = 'string1' );``.
+2. ``->someMethod( $methodArgument = 'some other string' );``.
+3. ``->someMethod( $methodArgument = 'smile :-)' );``.
+
+.. note::
+
+    Regular expression getters can't determine argument type automatically. So,
+    it's your work to cast string arguments into integers, floats or Booleans.
+
+.. note::
+
+    The actual step keyword is not important for Behat. It is not used in regex
+    matching. It means, that step, defined with ``@When`` will also be matched
+    to ``Given ...``, ``Then ...``, ``And ...``, ``But ...`` or localized
+    steps.
+
+And you can even have multiple arguments accepted by your definition:
+
+.. code-block:: php
+
+    /**
+     * @When /^I do something with "([^"]*)" and with (\d+)$/
+     */
+    public function someMethod($stringArgument, $numberArgument) {}
+
+Definition Snippets
+-------------------
+
+Ok, now you know how to write step definitions by hands, but writing all this
+method stubs, annotations and regular expressions by hands is tedious. Behat
+makes this routine task much easier and fun, generating definition snippets for
+you. Let's pretend, that you have this feature:
+
+.. code-block:: gherkin
+
+    # features/example.feature
+    Feature:
+      Scenario:
+        Given some step with "string" argument
+        And number step with 23
+
+Run this feature in Behat:
+
+.. code-block:: bash
+
+    $ behat features/example.feature
+
+Behat will provide autogenerated snippets for your steps:
+
+.. image:: /images/example-snippets.png
+   :align: center
+
+It not only generates proper definition annotation type (``@Given``), but also
+a regular expression with string (``"([^"]+)"``) or number (``(\d+)``)
+capturing, method name (``someStepWithArgument()``, ``numberStepWith()``) and
+arguments (``$argument1``), all based just on text of the step. Isn't that
+cool?
+
+The only thing left for you to do is to copy that method snippets into your
+``FeatureContext`` class and provide useful body for them!
+
+Step Execution Result Types
+---------------------------
+
+Now you know how to map actual code to php code, that will be executed. But
+how to tell Behat some sort of "failure"? How Behat actually checks, that step
+executed properly?
+
+There comes step execution types. Behat differentiate seven
+types of step execution results: "`Successful Steps`_", "`Undefined Steps`_",
+"`Pending Steps`_", "`Failed Steps`_", "`Skipped Steps`_", "`Ambiguous Steps`_"
+and "`Redundant Step Definitions`_".
+
+We will use previously introduced feature for all the following examples:
+
+.. code-block:: gherkin
+
+    # features/example.feature
+    Feature:
+      Scenario:
+        Given some step with "string" argument
+        And number step with 23
+
+Successful Steps
+~~~~~~~~~~~~~~~~
+
+When Behat finds a matching definition it will execute it. If the definition
+method doesn’t throw an ``Exception``, the step is marked as successful (green).
+What you return from a definition method has no significance what so ever.
+
+Let's pretend, that our context class have this code:
+
+.. code-block:: php
+
+    <?php # features/bootstrap/FeatureContext.php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+        /** @Given /^some step with "([^"]*)" argument$/ */
+        public function someStepWithArgument($argument1)
+        {
+        }
+
+        /** @Given /^number step with (\d+)$/ */
+        public function numberStepWith($argument1)
+        {
+        }
+    }
+
+When you run your feature, you'll get all steps passed and marked green:
+
+.. image:: /images/example-successful.png
+   :align: center
+
+.. note::
+
+    Passed steps are always marked as **green** if colors are supported by
+    your console.
+
+.. tip::
+
+    Install ``php5-posix`` on Linux, Mac OS or other Unix system
+    to be able to see colorful Behat output.
+
+Undefined Steps
+~~~~~~~~~~~~~~~
+
+When Behat can nott find a matching definition, the step gets marked as
+**undefined**, and all subsequent steps in the scenario are **skipped**.
+
+Let's pretend, that we have empty context class:
+
+.. code-block:: php
+
+    <?php # features/bootstrap/FeatureContext.php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+    }
+
+When you run your feature, you'll get 2 undefined steps, that are marked yellow:
+
+.. image:: /images/example-snippets.png
+   :align: center
+
+.. note::
+
+    Undefined steps are always marked as **yellow** if colors are supported by
+    your console.
+
+.. note::
+
+    All steps, following the undefined one are never gets executed, as the
+    following behavior is unpredictable. Those steps gets marked as
+    **skipped**.
+
+.. tip::
+
+    If you use ``--strict`` option with Behat, undefined steps will cause Behat
+    to exit with ``1`` code.
+
+Pending Steps
+~~~~~~~~~~~~~
+
+When a definition method throws ``Behat\Behat\Exception\Pending`` exception,
+the step is marked as **pending**, reminding you that you have a work to do.
+
+Let's pretend, that your ``FeatureContext`` looks like this:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext,
+        Behat\Behat\Exception\Pending;
+
+    class FeatureContext extends BehatContext
+    {
+        /** @Given /^some step with "([^"]*)" argument$/ */
+        public function someStepWithArgument($argument1)
+        {
+            throw new Pending('Do some string work');
+        }
+
+        /** @Given /^number step with (\d+)$/ */
+        public function numberStepWith($argument1)
+        {
+            throw new Pending('Do some number work');
+        }
+    }
+
+When you run your feature, you'll get 1 pending step, that are marked yellow:
+
+.. image:: /images/example-pending.png
+   :align: center
+
+.. note::
+
+    Pending steps are always marked as **yellow** if colors are supported by
+    your console, because they are logically close to **undefined** steps.
+
+.. note::
+
+    All steps, following the pending one are never gets executed, as the
+    following behavior is unpredictable. Those steps gets marked as
+    **skipped**.
+
+.. tip::
+
+    If you use ``--strict`` option with Behat, pending steps will cause Behat
+    to exit with ``1`` code.
+
+Failed Steps
+~~~~~~~~~~~~
+
+When a definition method throws an ``Exception`` (not ``Pending`` one) during
+it's execution, the step is marked as **failed**. What you return from a
+definition has no significance what so ever. Returning ``null`` or ``false``
+will not cause a step definition to fail. If Behat finds failed steps during
+suite execution - it will exit with ``1`` code.
+
+Let's pretend, that your ``FeatureContext`` has following code:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+        /** @Given /^some step with "([^"]*)" argument$/ */
+        public function someStepWithArgument($argument1)
+        {
+            throw new Exception('some exception');
+        }
+
+        /** @Given /^number step with (\d+)$/ */
+        public function numberStepWith($argument1)
+        {
+        }
+    }
+
+When you run your feature, you'll get 1 pending step, that are marked yellow:
+
+.. image:: /images/example-failed.png
+   :align: center
+
+.. note::
+
+    Failed steps are always marked as **red** if colors are supported by
+    your console.
+
+.. note::
+
+    All steps, following the failed one are never gets executed, as the
+    following behavior is unpredictable. Those steps gets marked as
+    **skipped**.
+
+.. tip::
+
+    You can get exception stack trace with ``-v`` option provided to Behat:
+
+    .. code-block:: bash
+
+        $ behat features/example.feature -v
+
+Skipped Steps
+~~~~~~~~~~~~~
+
+Steps that follow **undefined**, **pending** or **failed** steps are never
+executed (even if there is a matching definition), and are marked **skipped**:
+
+.. image:: /images/example-pending.png
+   :align: center
+
+.. note::
+
+    Skipped steps are always marked as **cyan** if colors are supported by
+    your console.
+
+Ambiguous Steps
+~~~~~~~~~~~~~~~
+
+When Behat find two or more definitions, that match single step, this step gets
+marked as **ambiguos**.
+
+Consider, that your ``FeatureContext`` has following code:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+        /** @Given /^.* step with .*$/ */
+        public function someStepWithArgument()
+        {
+        }
+
+        /** @Given /^number step with (\d+)$/ */
+        public function numberStepWith($argument1)
+        {
+        }
+    }
+
+When you'll try to run your feature with this context, you'll get:
+
+.. image:: /images/example-ambiguous.png
+   :align: center
+
+It's because Behat can't make a decision about what definition to execute. It's
+your job really. But as you might see, Behat will provide useful information to
+eliminate such problems.
+
+Redundant Step Definitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In Behat you're not allowed to use a regexp more than once in a definitions, so
+the following context class:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+        /** @Given /^number step with (\d+)$/ */
+        public function workWithNumber($number1)
+        {
+        }
+
+        /** @Given /^number step with (\d+)$/ */
+        public function workDifferentlyWithNumber($number1)
+        {
+        }
+    }
+
+Will throw exception during Behat run:
+
+.. image:: /images/example-redundant.png
+   :align: center
+
+Step Argument Transformations
+-----------------------------
+
+Step argument transformations help your step definitions be more DRY by
+allowing you to refactor common operations that you perform on step definition
+arguments.
+
+Before each match, captured by a step definition, is sent as an argument to the
+step definition method, an attempt is made to match them against transformation
+methods. If one of those captured matches matches the regular expression of one
+of a transformator methods - original string value gets replaced with the
+result of what the transformator method returns.
+
+For example, you can automatically cast all number arguments to integers with
+the following context class code:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+        /**
+         * @Transform /^(\d+)$/
+         */
+        public function castStringToNumber($string)
+        {
+            return intval($string);
+        }
+
+        /**
+         * @Then /^a user '([^']+)', should have (\d+) followers$/
+         */
+        public function assertUserHasFollowers($name, $count)
+        {
+            if ('integer' !== gettype($count)) {
+                throw new Exception('Integer expected');
+            }
+        }
+    }
+
+.. note::
+
+    Transformations looks like step definitions, except that they start with
+    ``@Transform`` keyword and returns new value (wich will replace old one as
+    definition argument).
+
+Or you can even cast provided username to actual ``User`` object if you have
+one:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+        /**
+         * @Transform /^(\d+)$/
+         */
+        public function castStringToNumber($string)
+        {
+            return intval($string);
+        }
+
+        /**
+         * @Transform /^user (.*)$/
+         */
+        public function castUsernameToUser($username)
+        {
+            return new User($username);
+        }
+
+        /**
+         * @Then /^a '(user [^']+)', should have (\d+) followers$/
+         */
+        public function assertUserHasFollowers(User $name, $count)
+        {
+            if ('integer' !== gettype($count)) {
+                throw new Exception('Integer expected');
+            }
+        }
+    }
+
+Transforming Tables
+~~~~~~~~~~~~~~~~~~~
+
+Let's pretend, that we have a feature, like this:
+
+.. code-block:: gherkin
+
+    # features/table.feature
+    Feature: Users
+
+      Scenario: Creating Users
+        Given the following users:
+          | name          | followers |
+          | everzet       | 147       |
+          | avalanche123  | 142       |
+          | kriswallsmith | 274       |
+          | fabpot        | 962       |
+
+``features/bootstrap/FeatureContext.php`` code in this case could look like
+this:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext;
+    use Behat\Gherkin\Node\TableNode;
+
+    class FeatureContext extends BehatContext
+    {
+        /**
+         * @Given /^the following users$/
+         */
+        public function pushUsers(TableNode $users)
+        {
+            $users = array();
+            foreach ($users->getHash() as $user) {
+                $user = new User();
+                $user->setUsername($user['name']);
+                $user->setFollowersCount($user['followers']);
+                $users[] = $user;
+            }
+
+            // do something with $users
+        }
+    }
+
+A table like this one may occur again in a creation step and again in a
+validation step. Using a ``@Transform`` will keep you DRY. Transformations can
+also be used with tables. A table transformations is matched via a
+comma-delimited list of the column headers prefixed with ``table:``:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext;
+    use Behat\Gherkin\Node\TableNode;
+
+    class FeatureContext extends BehatContext
+    {
+        /**
+         * @Transform /^table:name,followers$/
+         */
+        public function castUsersTable(TableNode $users)
+        {
+            $users = array();
+            foreach ($customers->getHash() as $user) {
+                $user = new User();
+                $user->setUsername($user['name']);
+                $user->setFollowersCount($user['followers']);
+                $users[] = $user;
+            }
+
+            return $users;
+        }
+
+        /**
+         * @Given /^the following users$/
+         */
+        public function pushUsers(array $users)
+        {
+            // do something with $users
+        }
+
+        /**
+         * @Then /^I expect the following users$/
+         */
+        public function assertUsers(array $users)
+        {
+            // do something with $users
+        }
+    }
+
+.. note::
+
+    Transformations are powerful and it is important to take care how you
+    implement them. A mistake with them can often introduce strange and
+    unexpected behavior.
+
+Step Execution Chaining
+-----------------------
+
+Sometimes it might be useful to pass execution flow from one step to another.
+For example, if during step definition execution you found, that it might be
+better to call another step in matter of DRY, you can just return step imitator
+object (substep) from definition method:
+
+.. code-block:: php
+
+    <?php
+
+    use Behat\Behat\Context\BehatContext,
+        Behat\Behat\Context\Step\Then;
+    use Behat\Gherkin\Node\TableNode;
+
+    class FeatureContext extends BehatContext
+    {
+        /**
+         * @Then /^(?:|I )should be on "(?P<page>[^"]+)"$/
+         */
+        public function assertPageAddress($page)
+        {
+            // check, that $page is equal to current page
+        }
+
+        /**
+         * @Then /^the url should match "(?P<pattern>[^"]+)"$/
+         */
+        public function assertUrlRegExp($pattern)
+        {
+            if (!preg_match('/^\/.*\/$/', $pattern)) {
+                return new Then("I should be on \"$pattern\"");
+            }
+
+            // do regex assertion
+        }
+    }
+
+Notice, that in case when we provide non-regex to ``Then the url should match "..."``
+step it's definition returns new ``Behat\Behat\Context\Step\Then`` instance.
+When Behat finds that some definition returns such object - it finds and
+executes step definition for step text, provided as those object's argument.
+
+.. tip::
+
+    There is actually three substep classes for you to use:
+
+    1. ``Behat\Behat\Context\Step\Given``
+    2. ``Behat\Behat\Context\Step\When``
+    3. ``Behat\Behat\Context\Step\Then``
+
+    Same as with usual steps.
+
+Also, you can return steps with multiline arguments:
+
+.. code-block:: php
+
+    /**
+     * @Given /^I have initial table$/
+     */
+    public function table()
+    {
+        $table = new Behat\Gherkin\Node\TableNode(<<<TABLE
+            | username | password |
+            | everzet  | 123456   |
+    TABLE
+        );
+
+        return new Given('I have users:', $table);
+    }
+
+.. note::
+
+    Step, executed in chain will throw exception for any result type excluding
+    **successful**. This means, that you'll never get snippets out of steps,
+    called **only** through execution chain!
