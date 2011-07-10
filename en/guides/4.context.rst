@@ -194,8 +194,12 @@ If you need to pass something into your subcontext - it's your job actually:
     Behat's subcontexts is a way to achieve horizontal reusability in php
     before we officailly get *traits* in php 5.4.
 
-Creating Your Own Context Class
+Creating Very Own Context Class
 -------------------------------
+
+The easiest way to start with Behat is to just extend base ``Behat\Behat\Context\BehatContext``
+class. But what if you do not want to inherit from any classed in your code?
+Then you should create your own context class, that Behat will be able to use.
 
 As we've pointed before, in order to be able to use your custom class as
 Behat context, it should define simple interface:
