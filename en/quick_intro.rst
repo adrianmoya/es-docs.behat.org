@@ -514,7 +514,7 @@ with behavior driven development and Behat. From here, you can learn more
 about the :doc:`Gherkin</guides/1.gherkin>` syntax or learn how to test your
 web applications by using Behat with Mink.
 
-* `Testing Web Applications with Mink`_
+* :doc:`/cookbook/behat_and_mink`
 * :doc:`/guides/1.gherkin`
 * :doc:`/guides/6.cli`
 

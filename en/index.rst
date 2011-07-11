@@ -65,6 +65,7 @@ Learn Behat with the topical guides:
     guides/4.context
     guides/5.closures
     guides/6.cli
+    guides/7.config
 
 Cookbook
 --------
@@ -74,6 +75,7 @@ Learn specific solutions for specific needs:
 .. toctree::
     :maxdepth: 1
 
+    cookbook/behat_and_mink
     cookbook/migrate_from_1x_to_20
 
 More about Behavior Driven Development
