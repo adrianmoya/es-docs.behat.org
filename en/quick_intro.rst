@@ -226,7 +226,7 @@ need in order to create that step definition:
          */
         public function iAmInADirectory($argument1)
         {
-            throw new Pending();
+            throw new PendingException();
         }
 
 Let's use Behat's advice and add the following to the ``features/bootstrap/FeatureContext.php``
@@ -237,7 +237,7 @@ file, renaming ``$argument1`` to ``$dir``, simply for clarity:
     <?php # features/bootstrap/FeatureContext.php
 
     use Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\Pending;
+        Behat\Behat\Exception\PendingException;
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
 
@@ -267,7 +267,7 @@ file looks like this:
     <?php # features/bootstrap/FeatureContext.php
 
     use Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\Pending;
+        Behat\Behat\Exception\PendingException;
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
 

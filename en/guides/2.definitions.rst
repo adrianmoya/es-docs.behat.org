@@ -46,7 +46,7 @@ context class code for you to start with:
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\TranslatedContextInterface,
         Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\Pending;
+        Behat\Behat\Exception\PendingException;
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
 
@@ -282,7 +282,7 @@ When you run your feature, you'll get 2 undefined steps, that are marked yellow:
 Pending Steps
 ~~~~~~~~~~~~~
 
-When a definition method throws ``Behat\Behat\Exception\Pending`` exception,
+When a definition method throws ``Behat\Behat\Exception\PendingException`` exception,
 the step is marked as **pending**, reminding you that you have a work to do.
 
 Let's pretend, that your ``FeatureContext`` looks like this:
@@ -292,20 +292,20 @@ Let's pretend, that your ``FeatureContext`` looks like this:
     <?php
 
     use Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\Pending;
+        Behat\Behat\Exception\PendingException;
 
     class FeatureContext extends BehatContext
     {
         /** @Given /^some step with "([^"]*)" argument$/ */
         public function someStepWithArgument($argument1)
         {
-            throw new Pending('Do some string work');
+            throw new PendingException('Do some string work');
         }
 
         /** @Given /^number step with (\d+)$/ */
         public function numberStepWith($argument1)
         {
-            throw new Pending('Do some number work');
+            throw new PendingException('Do some number work');
         }
     }
 

@@ -16,13 +16,13 @@ method names. If you one of those people, we have an option for you:
 
     $steps->Given('/^I have ordered hot "([^"]*)"$/',
         function($world, $arg1) {
-            throw new Behat\Behat\Exception\Pending();
+            throw new Behat\Behat\Exception\PendingException();
         }
     );
 
     $steps->When('/^the "([^"]*)" will be ready$/',
         function($world) {
-            throw new Behat\Behat\Exception\Pending;
+            throw new Behat\Behat\Exception\PendingException;
         }
     );
 
@@ -99,7 +99,7 @@ You can use ``$steps`` variable to define :doc:`step definitions </guides/2.defi
 
     $steps->Given('/^I have ordered hot "([^"]*)"$/',
         function($world, $arg1) {
-            throw new Behat\Behat\Exception\Pending();
+            throw new Behat\Behat\Exception\PendingException();
         }
     );
 
@@ -116,7 +116,7 @@ step is almost exactly the same as:
 
     $steps->SomeUnexistentKeyword('/^I have ordered hot "([^"]*)"$/',
         function($world, $arg1) {
-            throw new Behat\Behat\Exception\Pending();
+            throw new Behat\Behat\Exception\PendingException();
         }
     );
 

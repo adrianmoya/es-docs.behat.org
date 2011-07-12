@@ -37,7 +37,7 @@ The easiest way to migrate is to move this code into
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\Pending;
+        Behat\Behat\Exception\PendingException;
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
 
@@ -64,7 +64,7 @@ you might expect, you have another option:
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\Pending;
+        Behat\Behat\Exception\PendingException;
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
 
@@ -235,7 +235,7 @@ look like this:
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\Pending;
+        Behat\Behat\Exception\PendingException;
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
     use Symfony\Component\Finder\Finder;
