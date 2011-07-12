@@ -72,13 +72,13 @@ Also, you can use behat phar package:
 
 .. code-block:: bash
 
-    $ wget https://github.com/downloads/Behat/Behat/behat-2.0.0.phar
+    $ wget https://github.com/downloads/Behat/Behat/behat-2.0.1.phar
 
 Now you can execute Behat by simply running phar archive through ``php``:
 
 .. code-block:: bash
 
-    $ php behat-2.0.0.phar
+    $ php behat-2.0.1.phar
 
 Method #3 (Git)
 ~~~~~~~~~~~~~~~
