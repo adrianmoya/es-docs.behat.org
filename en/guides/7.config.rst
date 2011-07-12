@@ -1,0 +1,198 @@
+Configuration - ``behat.yml``
+=============================
+
+Sometimes, default configuration is not enough. Some day you'll need some
+extended tools to configure your feature suite. For that day, Behat has very
+powerful configuration system, based on ``YAML`` configuration files and
+profiles.
+
+``behat.yml``
+-------------
+
+All configuration happens inside single configuration file in ``YAML`` format.
+By default, behat looks for ``behat.yml`` or ``config/behat.yml`` to load, but
+you can change this with ``--config`` option:
+
+.. code-block:: bash
+
+    $ behat --config custom-config.yml
+
+All configuration parameters in that file are defined under profile name root
+(``default:`` for example). Profile is just a custom name, which you can use to
+fastly switch testing configuration through ``--profile`` parameter.
+
+Default profile is always ``default``. All other profiles inherit parameters
+from ``default`` one. If you don't need any profile other than default - define
+your parameters as follows:
+
+.. code-block:: yaml
+
+    # behat.yml
+    default:
+        ...
+
+Paths
+~~~~~
+
+First configuration block is ``paths``. Parameters under this configuration
+block tells behat where to find your features and bootstrap files:
+
+.. code-block:: yaml
+    
+    # behat.yml
+    default:
+        paths:
+            features:   '%%BEHAT_BASE_PATH%%'
+            bootstrap:  '%behat.paths.features%/bootstrap'
+
+* ``features`` parameter defines where behat will look for your ``*.feature``
+  files.
+
+* ``bootstrap`` parameter defines directory from which Behat will automaticall
+  load all ``*.php`` files.
+
+.. tip::
+
+    Notice the ``%behat.paths.features%`` and ``%%BEHAT_BASE_PATH%%``
+    placeholders. These strings are predefined configuration variables and
+    constants, that you can use to build very flexible configurations:
+
+    * A placeholder that consists of upper-case letters and starts/ends with
+      ``%%`` is a constant. Default constants are:
+
+        1. ``%%BEHAT_BASE_PATH%%`` - current base path (specified as
+           ``feature`` argument to behat command).
+        2. ``%%BEHAT_WORK_PATH%%`` - current work path, from which behat was
+           called.
+        3. ``%%BEHAT_CONFIG_PATH%%`` - configuration file directory path.
+
+    * A placeholder that consists of lower-case letters and starts/ends with
+      single ``%`` is a variable. These variables are your current
+      configuration parameters, which you can use to nest configurations.
+      Usable variables are:
+
+        1. ``%behat.paths.features%`` - default or specified by you features path.
+
+Filters
+~~~~~~~
+
+Another very useful configuration block is ``filters`` block. This block
+defines default filters (name or tag) for your features. It means, that if you
+type same filters again and again from run to run, then it would be better if
+you define them as parameters:
+
+.. code-block:: yaml
+
+    # behat.yml
+    default:
+        filters:
+            tags:   '@wip'
+
+This filter parameters (``name`` and ``tags``) accept same strings as behat
+``--name`` or ``--tags`` params does.
+
+Formatter
+~~~~~~~~~
+
+If you need to customize your output formatter - ``formatter`` block is right for you:
+
+.. code-block:: yaml
+
+    # behat.yml
+    default:
+        formatter:
+            name:                   'pretty'
+            parameters:
+                decorated:              true
+                verbose:                false
+                time:                   true
+                language:               'en'
+                output_path:            null
+                multiline_arguments:    true
+                ...
+
+* ``name`` defines output formatter name to use for your features by default.
+  You can write class name here, so behat will use your custom class as default
+  output formatter, but be careful - this class should be accessible by behat
+  and implement ``Behat\Behat\Formatter\FormatterInterface``.
+
+* ``parameters`` section defines additional parameters, which will be provided
+  into formatter instance. As you can see, all parameters from this section
+  duplicates ``behat`` tool options. You can redefine ``behat`` formatter
+  defaults here. Also, this is the place to specify parameters for your custom
+  formatters.
+
+Context
+~~~~~~~
+
+Sometimes, you'll want to use different `context </guides/4.context>`_ class
+name or provide useful parameters for context constructor from your
+``behat.yml``. That's what ``environment`` block for:
+
+.. code-block:: yaml
+
+    # behat.yml
+    default:
+        context:
+            class:              'Your\Custom\Context'
+            parameters:
+                start_url:      'http://test.mink.loc'
+
+* ``class`` defines which class you want to use as environment. This class
+  should be accessible by behat and implement `Behat\Behat\Context\ContextInterface`.
+
+* ``parameters`` parameters is a simple array, that will be passed into context
+  constructor as argument on it's initialization before each scenario.
+
+Profiles
+--------
+
+Sometimes, you might need to define different test running configuration for
+your feature suite. Profiles will help you with that. Let's say we need 2
+different configurations, that share common options, but use different
+formatters. Our ``behat.yml`` will might look like that:
+
+.. code-block:: yaml
+
+    # behat.yml
+    default:
+        context:
+            class:      'Your\Custom\Context'
+    wip:
+        filters:
+            tags:       '@wip'
+        formatter:
+            name:       'progress'
+    ci:
+        formatter:
+            name:        'junit'
+            output_path: '/var/temp/junit'
+
+This file defines 2 additional profiles (additional to default). Every profile
+will use ``Your\Custom\Context`` as environment object, but ``wip`` profile
+will run only scenarios with ``@wip`` (work in progress) tag and will output
+them with ``progress`` formatter and ``ci`` will run all your features and
+output them with ``junit`` formatter into ``/var/temp/junit`` path.
+
+To run custom profile, use ``--profile`` parameter:
+
+.. code-block:: bash
+
+    behat --profile wip
+    behat --profile ci
+
+Imports
+-------
+
+Sometimes you might want to share your feature suite configuration between
+different projects and their test suites. ``imports`` block comes to rescue:
+
+.. code-block:: bash
+
+    # behat.yml
+    imports:
+        - 'some_installed_pear_package_or_lib/behat.yml'
+        - '/full/path/to/custom_behat_config.yml'
+
+All files from ``imports`` block will be loaded by behat and merged into
+your ``behat.yml`` config.

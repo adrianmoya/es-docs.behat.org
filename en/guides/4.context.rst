@@ -1,0 +1,261 @@
+Testing Features - ``FeatureContext`` Class
+===========================================
+
+We've already used this strange ``FeatureContext`` class as a home for our
+:doc:`step definitions </guides/2.definitions>` and :doc:`hooks </guides/3.hooks>`.
+But what is it actually?
+
+Context class is a simple POPO (Plain Old PHP Object), that is used by behat
+to represent testing part of your features suite. If ``*.feature`` files are
+all about describing *how* your application behave, then context class is all
+about how to test, that it actually behaves as expected. That's it.
+Programmatic representation of your features:
+
+.. code-block:: php
+
+    <?php #features/bootstrap/FeatureContext.php
+
+    use Behat\Behat\Context\BehatContext;
+
+    require_once 'PHPUnit/Autoload.php';
+    require_once 'PHPUnit/Framework/Assert/Functions.php';
+
+    class FeatureContext extends BehatContext
+    {
+        public function __construct(array $parameters)
+        {
+            $this->useContext(new AnotherContext());
+        }
+
+        /** @BeforeFeature */
+        public static function prepareForTheFeature()
+        {} // clean database or do other preparation stuff
+
+        /** @Given /^we have some context$/ */
+        public function prepareContext()
+        {} // do something
+
+        /** @When /^event occurs$/ */
+        public function doSomeAction()
+        {} // do something
+
+        /** @Then /^something should be done$/ */
+        public function checkOutcomes()
+        {} // do something
+    }
+
+Context Class Requirements
+--------------------------
+
+In order to be used by Behat, your context class should follow 3 simple rules:
+
+1. Context class should implement ``Behat\Behat\Context\ContextInterface`` or
+   extend base ``Behat\Behat\Context\BehatContext`` class (as in example
+   above).
+
+2. Context class should be called ``FeatureContext``. It's a simple convention
+   inside Behat infrastructure.
+
+3. Context class should be findable and loadable by Behat. It means, that you
+   should somehow tell Behat about your class file. The easiest way to do this
+   is to put your class file inside ``features/bootstrap/`` folder. All
+   ``*.php`` files in this folder will be autoloaded by Behat before any
+   feature gets runned.
+
+.. note::
+
+    By convention, context class should be called ``FeatureContext``, but this
+    could be easily changed through :doc:`cli</guides/6.cli>` configuration.
+
+The simpliest way to start using Behat in your project is to call ``behat``
+with special ``--init`` option inside your project directory:
+
+.. code-block:: bash
+
+    $ behat --init
+
+After you'll run this command, Behat will sets up a testing directory inside
+your project:
+
+.. image:: /images/--init.png
+   :align: center
+
+And ``features/bootstrap/FeatureContext.php`` will have inital context class
+which will look like this:
+
+.. code-block:: php
+
+    <?php # features/bootstrap/FeatureContext.php
+
+    use Behat\Behat\Context\ClosuredContextInterface,
+        Behat\Behat\Context\TranslatedContextInterface,
+        Behat\Behat\Context\BehatContext,
+        Behat\Behat\Exception\Pending;
+    use Behat\Gherkin\Node\PyStringNode,
+        Behat\Gherkin\Node\TableNode;
+
+    /**
+     * Features context.
+     */
+    class FeatureContext extends BehatContext
+    {
+    }
+
+
+Contexts Lifetime
+-----------------
+
+Your context class gets initialized before each scenario run and every scenario
+has it's very own context instance. This means 2 things:
+
+1. Every scenario has isolated from each others context. You can do almost
+   anything inside your scenario context instance without the fear to affect
+   other scenarios - every scenario will get it's own context instance.
+
+2. Every step in a single scenario gets executed inside common context
+   instance. This means, that you can set ``private`` instance variables inside
+   your ``@Given`` steps and you'll be able to read their new values inside
+   your ``@When`` and ``@Then`` steps.
+
+Using Subcontexts
+-----------------
+
+At some point, it could become very hard to maintain all your
+:doc:`step definitions </guides/2.definitions>` and :doc:`hooks </guides/3.hooks>`
+inside one single class. You can actually use class inheritance and split
+definitions into multiple classes, but it could become not logical and very
+hard to use inheritance for contexts as php doesn't support multiple
+inheritance. Behat provides more flexible way to gain reusability.
+
+Behat provides a way to use one or more contexts inside your main context. Such
+contexts are called *subcontexts*.
+
+.. code-block:: php
+
+    <?php #features/bootstrap/FeatureContext.php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+        public function __construct(array $parameters)
+        {
+            $this->useContext(new SubContext);
+        }
+    }
+
+``Behat\Behat\Context\BehatContext`` provides special ``useContext()`` instance
+method, with which you can connect one or more subcontext instances to your
+main ``FeatureContext`` class.
+
+``SubContext`` is the same context class, that should follow same
+`Context Class Requirements`_ as main context, except class naming rule, cuz
+it doesn't really matter how you call it - you instantiate it with hands before
+passing into ``useContext()`` method:
+
+.. code-block:: php
+
+    <?php #features/bootstrap/SubContext.php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class SubContext extends BehatContext
+    {
+        public function __construct(array $parameters)
+        {
+            // do subcontext initialization
+        }
+    }
+
+All :doc:`step definitions </guides/2.definitions>` and
+:doc:`hooks </guides/3.hooks>` defined in subcontexts will be successfully
+parsed by Behat and made available to use in your features right away.
+
+If you need to pass something into your subcontext - it's your job actually:
+
+.. code-block:: php
+
+    <?php #features/bootstrap/FeatureContext.php
+
+    use Behat\Behat\Context\BehatContext;
+
+    class FeatureContext extends BehatContext
+    {
+        public function __construct(array $parameters)
+        {
+            $this->useContext(new SubContext(array(
+                /* custom params */
+            )));
+        }
+    }
+
+.. note::
+
+    Behat's subcontexts is a way to achieve horizontal reusability in php
+    before we officailly get *traits* in php 5.4.
+
+Creating Very Own Context Class
+-------------------------------
+
+The easiest way to start with Behat is to just extend base ``Behat\Behat\Context\BehatContext``
+class. But what if you do not want to inherit from any classed in your code?
+Then you should create your own context class, that Behat will be able to use.
+
+As we've pointed before, in order to be able to use your custom class as
+Behat context, it should define simple interface:
+
+.. code-block:: php
+
+    <?php
+
+    namespace Behat\Behat\Context;
+
+    interface ContextInterface
+    {
+        function getSubcontexts();
+        function getSubcontextByClassName($className);
+    }
+
+This interface actually have only 2 methods:
+
+* ``getSubcontexts()`` should return array of subcontext instances (if has any).
+
+* ``getSubcontextByClassName()`` should find subcontext instance by provided
+  class name. It's used in order to be sure, that your subcontext definitions
+  will be always called inside proper context instance.
+
+So, your custom very own ``FeatureContext`` class could look like this:
+
+.. code-block:: php
+
+    <?php #features/bootstrap/FeatureContext.php
+
+    use Behat\Behat\Context\ContextInterface;
+
+    class FeatureContext implements ContextInterface
+    {
+        $this->subcontext;
+
+        public function __construct()
+        {
+            $this->subcontext = new SubContext();
+        }
+
+        public function getSubcontexts()
+        {
+            return array($this->subcontext);
+        }
+
+        public function getSubcontextByClassName($className)
+        {
+            if ('SubContext' === $className) {
+                return $this->subcontext;
+            }
+        }
+    }
+
+.. note::
+
+    Provided ``getSubcontextByClassName()`` is useful just as example and it'll
+    cause this ``FeatureContext`` to broke when and if it'll be used as
+    subcontext itself.
