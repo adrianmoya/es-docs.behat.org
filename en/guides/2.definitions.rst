@@ -243,7 +243,7 @@ When you run your feature, you'll get all steps passed and marked green:
 Undefined Steps
 ~~~~~~~~~~~~~~~
 
-When Behat can nott find a matching definition, the step gets marked as
+When Behat can not find a matching definition, the step gets marked as
 **undefined**, and all subsequent steps in the scenario are **skipped**.
 
 Let's pretend, that we have empty context class:
@@ -511,7 +511,7 @@ the following context class code:
 .. note::
 
     Transformations looks like step definitions, except that they start with
-    ``@Transform`` keyword and returns new value (wich will replace old one as
+    ``@Transform`` keyword and returns new value (which will replace old one as
     definition argument).
 
 Or you can even cast provided username to actual ``User`` object if you have

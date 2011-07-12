@@ -127,7 +127,7 @@ Context
 
 Sometimes, you'll want to use different `context </guides/4.context>`_ class
 name or provide useful parameters for context constructor from your
-``behat.yml``. That's what ``environment`` block for:
+``behat.yml``. That's what ``context`` block for:
 
 .. code-block:: yaml
 
@@ -139,7 +139,7 @@ name or provide useful parameters for context constructor from your
                 start_url:      'http://test.mink.loc'
 
 * ``class`` defines which class you want to use as environment. This class
-  should be accessible by behat and implement `Behat\Behat\Context\ContextInterface`.
+  should be accessible by behat and implement ``Behat\Behat\Context\ContextInterface``.
 
 * ``parameters`` parameters is a simple array, that will be passed into context
   constructor as argument on it's initialization before each scenario.

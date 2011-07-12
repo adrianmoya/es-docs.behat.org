@@ -136,7 +136,7 @@ Migrating Step Definitions and Hooks
 
 That was a hard part. Yep, you've heard me right. Closured step definitions
 and hooks support is much more easier to achieve, thanks to bundled with Behat2
-closured autoloader.
+closured loader.
 
 The only thing, you need to do is to implement this interface with your ``FeatureContext``:
 

@@ -3,7 +3,7 @@ Developing Web Applications with Behat and Mink
 
 You can use Behat to describe anything, that you can describe in business
 logic. It's tools, gui applications, web applications. Most interesting part is
-web applications. First, behavioral testing is already exists in web world -
+web applications. First, behavioral testing already exists in web world -
 it's called *functional* or *acceptance* testing. Almost all popular
 frameworks and languages provide functional testing tools. Today we'll talk
 about how to use Behat for functional testing of web applications.
@@ -46,7 +46,7 @@ Now the real problem. We have 2 completely different type of solutions:
 The problem is we need both these emulator type in order to do successful
 functional testing. Because both this tools is quite limited at some parts, but
 succeed on others. For example, you can't use in-browser emulators for all
-tests in your application, cuz this your tests become very slow. Also, you
+tests in your application, cuz this makes your tests become very slow. Also, you
 can't do AJAX with headless browser.
 
 You should use them both. But there comes a problem - this is very different
@@ -60,7 +60,7 @@ and in case of Behat, this problem become even worse, cuz now you have single:
 And this step should be somehow executed through one or another browser
 emulator.
 
-Here comes the Mink. Mink is a browser emulators abstraction layer. It hides
+Here comes Mink. Mink is a browser emulators abstraction layer. It hides
 emulators differences behind single, consistent API.
 
 Just some of the benefits:
@@ -72,7 +72,7 @@ Just some of the benefits:
 Installink Mink
 ---------------
 
-Mink is php 5.3 library that you'll use inside your test and feature suites.
+Mink is a php 5.3 library that you'll use inside your test and feature suites.
 Before you begin, ensure that you have at least PHP 5.3.1 installed.
 
 Method #1 (PEAR)

@@ -2,7 +2,7 @@ Command Line Tool - ``behat``
 =============================
 
 Behat on it's own is just a command line utility, that executes your behavior
-descriptions, written in :doc:`Gherkin langauge </guides/1.gherkin>`. ``behat``
+descriptions, written in :doc:`Gherkin language </guides/1.gherkin>`. ``behat``
 comes with bunch of useful options and commands:
 
 .. image:: /images/--help.png
@@ -47,9 +47,9 @@ tell ``behat`` about it with ``--config`` option:
 
     $ behat --config custom-config-file.yml
 
-Your :doc:`configuration files </guides/7.config>` can have multiple profies
+Your :doc:`configuration files </guides/7.config>` can have multiple profiles
 (named configurations). You can run ``behat`` with specific profile being used
-by calling it with `--profile ...` option:
+by calling it with ``--profile ...`` option:
 
 .. code-block:: bash
 
