@@ -186,9 +186,9 @@ For example, put next code in your ``FeatureContext``:
         }
     }
 
-Now, Behat will try to load all `step definitions`_ from out the
-``features/steps/basic_steps.php`` file and `hooks`_ from out the
-``features/support/hooks.php``.
+Now, Behat will try to load all :doc:`step definitions </guides/2.definitions>`
+from out the ``features/steps/basic_steps.php`` file and
+:doc:`hooks </guides/3.hooks>` from out the ``features/support/hooks.php``.
 
 That's quite simple. But what if you have more than one definition file?
 Adding all this file into array by hands can become tedious. But you always can
