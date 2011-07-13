@@ -461,19 +461,47 @@ A few pointers:
 4. If, inside a step, you need to tell Behat that some sort of "failure" has
    occurred, you should throw an exception:
 
-.. code-block:: php
+    .. code-block:: php
 
-   /**
-    * @Then /^I should get:$/
-    */
-   public function iShouldGet(PyStringNode $string)
-   {
-       if ((string) $string !== $this->output) {
-           throw new Exception(
-               "Actual output is:\n" . $this->output
-           );
+       /**
+        * @Then /^I should get:$/
+        */
+       public function iShouldGet(PyStringNode $string)
+       {
+           if ((string) $string !== $this->output) {
+               throw new Exception(
+                   "Actual output is:\n" . $this->output
+               );
+           }
        }
-   }
+
+.. tip::
+
+    Behat doesn't comes with it's own assertion tool, but you can use any proper
+    assertion tool out there. Proper assertion tool is a library, which
+    assertions throw exceptions on fail. For example, if you're familiar with
+    PHPUnit, you can use it's assertions in Behat:
+
+    .. code-block:: php
+
+        <?php # features/bootstrap/FeatureContext.php
+
+        use Behat\Behat\Context\BehatContext;
+        use Behat\Gherkin\Node\PyStringNode;
+
+        require_once 'PHPUnit/Autoload.php';
+        require_once 'PHPUnit/Framework/Assert/Functions.php';
+
+        class FeatureContext extends BehatContext
+        {
+            /**
+             * @Then /^I should get:$/
+             */
+            public function iShouldGet(PyStringNode $string)
+            {
+                assertEquals($string->toRaw(), $this->output);
+            }
+        }
 
 In the same way, any step that does *not* throw an exception will be seen
 by Behat as "passing". 
