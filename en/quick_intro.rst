@@ -423,6 +423,9 @@ in a format called Gherkin. Each feature file follows a few basic rules:
     Supported languages include (but are not limited to) ``fr``, ``es``, ``it``
     and, of course, the english pirate dialect ``en-pirate``.
 
+You can read more about features and Gherkin language in ":doc:`/guides/1.gherkin`"
+guide.
+
 More about Steps
 ----------------
 
@@ -506,6 +509,8 @@ A few pointers:
 In the same way, any step that does *not* throw an exception will be seen
 by Behat as "passing". 
 
+You can read more about step definitions in ":doc:`/guides/2.definitions`" guide.
+
 The Context Class: ``FeatureContext``
 -------------------------------------
 
@@ -513,6 +518,8 @@ Behat creates an context object for each scenario and executes all scenario
 steps inside that same object. In other words, if you want to share variables
 between steps, you can easily do that by setting property values on the context
 object itself (which was shown in the previous example).
+
+You can read more about ``FeatureContext`` in ":doc:`/guides/4.context`" guide.
 
 The ``behat`` Command Line Tool
 -------------------------------
@@ -533,6 +540,8 @@ how a step you defined earlier is worded:
 .. code-block:: bash
 
     $ behat --definitions
+
+You can read more about Behat CLI in ":doc:`/guides/6.cli`" guide.
 
 What's Next?
 ------------
