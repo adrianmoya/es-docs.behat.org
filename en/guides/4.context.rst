@@ -234,7 +234,7 @@ So, your custom very own ``FeatureContext`` class could look like this:
 
     class FeatureContext implements ContextInterface
     {
-        $this->subcontext;
+        private $subcontext;
 
         public function __construct()
         {
@@ -254,8 +254,3 @@ So, your custom very own ``FeatureContext`` class could look like this:
         }
     }
 
-.. note::
-
-    Provided ``getSubcontextByClassName()`` is useful just as example and it'll
-    cause this ``FeatureContext`` to broke when and if it'll be used as
-    subcontext itself.
