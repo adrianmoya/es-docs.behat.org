@@ -304,3 +304,23 @@ simple jQuery instruction. Run feature again and:
    :align: center
 
 Voila!
+
+.. tip::
+
+    Context isolation is very important thing in functional tests. But
+    restarting the browser after each scenario could slow your feature suite
+    very much. So, by default Mink tries hard to reset your browser session
+    without reloading it (cleans all domain cookies).
+    
+    In some cases it might be not enough (when you use ``http-only`` cookies for
+    example). In that case, just add ``@insulated`` tag to your scenario.
+    Browser in this case will be fully reloaded and cleaned (before scenario):
+
+    .. code-block:: gherkin
+
+        Feature: Some feature with insulated scenario
+
+          @javascript @insulated
+          Scenario: isolated scenario
+            ...
+
