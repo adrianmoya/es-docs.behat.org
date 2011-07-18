@@ -143,7 +143,7 @@ Classes in php have ``$this``, but closures don't (until php 5.4):
 
     ``$world`` is always an instance of **main** ``FeatureContext`` class. This
     means, that you should provide missing methods and properties for your
-    subcontexts by yourself:
+    :doc:`subcontexts </guides/4.context>` by yourself:
 
     .. code-block:: php
 
