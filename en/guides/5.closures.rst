@@ -139,6 +139,48 @@ Classes in php have ``$this``, but closures don't (until php 5.4):
         // $world->someVar === 'someVal'
     });
 
+.. note::
+
+    ``$world`` is always an instance of **main** ``FeatureContext`` class. This
+    means, that you should provide missing methods and properties for your
+    subcontexts by yourself:
+
+    .. code-block:: php
+
+        <?php # features/bootstrap/FeatureContext.php
+
+        class FeatureContext
+        {
+            public function __construct(array $parameters)
+            {
+                $this->useContext(new SubContext($this));
+            }
+
+            public function doSomething()
+            {
+                // ...
+            }
+        }
+
+    .. code-block:: php
+
+        <?php # features/bootstrap/SubContext.php
+
+        class SubContext
+        {
+            private $mainContext;
+
+            public function __construct(FeatureContext $context)
+            {
+                $this->mainContext = $context;
+            }
+
+            public function doSomething()
+            {
+                $this->mainContext->doSomething();
+            }
+        }
+
 Hooks
 -----
 
