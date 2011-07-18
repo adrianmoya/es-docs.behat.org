@@ -79,8 +79,8 @@ squares on scheme) registers on ``EventDispatcher`` to be able to recieve those
 events. ``EventDispatcher`` automatically resends recievent event to registered
 listeneres, that able to handle this particular event type.
 
-That's how statistic collectors, :doc:`formatters</guides/7.formatters>` and
-hooks work. They just provide listeners to some type of Behat lifetime events.
+That's how statistic collectors, formatters and hooks work. They just provide
+listeners to some type of Behat lifetime events.
 
 Hooks
 -----
