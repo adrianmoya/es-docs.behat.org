@@ -98,13 +98,13 @@ Also, you can use mink phar package:
 
 .. code-block:: bash
 
-    $ wget https://github.com/downloads/Behat/Mink/mink-1.0.0RC4.phar
+    $ wget https://github.com/downloads/Behat/Mink/mink-1.0.0.phar
 
 Now you can require phar package in your project:
 
 .. code-block:: php
 
-    require_once 'mink-1.0.0RC4.phar';
+    require_once 'mink-1.0.0.phar';
 
 ``MinkContext`` for Behat requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -140,7 +140,7 @@ chapter):
 
     require_once 'mink/autoload.php';
     // or, if you want to use phar from current dir:
-    // require_once __DIR__ . '/mink-1.0.0RC4.phar';
+    // require_once __DIR__ . '/mink-1.0.0.phar';
 
     class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     {
