@@ -78,6 +78,14 @@ Learn specific solutions for specific needs:
     cookbook/behat_and_mink
     cookbook/migrate_from_1x_to_20
 
+Behat API
+---------
+
+Read libraries API:
+
+* `Behat API <http://docs.behat.org/behat-api/>`_ - Behat code API
+* `Gherkin API <http://docs.behat.org/gherkin-api/>`_ - Gherkin parser API
+
 More about Behavior Driven Development
 --------------------------------------
 
