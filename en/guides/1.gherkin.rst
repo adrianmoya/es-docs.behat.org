@@ -59,7 +59,7 @@ through the above example:
 
 5. Line ``Scenario: A different situation`` starts the next scenario, and so on.
 
-When you executing the feature, the trailing portion of each step (the part
+When you're executing the feature, the trailing portion of each step (the part
 after the keywords like ``Given``, ``And``, ``When``, etc) is matched to
 a regular expression, which executes a PHP callback function. You can read more
 about steps matching and execution in :doc:`/guides/2.definitions`.
@@ -68,12 +68,12 @@ Features
 --------
 
 Every ``*.feature`` file conventionally consists of single feature. Line
-starting with keyword ``Feature:`` followed by free indented text starts a
-feature. Feature usually contains a list of scenarios. You can write whatever
-you want up until the first scenario, which starts with the word ``Scenario:``
-(or localized equivalent) on a new line. You can use `tags`_ to group
-features and scenarios together independent of your file and directory
-structure.
+starting with keyword ``Feature:`` (or localized equivalent) followed by free
+indented text starts a feature. Feature usually contains a list of scenarios.
+You can write whatever you want up until the first scenario, which starts with
+the word ``Scenario:`` (or localized equivalent) on a new line. You can use
+`tags`_ to group features and scenarios together independent of your file and
+directory structure.
 
 Every scenario consists of a list of `steps`_, which must start with one of the
 keywords ``Given``, ``When``, ``Then``, ``But`` or ``And`` (or localized one).
@@ -452,7 +452,7 @@ should be offset by delimiters consisting of three double-quote marks
       Given a blog post named "Random" with:
         """
         Some Title, Eh?
-        ==============
+        ===============
         Here is the first paragraph of my blog post.
         Lorem ipsum dolor sit amet, consectetur adipiscing
         elit.

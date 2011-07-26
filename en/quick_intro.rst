@@ -480,10 +480,10 @@ A few pointers:
 
 .. tip::
 
-    Behat doesn't comes with it's own assertion tool, but you can use any proper
+    Behat doesn't come with its own assertion tool, but you can use any proper
     assertion tool out there. Proper assertion tool is a library, which
     assertions throw exceptions on fail. For example, if you're familiar with
-    PHPUnit, you can use it's assertions in Behat:
+    PHPUnit, you can use its assertions in Behat:
 
     .. code-block:: php
 
