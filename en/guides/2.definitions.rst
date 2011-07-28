@@ -613,10 +613,10 @@ this:
         /**
          * @Given /^the following users$/
          */
-        public function pushUsers(TableNode $users)
+        public function pushUsers(TableNode $usersTable)
         {
             $users = array();
-            foreach ($users->getHash() as $user) {
+            foreach ($usersTable->getHash() as $user) {
                 $user = new User();
                 $user->setUsername($user['name']);
                 $user->setFollowersCount($user['followers']);
@@ -644,10 +644,10 @@ comma-delimited list of the column headers prefixed with ``table:``:
         /**
          * @Transform /^table:name,followers$/
          */
-        public function castUsersTable(TableNode $users)
+        public function castUsersTable(TableNode $usersTable)
         {
             $users = array();
-            foreach ($customers->getHash() as $user) {
+            foreach ($usersTable->getHash() as $user) {
                 $user = new User();
                 $user->setUsername($user['name']);
                 $user->setFollowersCount($user['followers']);
