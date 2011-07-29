@@ -536,3 +536,20 @@ run:
 .. code-block:: bash
 
     behat --story-syntax --lang=fr
+
+.. note::
+
+    Keep in mind, that any language, different from ``en`` should be explicitly
+    marked with ``# language: ...`` comment at the begining of your
+    ``*.feature`` file:
+
+    .. code-block:: gherkin
+
+        # language: fr
+        Fonctionnalité: ...
+          ...
+
+    This way your features will hold all the information about it's content
+    type, which is very important for methodologies like BDD and also will give
+    Behat the ability to have multilanguage features in one suite.
+

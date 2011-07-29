@@ -423,6 +423,16 @@ in a format called Gherkin. Each feature file follows a few basic rules:
     Supported languages include (but are not limited to) ``fr``, ``es``, ``it``
     and, of course, the english pirate dialect ``en-pirate``.
 
+    Keep in mind, that any language, different from ``en`` should be explicitly
+    marked with ``# language: ...`` comment at the begining of your
+    ``*.feature`` file:
+
+    .. code-block:: gherkin
+
+        # language: fr
+        Fonctionnalité: ...
+          ...
+
 You can read more about features and Gherkin language in ":doc:`/guides/1.gherkin`"
 guide.
 
