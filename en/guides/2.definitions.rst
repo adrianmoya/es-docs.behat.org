@@ -62,7 +62,7 @@ Creating Your First Step Definition
 -----------------------------------
 
 The main goal for step definitions is to be executed when matching step is
-running in Behat. But method existence itself is not enough for Behat to be able
+run in Behat. But method existence itself is not enough for Behat to be able
 to find one specific method among the entire set of defined actions in
 ``FeatureContext`` class. Behat needs a way to check that concrete class method
 is suitable for concrete step in some scenario. Behat does this using regular
