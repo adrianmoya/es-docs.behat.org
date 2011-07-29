@@ -23,7 +23,7 @@ scenario? Hooks comes to rescue:
          public static function prepare(SuiteEvent $event)
          {
              // prepare system for test suite
-             // before it's runned
+             // before it runs
          }
 
          /**
@@ -46,7 +46,7 @@ next scheme:
 .. image:: /images/event-system-scheme.png
    :align: center
 
-Let me explain it little bit:
+Let me explain it a little bit:
 
 1. First, Behat reads all features files, that you provide to it.
 
@@ -75,9 +75,9 @@ answer is hidden in `Observer Design Pattern <http://en.wikipedia.org/wiki/Obser
 On every point of execution, testers initialize special objects, called
 *events* (green texts on scheme) and sends them to special ``EventDispatcher``
 object (green square on scheme). Other objects, called *listeners* (blue
-squares on scheme) registers on ``EventDispatcher`` to be able to recieve those
-events. ``EventDispatcher`` automatically resends recievent event to registered
-listeneres, that able to handle this particular event type.
+squares on scheme) registers on ``EventDispatcher`` to be able to receive those
+events. ``EventDispatcher`` automatically resends received events to registered
+listeners, that are able to handle this particular event type.
 
 That's how statistic collectors, formatters and hooks work. They just provide
 listeners to some type of Behat lifetime events.
@@ -85,33 +85,33 @@ listeners to some type of Behat lifetime events.
 Hooks
 -----
 
-Behat hooks is a simple way to execute some code when core Behat events occurs.
+Behat hooks are a simple way to execute some code when core Behat events occurs.
 Behat provides 8 event types for you to hook in:
 
-1. ``BeforeSuite`` event happens before any feature in suite gets really runned.
-   It's useful for initial project setup for example. This event comes with
+1. ``BeforeSuite`` event happens before any feature in suite will run. It's
+   useful for initial project setup for example. This event comes with
    instance of ``Behat\Behat\Event\SuiteEvent`` class.
 
-2. ``AfterSuite`` event happens after all features in suite are already runned.
+2. ``AfterSuite`` event happens after all features in suite have been run.
    This event is used internally for statistics printing. This event comes with
    instance of ``Behat\Behat\Event\SuiteEvent`` class.
 
-3. ``BeforeFeature`` event occurs before some feature gets runned. This event
-   comes with instance of ``Behat\Behat\Event\FeatureEvent`` class.
+3. ``BeforeFeature`` event occurs before a feature will run. This event comes
+   with instance of ``Behat\Behat\Event\FeatureEvent`` class.
 
-4. ``AfterFeature`` event occurs after Behat finishes to execute some feature.
+4. ``AfterFeature`` event occurs after Behat finishes to execute a feature.
    This event comes with instance of ``Behat\Behat\Event\FeatureEvent`` class.
 
-5. ``BeforeScenario`` event occurs before specific scenario gets runned. This
+5. ``BeforeScenario`` event occurs before specific scenario will run. This
    event comes with instance ``Behat\Behat\Event\ScenarioEvent`` class.
 
-6. ``AfterScenario`` event occurs after Behat finishes to execute some scenario.
+6. ``AfterScenario`` event occurs after Behat finishes to execute a scenario.
    This event comes with instance of ``Behat\Behat\Event\ScenarioEvent`` class.
 
-7. ``BeforeStep`` event occurs before specific step gets runned. This event
-   comes with instance of ``Behat\Behat\Event\StepEvent`` class.
+7. ``BeforeStep`` event occurs before specific step will run. This event comes
+   with instance of ``Behat\Behat\Event\StepEvent`` class.
 
-8. ``AfterStep`` event occurs after Behat finishes to execute some step. This
+8. ``AfterStep`` event occurs after Behat finishes to execute a step. This
    event comes with instance of ``Behat\Behat\Event\StepEvent`` class.
 
 You can hook into any of this events with specifically annotated methods in
@@ -125,7 +125,7 @@ your ``FeatureContext`` class:
     public static function prepare(SuiteEvent $event)
     {
         // prepare system for test suite
-        // before it's runned
+        // before it runs
     }
 
 As you might see, we've used annotation as we did before with `definitions </guides/2.definitions>`_.
@@ -153,23 +153,23 @@ defined as ``static public`` methods of your ``FeatureContext`` class:
 
 There are two suite hook types, available for you in Behat:
 
-* ``@BeforeSuite`` - gets executed before any feature runned.
-* ``@AfterSuite`` - gets executed after all features runned.
+* ``@BeforeSuite`` - gets executed before any feature will run.
+* ``@AfterSuite`` - gets executed after all features have been run.
 
-Both hooks recieve ``Behat\Behat\Event\SuiteEvent`` as their argument. This
+Both hooks receive ``Behat\Behat\Event\SuiteEvent`` as their argument. This
 object has some useful methods for you to consider:
 
 * ``getLogger()`` - returns ``Behat\Behat\DataCollector\LoggerDataCollector``
   instance, which holds all suite run statistics.
 
-* ``isCompleted()`` - ``true``, when whole suite successfuly executed and
+* ``isCompleted()`` - ``true``, when whole suite successfully executed and
   ``false``, when suite is not executed (``@BeforeSuite`` or
   ``@AfterSuite`` after ``SIGINT``).
 
 Feature Hooks
 -------------
 
-Feature hooks gets triggered before or after each feature runned. So, same as
+Feature hooks gets triggered before or after each feature runs. So, same as
 with `Suite Hooks`_, ``FeatureContext`` instance is not created. Feature hooks
 should be defined as ``static public`` methods too:
 
@@ -191,7 +191,7 @@ As with `Suite Hooks`_, there's exactly two hook types for you:
 * ``@BeforeFeature`` - gets executed before every feature in suite.
 * ``@AfterFeature`` - gets executed after every feature in suite.
 
-Both hooks recieve ``Behat\Behat\Event\FeatureEvent`` as their argument. This
+Both hooks receive ``Behat\Behat\Event\FeatureEvent`` as their argument. This
 object has useful methods for you:
 
 * ``getFeature()`` - returns ``Behat\Gherkin\Node\FeatureNode`` instance, which
@@ -204,7 +204,7 @@ object has useful methods for you:
 Scenario Hooks
 --------------
 
-Scenario hooks gets triggered before or after each scenario runned. Those
+Scenario hooks gets triggered before or after each scenario runs. Those
 hooks gets executed inside initialized ``FeatureContext`` instance. So, they
 are just plain ``FeatureContext`` instance methods:
 
@@ -231,7 +231,7 @@ outline. Yes, each scenario outline example row works almost the same as
 usual scenario, except, that it sends different event - ``Behat\Behat\Event\OutlineExampleEvent``.
 Same story is applied for ``@AfterScenario``.
 
-So, ``@BeforeScenario`` or ``@AfterScenario`` hook will recieve either
+So, ``@BeforeScenario`` or ``@AfterScenario`` hook will receive either
 ``Behat\Behat\Event\ScenarioEvent`` or ``Behat\Behat\Event\OutlineExampleEvent``
 instance, depending on the situation. It's your job to differentiate them if
 needed.
@@ -273,7 +273,7 @@ needed.
 Step Hooks
 ----------
 
-Step hooks gets triggered before or after each step runned. Those hooks gets
+Step hooks gets triggered before or after each step runs. Those hooks gets
 executed inside initialized ``FeatureContext`` instance. So, they are just
 plain ``FeatureContext`` instance methods:
 
@@ -295,7 +295,7 @@ There's two hook types for you to use:
 * ``@BeforeStep`` - gets executed before every step in each scenario.
 * ``@AfterStep`` - gets executed after every step in each scenario.
 
-Both hooks recieve ``Behat\Behat\Event\StepEvent`` as their argument. This
+Both hooks receive ``Behat\Behat\Event\StepEvent`` as their argument. This
 object has useful methods for you:
 
 * ``getStep()`` - returns ``Behat\Gherkin\Node\StepNode`` instance, which is an
@@ -314,7 +314,7 @@ object has useful methods for you:
 * ``getDefinition()`` - returns ``Behat\Behat\Definition\DefinitionInterface``
   implementation, which represents matched to this step definition.
 
-* ``hasException()`` - returns ``true`` if step throwed exception during it's
+* ``hasException()`` - returns ``true`` if step threw exception during its
   execution.
 
 * ``getException()`` - returns exception instance, that were thrown in step (
