@@ -18,7 +18,7 @@ User is always talking with web application through browser application.
 So, in order to test web application, we should transform user actions into
 steps and expectations - with Behat it's quite simple already. And next part
 is much harder - do this actions and test expectations. How to programmatically
-do think like this:
+do things like this:
 
 .. code-block:: gherkin
 
@@ -44,12 +44,12 @@ Now the real problem. We have 2 completely different type of solutions:
   the box.
 
 The problem is we need both these emulator type in order to do successful
-functional testing. Because both this tools is quite limited at some parts, but
-succeed on others. For example, you can't use in-browser emulators for all
+functional testing. Because both these tools are quite limited at some parts,
+but succeed on others. For example, you can't use in-browser emulators for all
 tests in your application, cuz this makes your tests become very slow. Also, you
 can't do AJAX with headless browser.
 
-You should use them both. But there comes a problem - this is very different
+You should use them both. But there comes a problem - these are very different
 tools and they have much different API. Use both those API limits us very much
 and in case of Behat, this problem become even worse, cuz now you have single:
 
@@ -67,9 +67,9 @@ Just some of the benefits:
 
 1. Single, consistent API.
 2. Almost zero-configuration.
-3. Support for both in-browser and headless browser emulators.
+3. Support for both, in-browser and headless browser emulators.
 
-Installink Mink
+Installing Mink
 ---------------
 
 Mink is a php 5.3 library that you'll use inside your test and feature suites.
@@ -254,8 +254,8 @@ through Sahi:
       And I wait for the suggestion box to appear
       Then I should see "Behavior Driven Development"
 
-Now, we need to tell Behat and Mink to run this scenario in different session (
-with different browser emulator). Mink comes with special :doc:`hook </guides/3.hooks>`,
+Now, we need to tell Behat and Mink to run this scenario in different session
+(with different browser emulator). Mink comes with special :doc:`hook </guides/3.hooks>`,
 that searches ``@javascript`` or ``@mink:sahi`` tag before scenario and switches
 current Mink session to Sahi (in both cases). So, let's simply add this tag to
 our scenario:
