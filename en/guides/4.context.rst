@@ -74,7 +74,7 @@ with special ``--init`` option inside your project directory:
 
     $ behat --init
 
-After you'll run this command, Behat will sets up a testing directory inside
+After you run this command, Behat will set up a testing directory inside
 your project:
 
 .. image:: /images/--init.png
@@ -105,12 +105,12 @@ which will look like this:
 Contexts Lifetime
 -----------------
 
-Your context class gets initialized before each scenario run and every scenario
-has it's very own context instance. This means 2 things:
+Your context class gets initialized before each scenario runs and every scenario
+has its very own context instance. This means 2 things:
 
 1. Every scenario has isolated from each others context. You can do almost
    anything inside your scenario context instance without the fear to affect
-   other scenarios - every scenario will get it's own context instance.
+   other scenarios - every scenario will get its own context instance.
 
 2. Every step in a single scenario gets executed inside common context
    instance. This means, that you can set ``private`` instance variables inside
@@ -198,7 +198,7 @@ Creating Very Own Context Class
 -------------------------------
 
 The easiest way to start with Behat is to just extend base ``Behat\Behat\Context\BehatContext``
-class. But what if you do not want to inherit from any classed in your code?
+class. But what if you do not want to inherit from any class in your code?
 Then you should create your own context class, that Behat will be able to use.
 
 As we've pointed before, in order to be able to use your custom class as
