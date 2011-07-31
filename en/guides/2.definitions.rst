@@ -30,7 +30,7 @@ project's directory:
 
     $ behat --init
 
-After you'll run this command, Behat will sets up a ``features`` directory
+After you run this command, Behat will set up a ``features`` directory
 inside your project:
 
 .. image:: /images/--init.png
@@ -62,7 +62,7 @@ Creating Your First Step Definition
 -----------------------------------
 
 The main goal for step definitions is to be executed when matching step is
-runned in Behat. But method existence itself is not enough for Behat to be able
+run in Behat. But method existence itself is not enough for Behat to be able
 to find one specific method among the entire set of defined actions in
 ``FeatureContext`` class. Behat needs a way to check that concrete class method
 is suitable for concrete step in some scenario. Behat does this using regular
@@ -309,7 +309,7 @@ Let's pretend, that your ``FeatureContext`` looks like this:
         }
     }
 
-When you run your feature, you'll get 1 pending step, that are marked yellow:
+When you run your feature, you'll get 1 pending step, that is marked yellow:
 
 .. image:: /images/definitions-pending.png
    :align: center
@@ -334,7 +334,7 @@ Failed Steps
 ~~~~~~~~~~~~
 
 When a definition method throws an ``Exception`` (not ``Pending`` one) during
-it's execution, the step is marked as **failed**. What you return from a
+its execution, the step is marked as **failed**. What you return from a
 definition has no significance what so ever. Returning ``null`` or ``false``
 will not cause a step definition to fail. If Behat finds failed steps during
 suite execution - it will exit with ``1`` code.
@@ -361,7 +361,7 @@ Let's pretend, that your ``FeatureContext`` has following code:
         }
     }
 
-When you run your feature, you'll get 1 pending step, that are marked yellow:
+When you run your feature, you'll get 1 failing step, that is marked red:
 
 .. image:: /images/definitions-failed.png
    :align: center
@@ -379,10 +379,10 @@ When you run your feature, you'll get 1 pending step, that are marked yellow:
 
 .. tip::
 
-    Behat doesn't comes with it's own assertion tool, but you can use any proper
+    Behat doesn't come with its own assertion tool, but you can use any proper
     assertion tool out there. Proper assertion tool is a library, which
     assertions throw exceptions on fail. For example, if you're familiar with
-    PHPUnit, you can use it's assertions in Behat:
+    PHPUnit, you can use its assertions in Behat:
 
     .. code-block:: php
 
@@ -430,7 +430,7 @@ executed (even if there is a matching definition), and are marked **skipped**:
 Ambiguous Steps
 ~~~~~~~~~~~~~~~
 
-When Behat find two or more definitions, that match single step, this step gets
+When Behat finds two or more definitions, that match single step, this step gets
 marked as **ambiguos**.
 
 Consider, that your ``FeatureContext`` has following code:
@@ -466,7 +466,7 @@ eliminate such problems.
 Redundant Step Definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In Behat you're not allowed to use a regexp more than once in a definitions, so
+In Behat you're not allowed to use a regexp more than once in definitions, so
 the following context class:
 
 .. code-block:: php
@@ -613,10 +613,10 @@ this:
         /**
          * @Given /^the following users$/
          */
-        public function pushUsers(TableNode $users)
+        public function pushUsers(TableNode $usersTable)
         {
             $users = array();
-            foreach ($users->getHash() as $user) {
+            foreach ($usersTable->getHash() as $user) {
                 $user = new User();
                 $user->setUsername($user['name']);
                 $user->setFollowersCount($user['followers']);
@@ -644,10 +644,10 @@ comma-delimited list of the column headers prefixed with ``table:``:
         /**
          * @Transform /^table:name,followers$/
          */
-        public function castUsersTable(TableNode $users)
+        public function castUsersTable(TableNode $usersTable)
         {
             $users = array();
-            foreach ($customers->getHash() as $user) {
+            foreach ($usersTable->getHash() as $user) {
                 $user = new User();
                 $user->setUsername($user['name']);
                 $user->setFollowersCount($user['followers']);
@@ -720,7 +720,7 @@ object (substep) from definition method:
     }
 
 Notice, that in case when we provide non-regex to ``Then the url should match "..."``
-step it's definition returns new ``Behat\Behat\Context\Step\Then`` instance.
+step its definition returns new ``Behat\Behat\Context\Step\Then`` instance.
 When Behat finds that some definition returns such object - it finds and
 executes step definition for step text, provided as those object's argument.
 
@@ -754,6 +754,6 @@ Also, you can return steps with multiline arguments:
 
 .. note::
 
-    Step, executed in chain will throw exception for any result type excluding
+    Steps, executed in chain will throw exception for any result type excluding
     **successful**. This means, that you'll never get snippets out of steps,
     called **only** through execution chain!

@@ -5,10 +5,10 @@ The officially best way to add :doc:`step definitions </guides/2.definitions>`
 and :doc:`hooks </guides/3.hooks>` is to write them as class or instance
 methods of :doc:`context class </guides/3.hooks>`. But Behat has other way too.
 
-Some people hate verbosity of php OOP. With Behat this problem even more
-serious, because now they need to also write a text annotations for every
+Some people hate verbosity of php OOP. With Behat this problem is even more
+serious, because now they need to also write a text annotation for every
 method with all this ``static``, ``public``, annotations and "*useless*"
-method names. If you one of those people, we have an option for you:
+method names. If you are one of those people, we have an option for you:
 
 .. code-block:: php
 
@@ -22,7 +22,7 @@ method names. If you one of those people, we have an option for you:
 
     $steps->When('/^the "([^"]*)" will be ready$/',
         function($world) {
-            throw new Behat\Behat\Exception\PendingException;
+            throw new Behat\Behat\Exception\PendingException();
         }
     );
 
@@ -30,7 +30,7 @@ Closured Context
 ----------------
 
 In order to use closures as definitions or hooks in your suite, you'll need
-to extend your ``FeatureContext`` little bit. To be able to load your closure
+to extend your ``FeatureContext`` a little bit. To be able to load your closure
 files, Behat will need a way to actually find them first.
 
 Behat comes with special interface, called ``Behat\Behat\Context\ClosuredContextInterface``.
@@ -123,7 +123,7 @@ step is almost exactly the same as:
 First argument to definition generator is a regex and the second one is a
 closure, that would be called on match.
 
-First argument to closure is **always** instance of ``FeatureContext``. This
+First argument to closure is **always** instance of ``FeatureContext``. This is
 done for you to be able to share context information between scenario steps.
 Classes in php have ``$this``, but closures don't (until php 5.4):
 
