@@ -616,10 +616,10 @@ this:
         public function pushUsers(TableNode $usersTable)
         {
             $users = array();
-            foreach ($usersTable->getHash() as $user) {
+            foreach ($usersTable->getHash() as $userHash) {
                 $user = new User();
-                $user->setUsername($user['name']);
-                $user->setFollowersCount($user['followers']);
+                $user->setUsername($userHash['name']);
+                $user->setFollowersCount($userHash['followers']);
                 $users[] = $user;
             }
 
@@ -647,10 +647,10 @@ comma-delimited list of the column headers prefixed with ``table:``:
         public function castUsersTable(TableNode $usersTable)
         {
             $users = array();
-            foreach ($usersTable->getHash() as $user) {
+            foreach ($usersTable->getHash() as $userHash) {
                 $user = new User();
-                $user->setUsername($user['name']);
-                $user->setFollowersCount($user['followers']);
+                $user->setUsername($userHash['name']);
+                $user->setFollowersCount($userHash['followers']);
                 $users[] = $user;
             }
 
