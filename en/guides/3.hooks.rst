@@ -159,6 +159,9 @@ There are two suite hook types, available for you in Behat:
 Both hooks receive ``Behat\Behat\Event\SuiteEvent`` as their argument. This
 object has some useful methods for you to consider:
 
+* ``getContextParameters()`` - returns array of parameters for your context
+  instance.
+
 * ``getLogger()`` - returns ``Behat\Behat\DataCollector\LoggerDataCollector``
   instance, which holds all suite run statistics.
 
@@ -193,6 +196,9 @@ As with `Suite Hooks`_, there's exactly two hook types for you:
 
 Both hooks receive ``Behat\Behat\Event\FeatureEvent`` as their argument. This
 object has useful methods for you:
+
+* ``getContextParameters()`` - returns array of parameters for your context
+  instance.
 
 * ``getFeature()`` - returns ``Behat\Gherkin\Node\FeatureNode`` instance, which
   is an abstract syntax tree, representing whole feature.

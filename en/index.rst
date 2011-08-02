@@ -78,6 +78,18 @@ Learn specific solutions for specific needs:
     cookbook/behat_and_mink
     cookbook/migrate_from_1x_to_20
 
+Frameworks Integration
+----------------------
+
+Behat can be used with any framework out there without the need in
+additional configuration, but to make your life even more fun, it
+provides plugins for some major frameworks out there:
+
+.. toctree::
+    :maxdepth: 1
+
+    bundle/index
+
 Behat API
 ---------
 

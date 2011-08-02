@@ -757,3 +757,21 @@ Also, you can return steps with multiline arguments:
     Steps, executed in chain will throw exception for any result type excluding
     **successful**. This means, that you'll never get snippets out of steps,
     called **only** through execution chain!
+
+As of 2.0.4, if you wan to pass more than one step to execution chain, just
+return array of substep instances:
+
+.. code-block:: php
+
+    /**
+     * @Given /I entered "([^"]*)" and expect "([^"]*)"/
+     */
+    public function complexStep($number, $result)
+    {
+        return array(
+            new Step\Given("I have entered \"$number\""),
+            new Step\When("I press +"),
+            new Step\Then("I should see \"$result\" on the screen")
+        );
+    } 
+

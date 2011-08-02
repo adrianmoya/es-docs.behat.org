@@ -140,13 +140,17 @@ contexts are called *subcontexts*.
     {
         public function __construct(array $parameters)
         {
-            $this->useContext(new SubContext);
+            $this->useContext('subcontext_alias', new SubContext);
         }
     }
 
 ``Behat\Behat\Context\BehatContext`` provides special ``useContext()`` instance
 method, with which you can connect one or more subcontext instances to your
 main ``FeatureContext`` class.
+
+First argument to ``useContext()`` method is always subcontext alias (``subcontext_alias``).
+Thanks to it, You'll be able to access any subcontext from another subcontexts
+later.
 
 ``SubContext`` is the same context class, that should follow same
 `Context Class Requirements`_ as main context, except class naming rule, cuz
@@ -193,6 +197,27 @@ If you need to pass something into your subcontext - it's your job actually:
 
     Behat's subcontexts is a way to achieve horizontal reusability in php
     before we officailly get *traits* in php 5.4.
+
+Communications Between Contexts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes you might need to call specific context method or attribute from
+within another context. In such case, base as of 2.0.4, ``BehatContext``
+provides two very useful methods:
+
+1. ``getMainContext()`` - returns main context instance in which all other
+   contexts are used.
+
+2. ``getSubcontext($alias)`` - returns context's subcontext by it's alias name,
+   that you specify during ``useContext()`` call.
+
+Keeping this in mind, you can always call any context method with simple:
+
+.. code-block:: php
+
+    $this->getMainContext()->getSubcontexts('subcontext_alias')->some_method();
+
+call.
 
 Creating Very Own Context Class
 -------------------------------

@@ -124,6 +124,7 @@ screen:
 * ``--no-paths`` - hides paths after steps and scenarios.
 * ``--no-snippets`` - hides snippet proposals for undefined steps after
   statistics.
+* ``--snippets-paths`` - prints steps information with snippets.
 * ``--no-multiline`` - hides multiline arguments (tables and pystrings) from
   ``pretty`` output.
 
