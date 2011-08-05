@@ -76,6 +76,7 @@ Learn specific solutions for specific needs:
     :maxdepth: 1
 
     cookbook/behat_and_mink
+    cookbook/using_the_profiler_with_minkbundle
     cookbook/migrate_from_1x_to_20
 
 Frameworks Integration
