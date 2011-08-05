@@ -311,7 +311,7 @@ Voila!
     restarting the browser after each scenario could slow your feature suite
     very much. So, by default Mink tries hard to reset your browser session
     without reloading it (cleans all domain cookies).
-    
+
     In some cases it might be not enough (when you use ``http-only`` cookies for
     example). In that case, just add ``@insulated`` tag to your scenario.
     Browser in this case will be fully reloaded and cleaned (before scenario):
@@ -324,3 +324,7 @@ Voila!
           Scenario: isolated scenario
             ...
 
+Going further
+-------------
+
+* :doc: using_the_profiler_with_minkbundle
