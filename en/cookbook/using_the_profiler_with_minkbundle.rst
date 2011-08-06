@@ -9,7 +9,10 @@ Your goal here will be to implement a step like this:
 
 .. code-block:: gherkin
 
-     Then I should get an email on "stof@example.org" containing "To finish validating your account - please visit"
+     Then I should get an email on "stof@example.org" containing:
+        """
+        To finish validating your account - please visit
+        """
 
 .. note:
 
@@ -30,13 +33,15 @@ and that the profiler is enabled:
 
     <?php
 
-    namespace Knp\AcademyBundle\Features\Context;
+    namespace Acme\DemoBundle\Features\Context;
 
-    use Behat\BehatBundle\Context\MinkContext;
+    use Behat\Gherkin\Node\PyStringNode;
     use Behat\Behat\Exception\PendingException;
+    use Behat\BehatBundle\Context\MinkContext;
+
+    use Behat\Mink\Exception\UnsupportedDriverActionException,
+        Behat\Mink\Exception\ExpectationException;
     use Behat\MinkBundle\Driver\SymfonyDriver;
-    use Behat\Mink\Exception\UnsupportedDriverActionException;
-    use Behat\Mink\Exception\ExpectationException;
 
     /**
      * Feature context.
@@ -44,13 +49,16 @@ and that the profiler is enabled:
     class FeatureContext extends MinkContext
     {
         /**
-         * @Given /^(?:|I )should get an email on "(?P<email>[^"]+)" containing "(?P<text>(?:[^"]|\\")*)"$/
+         * @Given /^(?:|I )should get an email on "(?P<email>[^"]+)" containing:$/
          */
-        public function iShouldGetAnEmail($email, $text)
+        public function iShouldGetAnEmail($email, PyStringNode $text)
         {
             $driver = $this->getSession()->getDriver();
             if (!$driver instanceof SymfonyDriver) {
-                throw new UnsupportedDriverActionException('You need to tag the scenario with "@mink:symfony". Using the profiler is not supported', $driver);
+                throw new UnsupportedDriverActionException(
+                    'You need to tag the scenario with "@mink:symfony". '.
+                    'Using the profiler is not supported by %s', $driver
+                );
             }
 
             $profile = $driver->getClient()->getProfile();
@@ -66,49 +74,54 @@ It is now time to use the profiler to implement the logic of the step:
 
 .. code-block:: php
 
-    <?php
-
-    namespace Knp\AcademyBundle\Features\Context;
-
-    use Behat\BehatBundle\Context\MinkContext;
-    use Behat\Behat\Exception\PendingException;
-    use Behat\MinkBundle\Driver\SymfonyDriver;
-    use Behat\Mink\Exception\UnsupportedDriverActionException;
-    use Behat\Mink\Exception\ExpectationException;
-
     /**
-     * Feature context.
+     * @Given /^(?:|I )should get an email on "(?P<email>[^"]+)" containing:$/
      */
-    class FeatureContext extends MinkContext
+    public function iShouldGetAnEmail($email, PyStringNode $text)
     {
-        /**
-         * @Given /^(?:|I )should get an email on "(?P<email>[^"]+)" containing "(?P<text>(?:[^"]|\\")*)"$/
-         */
-        public function iShouldGetAnEmail($email, $text)
-        {
-            // the previous checks
-            $expected = str_replace('\\"', '"', $text);
-            $error = sprintf('No message sent to "%s"', $email);
+        $driver = $this->getSession()->getDriver();
+        if (!$driver instanceof SymfonyDriver) {
+            throw new UnsupportedDriverActionException(
+                'You need to tag the scenario with "@mink:symfony". '.
+                'Using the profiler is not supported by %s', $driver
+            );
+        }
 
-            // Retrieving the swiftmailer collector to access the sent messages.
-            foreach ($profile->getCollector('swiftmailer')->getMessages() as $message) {
-                /* @var $message \Swift_Message */
-                if (!array_key_exists($email, $message->getTo()) &&
-                    !($message->getHeaders()->has('X-Swift-To') && array_key_exists($email, $message->getHeaders()->get('X-Swift-To')->getFieldBodyModel()))
-                ) {
-                    // Checking the recipient email and the X-Swift-To header to handle the the RedirectingPlugin
-                    // If the recipient is not the expected one, check the next mail
-                    continue;
-                }
+        $profile = $driver->getClient()->getProfile();
+        if (false === $profile) {
+            throw new \RuntimeException(
+                'Emails cannot be tested as the profiler is disabled.'
+            );
+        }
 
-                try {
-                    // checking the content
-                    return assertContains($expected, $message->getBody());
-                } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
-                    $error = sprintf('An email has been found for "%s" but without the text "%s".', $email, $expected);
-                }
+        $error = sprintf('No message sent to "%s"', $email);
+
+        // Retrieving the swiftmailer collector to access the sent messages.
+        $swiftmailerProfile = $profile->getCollector('swiftmailer');
+        foreach ($swiftmailerProfile->getMessages() as $message) {
+            $headers = $message->getHeaders();
+
+            if (!array_key_exists($email, $message->getTo()) &&
+                !($headers->has('X-Swift-To') &&
+                  array_key_exists($email, $headers->get('X-Swift-To')->getFieldBodyModel()))
+            ) {
+                // Checking the recipient email and the X-Swift-To header
+                // to handle the the RedirectingPlugin
+                // If the recipient is not the expected one, check the
+                // next mail
+                continue;
             }
 
-            throw new ExpectationException($error, $this->getSession());
+            try {
+                // checking the content
+                return assertContains($text->getRaw(), $message->getBody());
+            } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+                $error = sprintf(
+                    'An email has been found for "%s" but without '.
+                    'the text "%s".', $email, $text->getRaw()
+                );
+            }
         }
+
+        throw new ExpectationException($error, $this->getSession());
     }
