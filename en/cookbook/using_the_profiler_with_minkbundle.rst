@@ -14,7 +14,14 @@ Your goal here will be to implement a step like this:
         To finish validating your account - please visit
         """
 
-.. note:
+Bootstraping the Email Step
+---------------------------
+
+First, retrieve the driver and check that it is the good one (useful when
+you let someone else write the features with this step to avoid misuses)
+and that the profiler is enabled:
+
+.. note::
 
     You can only access the profiler when using the SymfonyDriver which gives
     you access to the kernel handling the request. You will need to tag your
@@ -24,10 +31,6 @@ Your goal here will be to implement a step like this:
 
         @mink:symfony
         Scenario: I should receive an email
-
-First, retrieve the driver and check that it is the good one (useful when
-you let someone else write the features with this step to avoid misuses)
-and that the profiler is enabled:
 
 .. code-block:: php
 
@@ -56,19 +59,26 @@ and that the profiler is enabled:
             $driver = $this->getSession()->getDriver();
             if (!$driver instanceof SymfonyDriver) {
                 throw new UnsupportedDriverActionException(
-                    'You need to tag the scenario with "@mink:symfony". '.
-                    'Using the profiler is not supported by %s', $driver
+                    'You need to tag the scenario with '.
+                    '"@mink:symfony". Using the profiler is not '.
+                    'supported by %s', $driver
                 );
             }
 
             $profile = $driver->getClient()->getProfile();
             if (false === $profile) {
-                throw new \RuntimeException('Emails cannot be tested as the profiler is disabled.');
+                throw new \RuntimeException(
+                    'Emails cannot be tested as the profiler is '.
+                    'disabled.'
+                );
             }
 
             throw new PendingException();
         }
     }
+
+Implementing Email Step Logic
+-----------------------------
 
 It is now time to use the profiler to implement the logic of the step:
 
@@ -79,42 +89,39 @@ It is now time to use the profiler to implement the logic of the step:
      */
     public function iShouldGetAnEmail($email, PyStringNode $text)
     {
-        $driver = $this->getSession()->getDriver();
-        if (!$driver instanceof SymfonyDriver) {
-            throw new UnsupportedDriverActionException(
-                'You need to tag the scenario with "@mink:symfony". '.
-                'Using the profiler is not supported by %s', $driver
-            );
-        }
-
-        $profile = $driver->getClient()->getProfile();
-        if (false === $profile) {
-            throw new \RuntimeException(
-                'Emails cannot be tested as the profiler is disabled.'
-            );
-        }
+        // Place previous DRIVER and PROFILER checks here
 
         $error = sprintf('No message sent to "%s"', $email);
 
-        // Retrieving the swiftmailer collector to access the sent messages.
+        // Retrieving the swiftmailer collector to access the
+        // sent messages.
         $swiftmailerProfile = $profile->getCollector('swiftmailer');
         foreach ($swiftmailerProfile->getMessages() as $message) {
             $headers = $message->getHeaders();
 
-            if (!array_key_exists($email, $message->getTo()) &&
-                !($headers->has('X-Swift-To') &&
-                  array_key_exists($email, $headers->get('X-Swift-To')->getFieldBodyModel()))
-            ) {
-                // Checking the recipient email and the X-Swift-To header
-                // to handle the the RedirectingPlugin
-                // If the recipient is not the expected one, check the
-                // next mail
+            // Checking the recipient email and the X-Swift-To
+            // header to handle the the RedirectingPlugin.
+            // If the recipient is not the expected one, check
+            // the next mail.
+            $correctTo = array_key_exists(
+                $email, $message->getTo()
+            );
+            $correctToHeader = $headers->has('X-Swift-To') &&
+                array_key_exists(
+                    $email,
+                    $headers->get('X-Swift-To')->
+                        getFieldBodyModel()
+                );
+
+            if (!$correctTo && !$correctToHeader) {
                 continue;
             }
 
             try {
                 // checking the content
-                return assertContains($text->getRaw(), $message->getBody());
+                return assertContains(
+                    $text->getRaw(), $message->getBody()
+                );
             } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
                 $error = sprintf(
                     'An email has been found for "%s" but without '.
