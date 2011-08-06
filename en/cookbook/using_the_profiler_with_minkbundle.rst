@@ -9,7 +9,7 @@ Your goal here will be to implement a step like this:
 
 .. code-block:: gherkin
 
-     Then I should get an email on "stof@example.org" containing:
+     Then I should get an email on "stof@example.org" with:
         """
         To finish validating your account - please visit
         """
@@ -35,12 +35,14 @@ the features with this step to avoid misuses) and that the profiler is enabled:
         Behat\Mink\Exception\ExpectationException;
     use Behat\MinkBundle\Driver\SymfonyDriver;
 
+    use PHPUnit_Framework_ExpectationFailedException as AssertException;
+
     /**
      * Feature context.
      */
     class FeatureContext extends MinkContext
     {
-        public function getSymfonyProfiler()
+        public function getSymfonyProfile()
         {
             $driver = $this->getSession()->getDriver();
             if (!$driver instanceof SymfonyDriver) {
@@ -82,34 +84,31 @@ It is now time to use the profiler to implement our email checking step:
 .. code-block:: php
 
     /**
-     * @Given /^(?:|I )should get an email on "(?P<email>[^"]+)" containing:$/
+     * @Given /^I should get an email on "(?P<email>[^"]+)" with:$/
      */
     public function iShouldGetAnEmail($email, PyStringNode $text)
     {
-        $profiler = $this->getSymfonyProfiler();
-        $error    = sprintf('No message sent to "%s"', $email);
+        $error     = sprintf('No message sent to "%s"', $email);
+        $profile   = $this->getSymfonyProfile();
+        $collector = $profile->getCollector('swiftmailer');
 
-        // Retrieving the swiftmailer collector to access the
-        // sent messages.
-        $swiftmailerProfile = $profile->getCollector('swiftmailer');
-        foreach ($swiftmailerProfile->getMessages() as $message) {
-            $headers = $message->getHeaders();
-
+        foreach ($collector->getMessages() as $message) {
             // Checking the recipient email and the X-Swift-To
             // header to handle the the RedirectingPlugin.
             // If the recipient is not the expected one, check
             // the next mail.
-            $correctTo = array_key_exists(
+            $correctRecipient = array_key_exists(
                 $email, $message->getTo()
             );
-            $correctToHeader = $headers->has('X-Swift-To') &&
-                array_key_exists(
-                    $email,
-                    $headers->get('X-Swift-To')->
-                        getFieldBodyModel()
+            $headers = $message->getHeaders();
+            $correctXToHeader = false;
+            if ($headers->has('X-Swift-To')) {
+                $correctXToHeader = array_key_exists($email,
+                    $headers->get('X-Swift-To')->getFieldBodyModel()
                 );
+            }
 
-            if (!$correctTo && !$correctToHeader) {
+            if (!$correctRecipient && !$correctXToHeader) {
                 continue;
             }
 
@@ -118,7 +117,7 @@ It is now time to use the profiler to implement our email checking step:
                 return assertContains(
                     $text->getRaw(), $message->getBody()
                 );
-            } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+            } catch (AssertException $e) {
                 $error = sprintf(
                     'An email has been found for "%s" but without '.
                     'the text "%s".', $email, $text->getRaw()
