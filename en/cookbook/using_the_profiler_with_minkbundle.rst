@@ -17,20 +17,9 @@ Your goal here will be to implement a step like this:
 Bootstraping the Email Step
 ---------------------------
 
-First, retrieve the driver and check that it is the good one (useful when
-you let someone else write the features with this step to avoid misuses)
-and that the profiler is enabled:
-
-.. note::
-
-    You can only access the profiler when using the SymfonyDriver which gives
-    you access to the kernel handling the request. You will need to tag your
-    scenario so that the `symfony` session is used.
-
-    .. code-block:: gherkin
-
-        @mink:symfony
-        Scenario: I should receive an email
+First, let's implement profiler retieving function which will check that the
+current driver is the profilable one (useful when you let someone else write
+the features with this step to avoid misuses) and that the profiler is enabled:
 
 .. code-block:: php
 
@@ -51,10 +40,7 @@ and that the profiler is enabled:
      */
     class FeatureContext extends MinkContext
     {
-        /**
-         * @Given /^(?:|I )should get an email on "(?P<email>[^"]+)" containing:$/
-         */
-        public function iShouldGetAnEmail($email, PyStringNode $text)
+        public function getSymfonyProfiler()
         {
             $driver = $this->getSession()->getDriver();
             if (!$driver instanceof SymfonyDriver) {
@@ -73,14 +59,25 @@ and that the profiler is enabled:
                 );
             }
 
-            throw new PendingException();
+            return $profile;
         }
     }
+
+.. note::
+
+    You can only access the profiler when using the SymfonyDriver which gives
+    you access to the kernel handling the request. You will need to tag your
+    scenario so that the `symfony` session is used.
+
+    .. code-block:: gherkin
+
+        @mink:symfony
+        Scenario: I should receive an email
 
 Implementing Email Step Logic
 -----------------------------
 
-It is now time to use the profiler to implement the logic of the step:
+It is now time to use the profiler to implement our email checking step:
 
 .. code-block:: php
 
@@ -89,9 +86,8 @@ It is now time to use the profiler to implement the logic of the step:
      */
     public function iShouldGetAnEmail($email, PyStringNode $text)
     {
-        // Place previous DRIVER and PROFILER checks here
-
-        $error = sprintf('No message sent to "%s"', $email);
+        $profiler = $this->getSymfonyProfiler();
+        $error    = sprintf('No message sent to "%s"', $email);
 
         // Retrieving the swiftmailer collector to access the
         // sent messages.
