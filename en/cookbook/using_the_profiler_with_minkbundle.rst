@@ -17,7 +17,7 @@ Your goal here will be to implement a step like this:
 Bootstraping the Email Step
 ---------------------------
 
-First, let's implement profiler retieving function which will check that the
+First, let's implement a profiler retrieving function which will check that the
 current driver is the profilable one (useful when you let someone else write
 the features with this step to avoid misuses) and that the profiler is enabled:
 
