@@ -204,7 +204,7 @@ When Behat finds a matching definition it will execute it. If the definition
 method doesn’t throw an ``Exception``, the step is marked as successful (green).
 What you return from a definition method has no significance what so ever.
 
-Let's pretend, that our context class have this code:
+Let's pretend, that our context class contains the code below:
 
 .. code-block:: php
 
