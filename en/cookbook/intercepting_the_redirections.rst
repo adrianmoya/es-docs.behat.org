@@ -9,24 +9,22 @@ This is possible for drivers based on the Symfony BrowserKit component.
 Adding the Needed Steps
 -----------------------
 
-To intercept the redirections, you will need three new steps: one to enable
-the interception (allowing you to intercept only the useful request instead
-of the whole scenario), one to disable it, and one to follow the redirection
-manually when you are ready.
+To intercept the redirections, you will need Two new steps: one to enable
+the interception (allowing you to intercept the redirection for a step), and
+another one to follow the redirection manually when you are ready and disable
+the interception.
 
 A scenario using them will look like this:
 
 .. code-block:: gherkin
 
-    Given the redirections are intercepted
-    When I submit the form
+    When I submit the form without redirection
     # At this place, the redirection is not followed automatically
     # This allows using the profiler for this request
     Then I should receive an email
     # The redirection can then be followed manually
-    When I follow the redirection
-    # Reset to the normal behavior
-    Given the redirections are not intercepted
+     And I should be redirected
+    # The driver uses the normal behavior again after this
 
 Bootstrapping the Interception Steps:
 -------------------------------------
@@ -42,6 +40,7 @@ the features with this step to avoid misuses):
     namespace Acme\DemoBundle\Features\Context;
 
     use Behat\BehatBundle\Context\MinkContext;
+    use Behat\Behat\Context\Step;
     use Behat\Mink\Exception\UnsupportedDriverActionException;
     use Behat\Mink\Driver\GoutteDriver;
 
@@ -66,8 +65,8 @@ the features with this step to avoid misuses):
 
 .. note::
 
-    You can only access the profiler when using the GoutteDriver or the
-    SymfonyDriver which are based on the Symfony BrowserKit component.
+    You can only intercept the redirections when using the GoutteDriver or
+    the SymfonyDriver which are based on the Symfony BrowserKit component.
     You will need to tag your scenario so that the `goutte` or the `symfony`
     session is used.
 
@@ -84,28 +83,24 @@ It is now time to use the client to configure the interception:
 .. code-block:: php
 
     /**
-     * @Given /^the redirections are intercepted$/
+     * @Given /^(.*) without redirection$/
      */
-    public function theRedirectionsAreIntercepted()
+    public function theRedirectionsAreIntercepted($step)
     {
-        $this->canIntercept()
+        $this->canIntercept();
         $this->getSession()->getDriver()->getClient()->followRedirects(false);
-    }
 
-    /**
-     * @Given /^the redirections are not intercepted$/
-     */
-    public function theRedirectionsAreNotIntercepted()
-    {
-        $this->canIntercept()
-        $this->getSession()->getDriver()->getClient()->followRedirects(true);
+        return new Step\Given($step);
     }
 
     /**
      * @When /^I follow the redirection$/
+     * @Then /^I should be redirected$/
      */
     public function iFollowTheRedirection()
     {
-        $this->canIntercept()
-        $this->getSession()->getDriver()->getClient()->followRedirect();
+        $this->canIntercept();
+        $client = $this->getSession()->getDriver()->getClient();
+        $client->followRedirects(true);
+        $client->followRedirect();
     }
