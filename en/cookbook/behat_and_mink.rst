@@ -328,3 +328,4 @@ Going further
 -------------
 
 * :doc: using_the_profiler_with_minkbundle
+* :doc: intercepting_the_redirections

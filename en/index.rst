@@ -77,6 +77,7 @@ Learn specific solutions for specific needs:
 
     cookbook/behat_and_mink
     cookbook/using_the_profiler_with_minkbundle
+    cookbook/intercepting_the_redirections
     cookbook/migrate_from_1x_to_20
 
 Frameworks Integration
