@@ -3,7 +3,7 @@ Intercepting the redirection with Behat and Mink
 
 Intercepting a redirection to execute some steps before following it can
 be useful in some cases, for instance when you are redirecting after sending
-an email and want to test it :ref:`using the profiler <using_the_profiler_with_minkbundle>`.
+an email and want to test it :doc:`using the profiler </cookbook/using_the_profiler_with_minkbundle>`.
 This is possible for drivers based on the Symfony BrowserKit component.
 
 Adding the Needed Steps
