@@ -327,5 +327,7 @@ Voila!
 Going further
 -------------
 
-* :doc: /cookbook/using_the_profiler_with_minkbundle
-* :doc: /cookbook/intercepting_the_redirections
+Read more cookbook articles on Behat and Mink interactions:
+
+* :doc:`/cookbook/using_the_profiler_with_minkbundle`
+* :doc:`/cookbook/intercepting_the_redirections`
