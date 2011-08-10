@@ -9,7 +9,7 @@ This is possible for drivers based on the Symfony BrowserKit component.
 Adding the Needed Steps
 -----------------------
 
-To intercept the redirections, you will need Two new steps: one to enable
+To intercept the redirections, you will need two new steps: one to enable
 the interception (allowing you to intercept the redirection for a step), and
 another one to follow the redirection manually when you are ready and disable
 the interception.

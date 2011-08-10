@@ -14,8 +14,8 @@ Your goal here will be to implement a step like this:
         To finish validating your account - please visit
         """
 
-Bootstraping the Email Step
----------------------------
+Bootstrapping the Email Step
+----------------------------
 
 First, let's implement a profiler retrieving function which will check that the
 current driver is the profilable one (useful when you let someone else write
@@ -94,7 +94,7 @@ It is now time to use the profiler to implement our email checking step:
 
         foreach ($collector->getMessages() as $message) {
             // Checking the recipient email and the X-Swift-To
-            // header to handle the the RedirectingPlugin.
+            // header to handle the RedirectingPlugin.
             // If the recipient is not the expected one, check
             // the next mail.
             $correctRecipient = array_key_exists(
