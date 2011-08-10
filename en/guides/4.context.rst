@@ -149,7 +149,7 @@ method, with which you can connect one or more subcontext instances to your
 main ``FeatureContext`` class.
 
 First argument to ``useContext()`` method is always subcontext alias (``subcontext_alias``).
-Thanks to it, You'll be able to access any subcontext from another subcontexts
+Thanks to it, you'll be able to access any subcontext from another subcontext
 later.
 
 ``SubContext`` is the same context class, that should follow same
@@ -208,7 +208,7 @@ provides two very useful methods:
 1. ``getMainContext()`` - returns main context instance in which all other
    contexts are used.
 
-2. ``getSubcontext($alias)`` - returns context's subcontext by it's alias name,
+2. ``getSubcontext($alias)`` - returns context's subcontext by its alias name,
    that you specify during ``useContext()`` call.
 
 Keeping this in mind, you can always call any context method with simple:
