@@ -280,9 +280,9 @@ And of course, you'll get:
 .. image:: /images/mink-wikipedia-2.5-scenarios.png
    :align: center
 
-It's because you indeed doesn't have ``Then I wait for the suggestion box to appear``
-step. But don't worry, Behat already provided the regex and function snippets
-for use and Mink makes new steps writing a breathe:
+That's because you haven't defined the ``Then I wait for the suggestion box to appear``
+step yet. But don't worry, Behat already suggested the regex and function snippets
+that you can use and Mink makes writing new steps easy:
 
 .. code-block:: php
 
