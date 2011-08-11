@@ -70,8 +70,12 @@ you might expect, you have another option:
 
     class FeatureContext extends BehatContext
     {
-        public function closureFunc()
+        public $parameters = array();
+
+        public function __construct(array $parameters)
         {
+            $this->parameters = $parameters;
+
             if (file_exists($env = __DIR__.'/../support/env.php')) {
                 $world = $this;
                 require_once($env);
@@ -155,10 +159,10 @@ The only thing, you need to do is to implement this interface with your ``Featur
 
 There's only two methods in this interface:
 
-* `getStepDefinitionResources()` should return array of ``*.php`` paths, that
+* ``getStepDefinitionResources()`` should return array of ``*.php`` paths, that
   will be used as step definition resources.
 
-* `getHookDefinitionResources()` should return array of ``*.php`` paths, that
+* ``getHookDefinitionResources()`` should return array of ``*.php`` paths, that
   will be used as hook definition resources.
 
 For example, put next code in your ``FeatureContext``:
@@ -192,7 +196,7 @@ from out the ``features/steps/basic_steps.php`` file and
 
 That's quite simple. But what if you have more than one definition file?
 Adding all this file into array by hands can become tedious. But you always can
-use path readers or libraries like ``Symfony Finder``:
+use ``glob()``:
 
 .. code-block:: php
 
@@ -200,7 +204,6 @@ use path readers or libraries like ``Symfony Finder``:
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\BehatContext;
-    use Symfony\Component\Finder\Finder;
 
     /**
      * Features context.
@@ -209,9 +212,7 @@ use path readers or libraries like ``Symfony Finder``:
     {
         public function getStepDefinitionResources()
         {
-            $finder = new Finder();
-
-            return $finder->files()->name('*.php')->in(__DIR__ . '/../steps');
+            return glob(__DIR__.'/../steps/*.php');
         }
 
         public function getHookDefinitionResources()
@@ -238,7 +239,6 @@ look like this:
         Behat\Behat\Exception\PendingException;
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
-    use Symfony\Component\Finder\Finder;
 
     if (file_exists(__DIR__ . '/../support/bootstrap.php')) {
         require_once __DIR__ . '/../support/bootstrap.php';
@@ -259,8 +259,7 @@ look like this:
 
         public function getStepDefinitionResources() {
             if (file_exists(__DIR__ . '/../steps')) {
-                $finder = new Finder();
-                return $finder->files()->name('*.php')->in(__DIR__ . '/../steps');
+                return glob(__DIR__.'/../steps/*.php');
             }
             return array();
         }
