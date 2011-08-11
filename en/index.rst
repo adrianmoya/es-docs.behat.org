@@ -109,4 +109,4 @@ to Cucumber, Behat shares a lot with Cucumber and the philosophies are one
 and the same.
 
 * `Dan North's "What's in a Story?" <http://dannorth.net/whats-in-a-story/>`_
-* `Cucumber's "Backgrounder" <https://github.com/aslakhellesoy/cucumber/wiki/Cucumber-Backgrounder>`_
+* `Cucumber's "Backgrounder" <https://github.com/cucumber/cucumber/wiki/Cucumber-Backgrounder>`_
