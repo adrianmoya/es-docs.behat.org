@@ -215,7 +215,7 @@ Keeping this in mind, you can always call any context method with simple:
 
 .. code-block:: php
 
-    $this->getMainContext()->getSubcontexts('subcontext_alias')->some_method();
+    $this->getMainContext()->getSubcontext('subcontext_alias')->some_method();
 
 call.
 
