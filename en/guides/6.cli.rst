@@ -195,6 +195,7 @@ can do it with name or tags filters:
 .. code-block:: bash
 
     $ behat --tags '@orm,@database'
+    $ behat --tags 'ticket,723'
     $ behat --tags '@orm&&@fixtures'
     $ behat --name 'number has'
 
