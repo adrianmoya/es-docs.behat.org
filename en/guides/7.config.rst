@@ -166,7 +166,8 @@ formatters. Our ``behat.yml`` will might look like that:
     ci:
         formatter:
             name:        'junit'
-            output_path: '/var/temp/junit'
+            parameters:
+                output_path: '/var/temp/junit'
 
 This file defines 2 additional profiles (additional to default). Every profile
 will use ``Your\Custom\Context`` as environment object, but ``wip`` profile
