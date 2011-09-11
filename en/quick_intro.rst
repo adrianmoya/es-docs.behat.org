@@ -56,6 +56,7 @@ The simplest way to install Behat is through PEAR:
 
 .. code-block:: bash
 
+    $ pear channel-discover pear.symfony.com
     $ pear channel-discover pear.behat.org
     $ pear install behat/behat
 
