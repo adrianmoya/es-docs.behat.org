@@ -4,7 +4,7 @@ Behavior Driven Development in Symfony2 with Behat, Mink and Zombie.js
 Description
 -----------
 
-This guide will show how to setup a new web application project with:
+This guide will show how to set up a new web application project with:
 
 * ``git``, a distributed version control system.
 * ``Symfony2`` framework
@@ -41,7 +41,7 @@ We create a folder where the project will live in and initialize a new git repos
 Installing ``Symfony2``
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-We are going to use the standard edition of Symfony2. Those steps download and extract the files into the current directory.
+We are going to use the standard edition of Symfony2. The following steps will download and extract the files into the current directory.
 
 .. code-block:: bash
 
@@ -221,7 +221,7 @@ Let's start implementing the step definitions into the feature context. Accordin
     Given I have a category "Underwear"
 
 The category name will be a parameter, so we make up a regular expression out of this definition. That could be ``/I have a category "([^"]*)"/``.
-Behat will pass the matches in there respective order to the method defining the step. Adding this to our feature context results into this empty method so far.
+Behat will pass the matches in their respective order to the method defining the step. Adding this to our feature context results into this empty method so far.
 
 .. code-block:: php
 
@@ -236,7 +236,7 @@ Behat will pass the matches in there respective order to the method defining the
 The ``@Given`` (``@When`` and ``@Then``) annotations are recognized by Behat, for more information on this topic, review the `more about steps`_ section of the quick intro.
 An ``And`` will be considered an extra ``Given``, ``When`` or ``Then`` when used after one, respectively.
 
-Now we have a small problem. We didn't setup any entities by now. So, we could do this now, but in `Test Driven Development`_, we won't.
+Now we have a small problem. We didn't set up any entities by now. So, we could do this now, but in `Test Driven Development`_, we won't.
 ``Doctrine2`` is available, but we have nothing set up. However, we can use it right away - we will implement everything we need, after we have got our tests.
 
 The step will only save a category with a given name.
@@ -375,19 +375,6 @@ After adding these, we will have this feature context:
      */
     class FeatureContext extends BehatContext
     {
-        /**
-         * @Given /There is no "([^"]*)" in database/
-         */
-        public function thereIsNoRecordInDatabase($entityName)
-        {
-            $entities = $this->getEntityManager()->getRepository($entityName)->findAll();
-            foreach ($entities as $eachEntity) {
-                $this->getEntityManager()->remove($eachEntity);
-            }
-    
-            $this->getEntityManager()->flush();
-        }
-    
         /**
          * @Given /I have a category "([^"]*)"/
          */
@@ -708,7 +695,7 @@ What do we have by now?
 
 So this a lot for one commit. Let's see, what we got in a commit's perspective.
 
-* Behat, the BehatBundle and it's configuration and vendors
+* Behat, the BehatBundle and its configuration and vendors
 
   ``git add app/AppKernel.php deps app/autoload.php vendor/behat/ vendor/bundles/Behat/ && git commit``
 
@@ -749,7 +736,7 @@ After running the ``./bin/vendors install`` command line, we register the new na
         'Behat\Behat'   => __DIR__.'/../vendor/behat/behat/src',
         'Behat\BehatBundle' => __DIR__.'/../vendor/bundles',
 
-        'Behat\Mink'       => __DIR__.'/../vendor/behat/mink/src'
+        'Behat\Mink'       => __DIR__.'/../vendor/behat/mink/src',
         'Behat\MinkBundle' => __DIR__.'/../vendor/bundles',
     ));
 
@@ -839,7 +826,7 @@ The feature definition may look like this one in ``src/Acme/DemoBundle/Features/
           And I should not see "Calvin Klein Black, 5"
 
 As you can see, ``Behat`` does not care, whether we are using ``@When`` step definitions in a ``@Given`` context. 
-However, *be careful when doing this*, there might be steps that will behave differently depending on what there are meant to be!
+However, *be careful when doing this*, there might be steps that will behave differently depending on what they are meant to be!
 
 Running these scenarios will fail, so let's make a list of things, we need to do.
 
@@ -896,7 +883,7 @@ Our scenario defines a container with the id ``category-list`` containing the ca
 
     {% extends "AcmeDemoBundle::layout.html.twig" %}
     
-    {% block title "Catalog - Category Lis" %}
+    {% block title "Catalog - Category List" %}
     
     {% block content_header '' %}
     
@@ -1020,7 +1007,7 @@ The controller will gain a new method.
             }
     
             return array(
-                'products' => $category->getProducts()
+                'products' => $category->getProducts(),
             );
         }
     }
@@ -1041,7 +1028,7 @@ Everything a stakeholder gave us in its feature definitions is fulfilled and wor
 
 So let's take those changes into our repository and commit them.
 
-* Mink, the MinkBundle and it's configuration
+* Mink, the MinkBundle and its configuration
 
   ``git add app/AppKernel.php app/autoload.php deps src/Acme/DemoBundle/Features/Context/ app/config/config_test.yml vendor/ && git commit``
 
@@ -1111,7 +1098,7 @@ Well, now that we actually visit this web page, we also need that index file at 
     $kernel->loadClassCache();
     $kernel->handle(Request::createFromGlobals())->send();
 
-Now, we have setup Zombie.js to be used by Mink. 
+Now, we have set up Zombie.js to be used by Mink. 
 
 .. note::
 
