@@ -1,5 +1,5 @@
-Behavior Driven Development in Symfony2 with Behat, Mink and Zombie.js
-======================================================================
+BDD in Symfony2 with Behat, Mink and Zombie.js
+==============================================
 
 Description
 -----------
