@@ -41,7 +41,7 @@ We create a folder where the project will live in and initialize a new git repos
 Installing ``Symfony2``
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-We are going to use the standard edition of Symfony2. Those steps download and extract the files into the current directory.
+We are going to use the standard edition of Symfony2. The following steps will download and extract the files into the current directory.
 
 .. code-block:: bash
 
@@ -221,7 +221,7 @@ Let's start implementing the step definitions into the feature context. Accordin
     Given I have a category "Underwear"
 
 The category name will be a parameter, so we make up a regular expression out of this definition. That could be ``/I have a category "([^"]*)"/``.
-Behat will pass the matches in there respective order to the method defining the step. Adding this to our feature context results into this empty method so far.
+Behat will pass the matches in their respective order to the method defining the step. Adding this to our feature context results into this empty method so far.
 
 .. code-block:: php
 
@@ -708,7 +708,7 @@ What do we have by now?
 
 So this a lot for one commit. Let's see, what we got in a commit's perspective.
 
-* Behat, the BehatBundle and it's configuration and vendors
+* Behat, the BehatBundle and its configuration and vendors
 
   ``git add app/AppKernel.php deps app/autoload.php vendor/behat/ vendor/bundles/Behat/ && git commit``
 
@@ -839,7 +839,7 @@ The feature definition may look like this one in ``src/Acme/DemoBundle/Features/
           And I should not see "Calvin Klein Black, 5"
 
 As you can see, ``Behat`` does not care, whether we are using ``@When`` step definitions in a ``@Given`` context. 
-However, *be careful when doing this*, there might be steps that will behave differently depending on what there are meant to be!
+However, *be careful when doing this*, there might be steps that will behave differently depending on what they are meant to be!
 
 Running these scenarios will fail, so let's make a list of things, we need to do.
 
@@ -1041,7 +1041,7 @@ Everything a stakeholder gave us in its feature definitions is fulfilled and wor
 
 So let's take those changes into our repository and commit them.
 
-* Mink, the MinkBundle and it's configuration
+* Mink, the MinkBundle and its configuration
 
   ``git add app/AppKernel.php app/autoload.php deps src/Acme/DemoBundle/Features/Context/ app/config/config_test.yml vendor/ && git commit``
 
