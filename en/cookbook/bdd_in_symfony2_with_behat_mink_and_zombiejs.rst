@@ -376,19 +376,6 @@ After adding these, we will have this feature context:
     class FeatureContext extends BehatContext
     {
         /**
-         * @Given /There is no "([^"]*)" in database/
-         */
-        public function thereIsNoRecordInDatabase($entityName)
-        {
-            $entities = $this->getEntityManager()->getRepository($entityName)->findAll();
-            foreach ($entities as $eachEntity) {
-                $this->getEntityManager()->remove($eachEntity);
-            }
-    
-            $this->getEntityManager()->flush();
-        }
-    
-        /**
          * @Given /I have a category "([^"]*)"/
          */
         public function iHaveACategory($name)
@@ -749,7 +736,7 @@ After running the ``./bin/vendors install`` command line, we register the new na
         'Behat\Behat'   => __DIR__.'/../vendor/behat/behat/src',
         'Behat\BehatBundle' => __DIR__.'/../vendor/bundles',
 
-        'Behat\Mink'       => __DIR__.'/../vendor/behat/mink/src'
+        'Behat\Mink'       => __DIR__.'/../vendor/behat/mink/src',
         'Behat\MinkBundle' => __DIR__.'/../vendor/bundles',
     ));
 
@@ -896,7 +883,7 @@ Our scenario defines a container with the id ``category-list`` containing the ca
 
     {% extends "AcmeDemoBundle::layout.html.twig" %}
     
-    {% block title "Catalog - Category Lis" %}
+    {% block title "Catalog - Category List" %}
     
     {% block content_header '' %}
     
@@ -1020,7 +1007,7 @@ The controller will gain a new method.
             }
     
             return array(
-                'products' => $category->getProducts()
+                'products' => $category->getProducts(),
             );
         }
     }
