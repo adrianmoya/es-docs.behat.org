@@ -476,7 +476,7 @@ Creating the schema
 +++++++++++++++++++
 
 First, we need to define our data model. As by our scenarios, we have a ``Product`` and a ``Category``, both sharing a Many-To-Many relationship.
-``Doctrine`` is able to read YAML schema files. We need two of them: one for each model, respectively. They will be saved in the bundles directory under "Resources/config/doctrine/".
+``Doctrine`` is able to read YAML schema files. We need two of them: one for each model, respectively. They will be saved in the bundles directory under ``Resources/config/doctrine/``.
 Their names are ``Product.orm.yml`` and ``Category.orm.yml``.
 
 The category is described by this schema.
@@ -653,7 +653,7 @@ Then we need to add this new step to our feature context:
         $this->getEntityManager()->flush();
     }
 
-As you can see here, the name of the method implementing the step definition is not required to be in relation with the step itself. However naming them meaning full, makes life easier!
+As you can see here, the name of the method implementing the step definition is not required to be in relation with the step itself. However naming them meaningful, makes life easier!
 
 Running the tests again, will now result into our expected success.
 
