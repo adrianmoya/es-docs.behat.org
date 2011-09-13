@@ -4,7 +4,7 @@ Behavior Driven Development in Symfony2 with Behat, Mink and Zombie.js
 Description
 -----------
 
-This guide will show how to setup a new web application project with:
+This guide will show how to set up a new web application project with:
 
 * ``git``, a distributed version control system.
 * ``Symfony2`` framework
@@ -236,7 +236,7 @@ Behat will pass the matches in their respective order to the method defining the
 The ``@Given`` (``@When`` and ``@Then``) annotations are recognized by Behat, for more information on this topic, review the `more about steps`_ section of the quick intro.
 An ``And`` will be considered an extra ``Given``, ``When`` or ``Then`` when used after one, respectively.
 
-Now we have a small problem. We didn't setup any entities by now. So, we could do this now, but in `Test Driven Development`_, we won't.
+Now we have a small problem. We didn't set up any entities by now. So, we could do this now, but in `Test Driven Development`_, we won't.
 ``Doctrine2`` is available, but we have nothing set up. However, we can use it right away - we will implement everything we need, after we have got our tests.
 
 The step will only save a category with a given name.
@@ -1098,7 +1098,7 @@ Well, now that we actually visit this web page, we also need that index file at 
     $kernel->loadClassCache();
     $kernel->handle(Request::createFromGlobals())->send();
 
-Now, we have setup Zombie.js to be used by Mink. 
+Now, we have set up Zombie.js to be used by Mink. 
 
 .. note::
 
