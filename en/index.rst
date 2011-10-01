@@ -6,7 +6,7 @@ What's *behavior driven development* you ask? It's the idea that you start
 by writing human-readable sentences that describes a feature of your application
 and how it should work.
 
-For example, imagine you're about the create the famous UNIX ``ls`` command.
+For example, imagine you're about to create the famous UNIX ``ls`` command.
 Before you begin, you describe how the feature should work:
 
 .. code-block:: gherkin
