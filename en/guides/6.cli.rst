@@ -199,11 +199,14 @@ can do it with name or tags filters:
     $ behat --tags '@orm&&@fixtures'
     $ behat --name 'number has'
 
-First command will run only features or scenarios which has either ``@orm`` or
-``@database`` tag.
+First command will run only features or scenarios which have either the 
+``@orm`` or the ``@database`` tag.
 
-Second command will run only features or scenarios with both ``@orm`` and
-``@fixtures`` tags.
+Second command will run only features or scenarios which have either the 
+``@ticket`` or the ``@723`` tag
 
-Third command will run only features and scenarios, that contain ``number has``
+Third command will run only features or scenarios with both the ``@orm`` 
+and the ``@fixtures`` tags.
+
+Fourth command will run only features and scenarios that contain ``number has``
 in their title.
