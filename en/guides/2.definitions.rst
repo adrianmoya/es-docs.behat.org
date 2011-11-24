@@ -401,7 +401,7 @@ When you run your feature, you'll get 1 failing step, that is marked red:
              */
             public function iShouldGet(PyStringNode $string)
             {
-                assertEquals($string->toRaw(), $this->output);
+                assertEquals($string->getRaw(), $this->output);
             }
         }
 

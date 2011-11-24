@@ -513,7 +513,7 @@ A few pointers:
              */
             public function iShouldGet(PyStringNode $string)
             {
-                assertEquals($string->toRaw(), $this->output);
+                assertEquals($string->getRaw(), $this->output);
             }
         }
 
