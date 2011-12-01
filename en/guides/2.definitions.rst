@@ -41,7 +41,8 @@ an initial context class to get you started:
 
 .. code-block:: php
 
-    <?php # features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\TranslatedContextInterface,
@@ -220,7 +221,8 @@ Let's pretend our context class contains the code below:
 
 .. code-block:: php
 
-    <?php # features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\BehatContext;
 
@@ -262,7 +264,8 @@ Let's pretend we have an empty context class:
 
 .. code-block:: php
 
-    <?php # features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\BehatContext;
 
@@ -402,7 +405,8 @@ When you run your feature, you'll get 1 failing step that is marked red:
 
     .. code-block:: php
 
-        <?php # features/bootstrap/FeatureContext.php
+        # features/bootstrap/FeatureContext.php
+        <?php
 
         use Behat\Behat\Context\BehatContext;
         use Behat\Gherkin\Node\PyStringNode;

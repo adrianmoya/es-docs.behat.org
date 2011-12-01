@@ -129,7 +129,8 @@ chapter):
 
 .. code-block:: php
 
-    <?php # features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\BehatContext,

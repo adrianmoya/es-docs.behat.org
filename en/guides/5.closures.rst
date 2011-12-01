@@ -60,7 +60,8 @@ For example, put next code in your ``FeatureContext``:
 
 .. code-block:: php
 
-    <?php # features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\BehatContext;
@@ -147,7 +148,8 @@ Classes in php have ``$this``, but closures don't (until php 5.4):
 
     .. code-block:: php
 
-        <?php # features/bootstrap/FeatureContext.php
+        # features/bootstrap/FeatureContext.php
+        <?php
 
         class FeatureContext
         {
@@ -164,7 +166,8 @@ Classes in php have ``$this``, but closures don't (until php 5.4):
 
     .. code-block:: php
 
-        <?php # features/bootstrap/SubContext.php
+        # features/bootstrap/SubContext.php
+        <?php
 
         class SubContext
         {

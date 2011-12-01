@@ -2,18 +2,19 @@ Testing Features - ``FeatureContext`` Class
 ===========================================
 
 We've already used this strange ``FeatureContext`` class as a home for our
-:doc:`step definitions </guides/2.definitions>` and :doc:`hooks </guides/3.hooks>`.
-But what is it actually?
+:doc:`step definitions </guides/2.definitions>` and :doc:`hooks </guides/3.hooks>`,
+but we haven't done much to explain what it actually is.
 
-Context class is a simple POPO (Plain Old PHP Object), that is used by behat
+The Context class is a simple POPO (Plain Old PHP Object) used by Behat
 to represent testing part of your features suite. If ``*.feature`` files are
-all about describing *how* your application behave, then context class is all
-about how to test, that it actually behaves as expected. That's it.
-Programmatic representation of your features:
+all about describing *how* your application behaves, then the Context class is
+all about how to test your application and that it actually behaves as
+expected. That's it!
 
 .. code-block:: php
 
-    <?php #features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\BehatContext;
 
@@ -85,7 +86,8 @@ which will look like this:
 
 .. code-block:: php
 
-    <?php # features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\TranslatedContextInterface,
@@ -132,7 +134,8 @@ contexts are called *subcontexts*.
 
 .. code-block:: php
 
-    <?php #features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\BehatContext;
 
@@ -159,7 +162,8 @@ passing into ``useContext()`` method:
 
 .. code-block:: php
 
-    <?php #features/bootstrap/SubContext.php
+    #features/bootstrap/SubContext.php
+    <?php
 
     use Behat\Behat\Context\BehatContext;
 
@@ -179,7 +183,8 @@ If you need to pass something into your subcontext - it's your job actually:
 
 .. code-block:: php
 
-    <?php #features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\BehatContext;
 
@@ -253,7 +258,8 @@ So, your custom very own ``FeatureContext`` class could look like this:
 
 .. code-block:: php
 
-    <?php #features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\ContextInterface;
 
