@@ -7,8 +7,8 @@ but we haven't done much to explain what it actually is.
 
 The Context class is a simple POPO (Plain Old PHP Object) used by Behat
 to represent testing part of your features suite. If ``*.feature`` files are
-all about describing *how* your application behaves, then the Context class is
-all about how to test your application and that it actually behaves as
+all about describing *how* your application behaves, then the context class is
+all about how to test your application, and that it actually behaves as
 expected. That's it!
 
 .. code-block:: php
@@ -51,38 +51,36 @@ Context Class Requirements
 In order to be used by Behat, your context class should follow 3 simple rules:
 
 1. Context class should implement ``Behat\Behat\Context\ContextInterface`` or
-   extend base ``Behat\Behat\Context\BehatContext`` class (as in example
-   above).
+   extend base class ``Behat\Behat\Context\BehatContext`` (as in the previous
+   example).
 
 2. Context class should be called ``FeatureContext``. It's a simple convention
-   inside Behat infrastructure.
+   inside the Behat infrastructure.
 
-3. Context class should be findable and loadable by Behat. It means, that you
+3. Context class should be findable and loadable by Behat. That means you
    should somehow tell Behat about your class file. The easiest way to do this
-   is to put your class file inside ``features/bootstrap/`` folder. All
-   ``*.php`` files in this folder will be autoloaded by Behat before any
-   feature gets runned.
+   is to put your class file inside the ``features/bootstrap/`` directory. All
+   ``*.php`` files in this directory are autoloaded by Behat before any
+   feature is run.
 
 .. note::
 
-    By convention, context class should be called ``FeatureContext``, but this
-    could be easily changed through :doc:`cli</guides/6.cli>` configuration.
+    By convention, the context class should be called ``FeatureContext``, but
+    this could be easily changed through the :doc:`cli</guides/6.cli>`
+    configuration.
 
-The simpliest way to start using Behat in your project is to call ``behat``
-with special ``--init`` option inside your project directory:
+The easiest way to start using Behat in your project is to call ``behat``
+with the ``--init`` option inside your project directory:
 
 .. code-block:: bash
 
     $ behat --init
 
-After you run this command, Behat will set up a testing directory inside
-your project:
+Behat will create a few directories and a skeleton ``FeatureContext``
+class inside your project:
 
 .. image:: /images/--init.png
    :align: center
-
-And ``features/bootstrap/FeatureContext.php`` will have inital context class
-which will look like this:
 
 .. code-block:: php
 
@@ -107,15 +105,15 @@ which will look like this:
 Contexts Lifetime
 -----------------
 
-Your context class gets initialized before each scenario runs and every scenario
+Your context class is initialized before each scenario runs, and every scenario
 has its very own context instance. This means 2 things:
 
-1. Every scenario has isolated from each others context. You can do almost
-   anything inside your scenario context instance without the fear to affect
-   other scenarios - every scenario will get its own context instance.
+1. Every scenario is isolated from each other scenario's context. You can do
+   almost anything inside your scenario context instance without the fear of
+   affecting other scenarios - every scenario gets its own context instance.
 
-2. Every step in a single scenario gets executed inside common context
-   instance. This means, that you can set ``private`` instance variables inside
+2. Every step in a single scenario is executed inside a common context
+   instance. This means you can set ``private`` instance variables inside
    your ``@Given`` steps and you'll be able to read their new values inside
    your ``@When`` and ``@Then`` steps.
 
@@ -124,13 +122,13 @@ Using Subcontexts
 
 At some point, it could become very hard to maintain all your
 :doc:`step definitions </guides/2.definitions>` and :doc:`hooks </guides/3.hooks>`
-inside one single class. You can actually use class inheritance and split
-definitions into multiple classes, but it could become not logical and very
-hard to use inheritance for contexts as php doesn't support multiple
-inheritance. Behat provides more flexible way to gain reusability.
+inside a single class. You could use class inheritance and split
+definitions into multiple classes, but doing so could cause your code to become
+more difficult to follow and use.
 
-Behat provides a way to use one or more contexts inside your main context. Such
-contexts are called *subcontexts*.
+In light of these issues, Behat provides a more flexible way to help make
+your code more reusable: using one or more contexts inside your main context.
+A context used from within another context is called a *subcontext*:
 
 .. code-block:: php
 
@@ -143,22 +141,27 @@ contexts are called *subcontexts*.
     {
         public function __construct(array $parameters)
         {
-            $this->useContext('subcontext_alias', new SubContext);
+            $this->useContext('subcontext_alias', new SubContext());
         }
     }
 
-``Behat\Behat\Context\BehatContext`` provides special ``useContext()`` instance
-method, with which you can connect one or more subcontext instances to your
+.. note::
+
+    PHP does not yet support horizontal reusability in its core feature set.
+    While this functionality, called *traits*, is on the roadmap for PHP 5.4,
+    Behat provides subcontexts as a stop-gap solution to achieve horizontal
+    reusability until this functionality is available in a stable PHP release.
+
+``Behat\Behat\Context\BehatContext`` provides a special ``useContext()`` instance
+method allowing you to connect one or more subcontext instances to your
 main ``FeatureContext`` class.
 
-First argument to ``useContext()`` method is always subcontext alias (``subcontext_alias``).
-Thanks to it, you'll be able to access any subcontext from another subcontext
-later.
+The first argument to the ``useContext()`` method is always a subcontext
+alias (``subcontext_alias``), allowing you to later access any subcontext
+from another subcontext.
 
-``SubContext`` is the same context class, that should follow same
-`Context Class Requirements`_ as main context, except class naming rule, cuz
-it doesn't really matter how you call it - you instantiate it with hands before
-passing into ``useContext()`` method:
+``SubContext`` instances should follow the same `Context Class Requirements`_
+as your main ``FeatureContext``:
 
 .. code-block:: php
 
@@ -176,10 +179,11 @@ passing into ``useContext()`` method:
     }
 
 All :doc:`step definitions </guides/2.definitions>` and
-:doc:`hooks </guides/3.hooks>` defined in subcontexts will be successfully
-parsed by Behat and made available to use in your features right away.
+:doc:`hooks </guides/3.hooks>` defined in a subcontext are
+parsed by Behat and available right away to use in your features.
 
-If you need to pass something into your subcontext - it's your job actually:
+If you need to inject parameters or make other changes to your subcontext
+object, do so before passing it into ``useContext()``:
 
 .. code-block:: php
 
@@ -198,41 +202,35 @@ If you need to pass something into your subcontext - it's your job actually:
         }
     }
 
-.. note::
-
-    Behat's subcontexts is a way to achieve horizontal reusability in php
-    before we officailly get *traits* in php 5.4.
-
 Communications Between Contexts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sometimes you might need to call specific context method or attribute from
-within another context. In such case, base as of 2.0.4, ``BehatContext``
-provides two very useful methods:
+Sometimes you might need to call a specific context method or attribute from
+within another context. ``BehatContext`` has two methods to accomplish this:
 
-1. ``getMainContext()`` - returns main context instance in which all other
+1. ``getMainContext()`` - returns the main context instance in which all other
    contexts are used.
 
-2. ``getSubcontext($alias)`` - returns context's subcontext by its alias name,
-   that you specify during ``useContext()`` call.
+2. ``getSubcontext($alias)`` - returns a subcontext given its alias, which was
+   defined when it was passed to ``useContext()``.
 
-Keeping this in mind, you can always call any context method with simple:
+Keeping this in mind, you can always call any context method using the
+following statement:
 
 .. code-block:: php
 
     $this->getMainContext()->getSubcontext('subcontext_alias')->some_method();
 
-call.
 
-Creating Very Own Context Class
--------------------------------
+Creating Your Very Own Context Class
+------------------------------------
 
-The easiest way to start with Behat is to just extend base ``Behat\Behat\Context\BehatContext``
-class. But what if you do not want to inherit from any class in your code?
-Then you should create your own context class, that Behat will be able to use.
+The easiest way to start with Behat is to just extend the base class
+``Behat\Behat\Context\BehatContext``. But what if you don't want to inherit
+from another class? Then you should create your own context class.
 
-As we've pointed before, in order to be able to use your custom class as
-Behat context, it should define simple interface:
+To use your custom class as a Behat context, it must implement a simple
+interface:
 
 .. code-block:: php
 
@@ -246,15 +244,16 @@ Behat context, it should define simple interface:
         function getSubcontextByClassName($className);
     }
 
-This interface actually have only 2 methods:
+This interface actually only has 2 methods:
 
-* ``getSubcontexts()`` should return array of subcontext instances (if has any).
+* ``getSubcontexts()`` - should return an array of subcontext instances
+  (if it even has any).
 
-* ``getSubcontextByClassName()`` should find subcontext instance by provided
-  class name. It's used in order to be sure, that your subcontext definitions
-  will be always called inside proper context instance.
+* ``getSubcontextByClassName()`` - should return a subcontext instance given
+  its class name. This method is used to ensure your subcontext
+  definitions will always be called inside the proper context instance.
 
-So, your custom very own ``FeatureContext`` class could look like this:
+Your custom ``FeatureContext`` class could look like this:
 
 .. code-block:: php
 
