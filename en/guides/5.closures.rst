@@ -1,14 +1,16 @@
 Closures as Definitions and Hooks
 =================================
 
-The officially best way to add :doc:`step definitions </guides/2.definitions>`
+The official best way to add :doc:`step definitions </guides/2.definitions>`
 and :doc:`hooks </guides/3.hooks>` is to write them as class or instance
-methods of :doc:`context class </guides/3.hooks>`. But Behat has other way too.
+methods of a :doc:`context class </guides/3.hooks>`. But step definitions
+can be written in other ways too.
 
-Some people hate verbosity of php OOP. With Behat this problem is even more
-serious, because now they need to also write a text annotation for every
-method with all this ``static``, ``public``, annotations and "*useless*"
-method names. If you are one of those people, we have an option for you:
+Some people dislike the verbosity of object-oriented PHP, where developers
+need to worry about method visibility (``public``, ``private``) and whether
+to declare a method as an instance method or as ``static``. On top of that,
+we have used annotations to tell Behat how our methods should be used. If you
+would like a more concise way to declare your step definitions, you're in luck!
 
 .. code-block:: php
 
@@ -33,8 +35,9 @@ In order to use closures as definitions or hooks in your suite, you'll need
 to extend your ``FeatureContext`` a little bit. To be able to load your closure
 files, Behat will need a way to actually find them first.
 
-Behat comes with special interface, called ``Behat\Behat\Context\ClosuredContextInterface``.
-In order to use closures, your ``FeatureContext`` must implement it:
+To use closures, your ``FeatureContext`` must implement the interface
+``Behat\Behat\Context\ClosuredContextInterface``.
+:
 
 .. code-block:: php
 
@@ -48,15 +51,15 @@ In order to use closures, your ``FeatureContext`` must implement it:
         function getHookDefinitionResources();
     }
 
-There's only two methods in this interface:
+There are only two methods in this interface:
 
-* `getStepDefinitionResources()` should return array of ``*.php`` paths, that
-  will be used as step definition resources.
+* ``getStepDefinitionResources()`` - should return an array of file paths
+  pointing to ``*.php`` files to be used as **step definition** resources.
 
-* `getHookDefinitionResources()` should return array of ``*.php`` paths, that
-  will be used as hook definition resources.
+* ``getHookDefinitionResources()`` - should return an array of file paths
+  pointing to ``*.php`` files to be used as **hook definition** resources.
 
-For example, put next code in your ``FeatureContext``:
+The following example ``FeatureContext`` implements this interface:
 
 .. code-block:: php
 
@@ -82,17 +85,17 @@ For example, put next code in your ``FeatureContext``:
         }
     }
 
-Now, Behat will try to load all `step definitions`_ from out the
-``features/steps/basic_steps.php`` file and `hooks`_ from out the
+Given this example, Behat will try to load `step definitions`_ from
+``features/steps/basic_steps.php`` and `hooks`_ from
 ``features/support/hooks.php``.
 
 Step Definitions
 ----------------
 
-Every ``*.php`` path returned from ``getStepDefinitionResources()`` will be
-loaded with special provided ``$steps`` variable.
+Every ``*.php`` path returned by ``getStepDefinitionResources()`` will be
+loaded with the variable ``$steps`` already defined.
 
-You can use ``$steps`` variable to define :doc:`step definitions </guides/2.definitions>`:
+Use the provided ``$steps`` variable to define :doc:`step definitions </guides/2.definitions>`:
 
 .. code-block:: php
 
@@ -104,12 +107,13 @@ You can use ``$steps`` variable to define :doc:`step definitions </guides/2.defi
         }
     );
 
-In the example above, we call so-called *definition generator*. This generator
-maps provided closure to specific regex.
+In the previous example, we call a *definition generator*. This generator
+maps the provided closure to the given regular expression.
 
-Actual keyword (``Given``) does not matter for ``$steps`` and used only for
-make your definition files more readable. It means, that previously defined
-step is almost exactly the same as:
+Just like their annotation counterparts, Behat does not distinguish between
+keyword methods (``Given``, ``When``, ``Then``) available via ``$steps``, and
+uses them only to make your definition files more readable. In fact, the name
+of the method doesn't matter one bit!
 
 .. code-block:: php
 
@@ -121,12 +125,14 @@ step is almost exactly the same as:
         }
     );
 
-First argument to definition generator is a regex and the second one is a
-closure, that would be called on match.
+The first argument to the definition generator is a regular expression, and the
+the second argument is a closure that would be called when the regular expression
+matches your :doc:`Gherkin </guides/1.gherkin>` step.
 
-First argument to closure is **always** instance of ``FeatureContext``. This is
-done for you to be able to share context information between scenario steps.
-Classes in php have ``$this``, but closures don't (until php 5.4):
+The first argument to the provided closure should **always** be an instance of
+``FeatureContext``. This is done for you to be able to share context
+information between scenario steps. Classes in PHP have ``$this``, but closures
+have no concept of ``$this`` (at least until PHP 5.4):
 
 .. code-block:: php
 
@@ -142,9 +148,9 @@ Classes in php have ``$this``, but closures don't (until php 5.4):
 
 .. note::
 
-    ``$world`` is always an instance of **main** ``FeatureContext`` class. This
-    means, that you should provide missing methods and properties for your
-    :doc:`subcontexts </guides/4.context>` by yourself:
+    ``$world`` is always an instance of the **main** ``FeatureContext`` class.
+    This means you should provide missing methods and properties for your
+    :doc:`subcontexts </guides/4.context>`:
 
     .. code-block:: php
 
@@ -187,10 +193,10 @@ Classes in php have ``$this``, but closures don't (until php 5.4):
 Hooks
 -----
 
-Every ``*.php`` path returned from ``getHookDefinitionResources()`` will be
-loaded with special provided ``$hooks`` variable.
+Every ``*.php`` path returned by ``getHookDefinitionResources()`` will be
+loaded with the variable ``$hooks`` already defined.
 
-You can use ``$hooks`` variable to define :doc:`hooks </guides/3.hooks>`:
+Use the ``$hooks`` variable to define your :doc:`hooks </guides/3.hooks>`:
 
 .. code-block:: php
 
@@ -204,10 +210,11 @@ You can use ``$hooks`` variable to define :doc:`hooks </guides/3.hooks>`:
         // teardown feature
     });
 
-You have ability to call all hook types, described in ":doc:`/guides/3.hooks`"
-chapter. The only difference is that the method names are camel-cased.
+You have the ability to call all hook types described in the
+":doc:`/guides/3.hooks`" chapter. The only difference is that the method names
+are camel-cased (e.g. ``@BeforeFeature`` becomes ``beforeFeature()``).
 
-First argument to all hook generators, except ``beforeSuite`` and ``afterSuite``
-is tag filter.
+The first argument to all hook generators, except ``beforeSuite`` and
+``afterSuite``, is a tag filter.
 
-In other parts, closure hooks are the same as usual annotated hooks.
+In other parts, closure hooks are the same as normal annotated hooks.
