@@ -169,7 +169,8 @@ For example, put next code in your ``FeatureContext``:
 
 .. code-block:: php
 
-    <?php # features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\BehatContext;
@@ -200,7 +201,8 @@ use ``glob()``:
 
 .. code-block:: php
 
-    <?php # features/bootstrap/FeatureContext.php
+    # features/bootstrap/FeatureContext.php
+    <?php
 
     use Behat\Behat\Context\ClosuredContextInterface,
         Behat\Behat\Context\BehatContext;
