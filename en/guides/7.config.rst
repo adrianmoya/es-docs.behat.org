@@ -137,9 +137,9 @@ class or provide useful parameters for the context constructor from your
     # behat.yml
     default:
         context:
-            class:              'Your\Custom\Context'
+            class:          'Your\Custom\Context'
             parameters:
-                start_url:      'http://test.mink.loc'
+                base_url:   'http://test.mink.loc'
 
 * ``class`` defines which class you want to use as the environment. This class
   should be accessible by Behat and implement ``Behat\Behat\Context\ContextInterface``.
