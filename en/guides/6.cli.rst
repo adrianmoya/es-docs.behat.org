@@ -74,7 +74,7 @@ run with a specific formatter by providing the ``--format`` option:
 
     The default formatter is ``pretty``.
 
-``behat`` supports 4 formatters out of the box:
+``behat`` supports 6 formatters out of the box:
 
 * ``pretty`` - prints the feature as is:
 
@@ -90,6 +90,10 @@ run with a specific formatter by providing the ``--format`` option:
 
 * ``junit`` - generates a report similar to Ant+JUnit.
 
+* ``failed`` - prints paths to failed scenarios.
+
+* ``snippets`` - prints only snippets for undefined steps.
+
 If you don't want to print output to the console, you can tell ``behat``
 to print output to a file instead of ``STDOUT`` with the ``--out`` option:
 
@@ -102,6 +106,29 @@ to print output to a file instead of ``STDOUT`` with the ``--out`` option:
     Some formatters, like ``junit``, always require the ``--out`` option to be
     specified. The ``junit`` formatter generates ``*.xml`` files for every
     feature, so it needs a destination directory to put these XML files into.
+
+Also, you can specify multiple formats to be used by Behat with comma (``,``):
+
+.. code-block:: bash
+
+    $ behat -f pretty,progress
+
+In this case, default output will be used as output for both formatters. But if you want
+them to use different ones - specify them with ``--out``:
+
+.. code-block:: bash
+
+    $ behat -f pretty,progress,junit --out ~/pretty.out,,xml
+
+In this case, output of pretty formatter will be written to ``~/pretty.out`` file, output of junit
+formatter will be written to ``xml`` folder and progress formatter will just print to console.
+Empty out option (as in case with progress in example) tells Behat to use stdout. So:
+
+.. code-block:: bash
+
+    $ behat -f pretty,progress,junit --out ,progress.out,xml
+
+Will print pretty output instead, but will write progress output to ``progress.out`` file.
 
 Behat tries hard to identify if your terminal supports colors or not, but
 sometimes it still fails. In such cases, you can force ``behat`` to
@@ -182,12 +209,24 @@ all available definitions by calling it with the ``--definitions`` option:
 
 .. code-block:: bash
 
-    $ behat --definitions
+    $ behat -dl
 
 This command will print all available definition regular expressions:
 
 .. image:: /images/--definitions.png
    :align: center
+
+If you want to get extended info bout definitions, use:
+
+.. code-block:: bash
+
+    $ behat -di
+
+To search for a specific definition, use:
+
+.. code-block:: bash
+
+    $ behat -d 'search string'
 
 Gherkin Filters
 ---------------
