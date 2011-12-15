@@ -125,6 +125,44 @@ right for you:
   formatter defaults here. Also, this is the place to specify parameters for
   your custom formatters.
 
+Formatter Colors
+~~~~~~~~~~~~~~~~
+
+As of version 2.2, you can configure Behat formatters to use specific output
+styles (colors).
+
+.. code-block:: yaml
+
+    default:
+        formatter:
+            name:           pretty
+            parameters:
+            output_styles:
+                comment:    [black, white, [underscore]]
+
+this will force Behat to print comments (key of the style) with black foreground
+(first parameter), white background (second parameter) and as underscore (list of
+options - third parameter).
+
+Styles available for redefinition:
+
+* ``undefined`` - style of undefined step
+* ``pending`` - style of pending step
+* ``pending_param`` - style of param in pending step
+* ``failed`` - style of failed step
+* ``failed_param`` - style of param in failed step
+* ``passed`` - style of passed step
+* ``passed_param`` - style of param in passed step
+* ``skipped`` - style of skipped step
+* ``skipped_param`` - style of param in skipped step
+* ``comment`` - style of comment
+* ``tag`` - style of scenario/feature tag
+
+Available colors for first two arguments (``fg`` and ``bg``) are: ``black``, ``red``,
+``green``, ``yellow``, ``blue``, ``magenta``, ``cyan``, ``white``
+
+Available options are: ``bold``, ``underscore``, ``blink``, ``reverse``, ``conceal``
+
 Context
 ~~~~~~~
 
