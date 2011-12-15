@@ -135,10 +135,10 @@ styles (colors).
 
     default:
         formatter:
-            name:           pretty
+            name:            'pretty'
             parameters:
-            output_styles:
-                comment:    [black, white, [underscore]]
+                output_styles:
+                    comment: ['black', 'white', ['underscore']]
 
 this will force Behat to print comments (key of the style) with black foreground
 (first parameter), white background (second parameter) and as underscore (list of
