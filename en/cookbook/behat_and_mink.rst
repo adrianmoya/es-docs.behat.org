@@ -118,7 +118,7 @@ in order to work with Mink through Behat.
 Method #2 (PEAR)
 ~~~~~~~~~~~~~~~~
 
-You can also install Mink is through PEAR:
+You can also install Mink through PEAR:
 
 .. code-block:: bash
 

@@ -84,7 +84,7 @@ After that, you will be able to run Behat with:
 Method #2 (PEAR)
 ~~~~~~~~~~~~~~~~
 
-You can also install Behat is through PEAR:
+You can also install Behat through PEAR:
 
 .. code-block:: bash
 
