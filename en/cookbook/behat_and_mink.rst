@@ -82,7 +82,7 @@ The simplest way to install Behat with Mink is through Composer.
 
 Create ``composer.json`` file in the project root:
 
-.. code-block:: json
+.. code-block:: js
 
     {
         "require": {
