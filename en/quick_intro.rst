@@ -49,10 +49,42 @@ Behat is an executable that you'll run from the command line to execute your
 stories as tests. Before you begin, ensure that you have at least PHP 5.3.1
 installed.
 
-Method #1 (PEAR)
+Method #1 (Composer)
+~~~~~~~~~~~~~~~~~~~~
+
+The simplest way to install Behat is through Composer.
+
+Create ``composer.json`` file in the project root:
+
+.. code-block:: json
+
+    {
+        "require": {
+            "behat/behat": ">=2.2.2"
+        },
+
+        "config" {
+            "bin-dir": "bin/"
+        }
+    }
+
+Then download ``composer.phar`` and run ``install`` command:
+
+.. code-block:: bash
+
+    $ wget -nc http://getcomposer.org/composer.phar
+    $ php composer.phar install
+
+After that, you will be able to run Behat with:
+
+.. code-block:: bash
+
+    $ bin/behat
+
+Method #2 (PEAR)
 ~~~~~~~~~~~~~~~~
 
-The simplest way to install Behat is through PEAR:
+You can also install Behat is through PEAR:
 
 .. code-block:: bash
 
@@ -66,7 +98,7 @@ You can now execute Behat simply by running the ``behat`` command:
 
     $ behat
 
-Method #2 (PHAR)
+Method #3 (PHAR)
 ~~~~~~~~~~~~~~~~
 
 Also, you can use behat phar package:
@@ -81,7 +113,7 @@ Now you can execute Behat by simply running phar archive through ``php``:
 
     $ php behat.phar
 
-Method #3 (Git)
+Method #4 (Git)
 ~~~~~~~~~~~~~~~
 
 You can also clone the project with Git by running:
@@ -91,11 +123,18 @@ You can also clone the project with Git by running:
     $ git clone git://github.com/Behat/Behat.git && cd Behat
     $ git submodule update --init
 
-After downloading, you can execute behat by running:
+Then download ``composer.phar`` and run ``install`` command:
 
 .. code-block:: bash
 
-    $ ./path/to/Behat/bin/behat.php
+    $ wget -nc http://getcomposer.org/composer.phar
+    $ php composer.phar install
+
+After that, you will be able to run Behat with:
+
+.. code-block:: bash
+
+    $ bin/behat
 
 Basic Usage
 -----------

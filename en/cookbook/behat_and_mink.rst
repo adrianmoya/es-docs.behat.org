@@ -75,10 +75,50 @@ Installing Mink
 Mink is a php 5.3 library that you'll use inside your test and feature suites.
 Before you begin, ensure that you have at least PHP 5.3.1 installed.
 
-Method #1 (PEAR)
+Method #1 (Composer)
+~~~~~~~~~~~~~~~~~~~~
+
+The simplest way to install Behat with Mink is through Composer.
+
+Create ``composer.json`` file in the project root:
+
+.. code-block:: json
+
+    {
+        "require": {
+            "behat/behat": ">=2.2.2",
+            "behat/mink":  ">=1.3.2"
+        },
+
+        "repositories": {
+            "behat/mink-deps": { "composer": { "url": "behat.org" } }
+        },
+
+        "config" {
+            "bin-dir": "bin/"
+        }
+    }
+
+Then download ``composer.phar`` and run ``install`` command:
+
+.. code-block:: bash
+
+    $ wget -nc http://getcomposer.org/composer.phar
+    $ php composer.phar install
+
+After that, you will be able to run Behat with:
+
+.. code-block:: bash
+
+    $ bin/behat
+
+And this executable will already autoload all the needed classes
+in order to work with Mink through Behat.
+
+Method #2 (PEAR)
 ~~~~~~~~~~~~~~~~
 
-The simplest way to install Behat is through PEAR:
+You can also install Mink is through PEAR:
 
 .. code-block:: bash
 
@@ -91,7 +131,7 @@ Now, you can use Mink in your projects simply by including it:
 
     require_once 'mink/autoload.php';
 
-Method #2 (PHAR)
+Method #3 (PHAR)
 ~~~~~~~~~~~~~~~~
 
 Also, you can use mink phar package:
