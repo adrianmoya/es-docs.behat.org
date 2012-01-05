@@ -63,7 +63,7 @@ Create ``composer.json`` file in the project root:
             "behat/behat": ">=2.2.2"
         },
 
-        "config" {
+        "config": {
             "bin-dir": "bin/"
         }
     }
