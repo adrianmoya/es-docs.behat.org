@@ -125,8 +125,8 @@ right for you:
   formatter defaults here. Also, this is the place to specify parameters for
   your custom formatters.
 
-Formatter Colors
-~~~~~~~~~~~~~~~~
+Colors
+~~~~~~
 
 As of version 2.2, you can configure Behat formatters to use specific output
 styles (colors).
@@ -239,3 +239,18 @@ between projects and their test suites:
 
 All files from the ``imports`` block will be loaded by Behat and merged into
 your ``behat.yml`` config.
+
+Environment Variable
+~~~~~~~~~~~~~~~~~~~~
+
+If you want to configure some system-wide Behat defaults, then ``BEHAT_PARAMS``
+environment variable is right for you:
+
+.. code-block:: bash
+
+    export BEHAT_PARAMS="formatter[name]=progress&context[parameters][base_url]=http://localhost"
+
+You could setup default value for any option, that available for you in ``behat.yml``.
+Just provide options in *url* format (parseable by ``parse_str()`` php function).
+Behat will use those options as default ones and you will always be able to redefine
+them with project ``behat.yml`` (it has higher priority).
