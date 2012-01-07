@@ -241,7 +241,7 @@ All files from the ``imports`` block will be loaded by Behat and merged into
 your ``behat.yml`` config.
 
 Environment Variable
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 If you want to configure some system-wide Behat defaults, then ``BEHAT_PARAMS``
 environment variable is right for you:
