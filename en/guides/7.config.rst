@@ -128,6 +128,8 @@ right for you:
 Colors
 ~~~~~~
 
+.. versionadded:: 2.2
+
 As of version 2.2, you can configure Behat formatters to use specific output
 styles (colors).
 
@@ -242,6 +244,8 @@ your ``behat.yml`` config.
 
 Environment Variable
 --------------------
+
+.. versionadded:: 2.2.5
 
 If you want to configure some system-wide Behat defaults, then ``BEHAT_PARAMS``
 environment variable is right for you:
