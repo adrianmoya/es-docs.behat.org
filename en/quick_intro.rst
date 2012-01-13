@@ -567,7 +567,7 @@ You can read more about step definitions in ":doc:`/guides/2.definitions`" guide
 The Context Class: ``FeatureContext``
 -------------------------------------
 
-Behat creates an context object for each scenario and executes all scenario
+Behat creates a context object for each scenario and executes all scenario
 steps inside that same object. In other words, if you want to share variables
 between steps, you can easily do that by setting property values on the context
 object itself (which was shown in the previous example).
@@ -592,7 +592,7 @@ how a step you defined earlier is worded:
 
 .. code-block:: bash
 
-    $ behat --definitions
+    $ behat -dl
 
 You can read more about Behat CLI in ":doc:`/guides/6.cli`" guide.
 

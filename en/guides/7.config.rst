@@ -10,7 +10,7 @@ profiles.
 -------------
 
 All configuration happens inside a single configuration file in the ``YAML``
-format. Behat looks to load ``behat.yml`` or ``config/behat.yml`` by default,
+format. Behat tries to load ``behat.yml`` or ``config/behat.yml`` by default,
 or you can tell Behat where your config file is with the ``--config`` option:
 
 .. code-block:: bash

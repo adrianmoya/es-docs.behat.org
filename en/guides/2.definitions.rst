@@ -66,7 +66,7 @@ The main goal for step definitions is to be executed when its matching step is
 run in Behat. But just because a method exists within ``FeatureContext`` doesn't
 mean Behat can find it. Behat needs a way to check that a concrete class method
 is suitable for a concrete step in a scenario. Behat matches ``FeatureContext``
-methods to step definitions using using regular expression matching.
+methods to step definitions using regular expression matching.
 
 When Behat runs, it compares special lines of Gherkin
 from each scenario to the regular expressions bound to each method in
@@ -133,7 +133,7 @@ be called three times, each time with a different argument:
     you are testing.
 
     Casting arguments to specific types can be accomplished using
-    Step Argument Transformations. <link to section???????>
+    `step argument transformations`_.
 
 .. note::
 
@@ -521,7 +521,7 @@ Step Argument Transformations
 
 Step argument transformations allow you to abstract common operations performed
 on step definition arguments into reusable methods. In addition, these methods
-can be used to transform a normal string argument that were going to be used
+can be used to transform a normal string argument that was going to be used
 as an argument to a step definition method, into a more specific data type
 or object.
 
