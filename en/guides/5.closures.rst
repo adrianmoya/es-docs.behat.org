@@ -126,7 +126,7 @@ of the method doesn't matter one bit!
     );
 
 The first argument to the definition generator is a regular expression, and the
-the second argument is a closure that would be called when the regular expression
+second argument is a closure that would be called when the regular expression
 matches your :doc:`Gherkin </guides/1.gherkin>` step.
 
 The first argument to the provided closure should **always** be an instance of

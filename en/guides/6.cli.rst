@@ -205,7 +205,7 @@ Will print the feature example in French:
 
 Also, if you forgot what `step definitions </guides/2.definitions>`_ you've
 already implemented, or how to spell a particular step, ``behat`` will print
-all available definitions by calling it with the ``--definitions`` option:
+all available definitions by calling it with the ``-dl`` option:
 
 .. code-block:: bash
 

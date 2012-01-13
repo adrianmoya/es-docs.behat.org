@@ -3,7 +3,7 @@ Behat Documentation
 
 Behat is an open source behavior driven development framework for PHP 5.3.
 What's *behavior driven development* you ask? It's the idea that you start
-by writing human-readable sentences that describes a feature of your application
+by writing human-readable sentences that describe a feature of your application
 and how it should work.
 
 For example, imagine you're about to create the famous UNIX ``ls`` command.
@@ -84,7 +84,7 @@ Learn specific solutions for specific needs:
 Frameworks Integration
 ----------------------
 
-Behat can be used with any framework out there without the need in
+Behat can be used with any framework out there without the need for
 additional configuration, but to make your life even more fun, it
 provides plugins for some major frameworks out there:
 

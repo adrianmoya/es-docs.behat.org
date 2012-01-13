@@ -76,7 +76,7 @@ answer is hidden in `Observer Design Pattern <http://en.wikipedia.org/wiki/Obser
 On every point of execution, testers initialize special objects called
 *events* (green texts on the scheme) and send them to a special ``EventDispatcher``
 object (green square on the scheme). Other objects, called *listeners* (blue
-squares on scheme) registers on ``EventDispatcher`` to be able to receive those
+squares on scheme) register on ``EventDispatcher`` to be able to receive those
 events. ``EventDispatcher`` automatically dispatches received events to registered
 listeners that are capable of handling a particular event type.
 
@@ -86,14 +86,14 @@ listeners to some type of Behat lifetime events.
 Hooks
 -----
 
-Behat hooks are a simple way to execute code when core Behat events occurs.
+Behat hooks are a simple way to execute code when core Behat events occur.
 Behat provides 8 event types for you to hook into:
 
 1. ``BeforeSuite`` event happens before any feature in the suite runs. For
    example, you could use this to setup the project you are testing. This
    event comes with an instance of the ``Behat\Behat\Event\SuiteEvent`` class.
 
-2. ``AfterSuite`` event happens after all features in suite have run.
+2. ``AfterSuite`` event happens after all features in the suite have run.
    This event is used internally for statistics printing. This event comes with
    an instance of the ``Behat\Behat\Event\SuiteEvent`` class.
 
@@ -132,7 +132,7 @@ You can hook into any of these events by using annotations on methods in your
         // before it runs
     }
 
-We use annotation as we did before with `definitions </guides/2.definitions>`_.
+We use annotations as we did before with `definitions </guides/2.definitions>`_.
 Simply use the annotation of the name of the event you want to hook into (e.g.
 @BeforeSuite).
 
@@ -169,7 +169,7 @@ object has some useful methods for you to consider:
 * ``getLogger()`` - returns ``Behat\Behat\DataCollector\LoggerDataCollector``
   instance, which holds all suite run statistics.
 
-* ``isCompleted()`` - returns ``true`` when whole suite successfully executed,
+* ``isCompleted()`` - returns ``true`` when the whole suite is successfully executed,
   or ``false`` when the suite is not executed (``@BeforeSuite`` or
   ``@AfterSuite`` after ``SIGINT``).
 
@@ -207,9 +207,9 @@ object has useful methods for you:
 * ``getFeature()`` - returns a ``Behat\Gherkin\Node\FeatureNode`` instance, which
   is an abstract syntax tree representing the whole feature.
 
-* ``getResult()`` - returns resulting (highest) feature run code: ``4`` when
-  feature has failed steps, ``3`` when feature has undefined steps, ``2`` when
-  feature has pending steps and ``0`` when all steps are passing.
+* ``getResult()`` - returns the resulting (highest) feature run code: ``4`` when
+  the feature has failed steps, ``3`` when the feature has undefined steps, ``2`` when
+  the feature has pending steps and ``0`` when all steps are passing.
 
 Scenario Hooks
 --------------
@@ -237,7 +237,7 @@ There are two scenario hook types available:
 
 Now, the interesting part:
 
-``@BeforeScenario`` hook execute not only
+The ``@BeforeScenario`` hook executes not only
 before each scenario in each feature, but before **each example row** in
 the scenario outline. Yes, each scenario outline example row works almost the
 same as a usual scenario, except that it sends a different event:
@@ -262,9 +262,9 @@ them if needed.
   accessible from within the method itself by using ``$this->``. The instance
   passed with the event isn't very useful in this case.
 
-* ``getResult()`` - returns resulting (highest) step run code. ``4`` when
-  scenario has failed steps, ``3`` when scenario has undefined steps, ``2`` when
-  scenario has pending steps and ``0`` when all steps are passing.
+* ``getResult()`` - returns the resulting (highest) step run code. ``4`` when
+  the scenario has failed steps, ``3`` when the scenario has undefined steps, ``2`` when
+  the scenario has pending steps and ``0`` when all steps are passing.
 
 * ``isSkipped()`` - returns ``true`` if the scenario has skipped steps (steps
   that follow **pending**, **undefined** or **failed** steps).
@@ -284,9 +284,9 @@ them if needed.
   accessible from within the method itself by using ``$this->``. The instance
   passed with the event isn't very useful in this case.
 
-* ``getResult()`` - returns resulting (highest) step run code. ``4`` when
-  examples row has failed steps, ``3`` when row has undefined steps, ``2``
-  when row has pending steps and ``0`` when all steps are passing.
+* ``getResult()`` - returns the resulting (highest) step run code. ``4`` when
+  an examples row has failed steps, ``3`` when a row has undefined steps, ``2``
+  when a row has pending steps and ``0`` when all steps are passing.
 
 * ``isSkipped()`` - returns ``true`` if the scenario has skipped steps (steps
   that follow **pending**, **undefined** or **failed** steps).
@@ -327,11 +327,11 @@ object has the following methods:
   accessible from within the method itself by using ``$this->``. The instance
   passed with the event isn't very useful in this case.
 
-* ``getResult()`` - returns resulting step run code. ``4`` when the step has
+* ``getResult()`` - returns the resulting step run code. ``4`` when the step has
   failed, ``3`` when the step is undefined, ``2`` when the step is pending,
   ``1`` when the step has been skipped and ``0`` when the step is passing.
 
-* ``hasDefinition()`` - returns ``true`` if a definition for current step is
+* ``hasDefinition()`` - returns ``true`` if a definition for the current step is
   found.
 
 * ``getDefinition()`` - returns ``Behat\Behat\Definition\DefinitionInterface``
