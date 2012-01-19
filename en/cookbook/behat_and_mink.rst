@@ -94,7 +94,7 @@ Create ``composer.json`` file in the project root:
             "behat/mink-deps": { "composer": { "url": "behat.org" } }
         },
 
-        "config" {
+        "config": {
             "bin-dir": "bin/"
         }
     }
