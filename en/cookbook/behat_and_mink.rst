@@ -179,9 +179,11 @@ chapter):
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
 
-    require_once 'mink/autoload.php';
+    // to use mink installed with PEAR:
+    // require_once 'mink/autoload.php';
     // or, if you want to use phar from current dir:
     // require_once __DIR__ . '/mink.phar';
+    // nothing required here if you installed mink with Composer!
 
     class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     {
