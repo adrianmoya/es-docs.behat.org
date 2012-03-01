@@ -193,7 +193,7 @@ see all available steps and to check, that Mink is included correctly - call:
 
 .. code-block:: bash
 
-    $ behat --definitions
+    $ behat -dl
 
 If all works properly, you should see something like this:
 
