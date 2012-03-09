@@ -132,12 +132,12 @@ Will print pretty output instead, but will write progress output to ``progress.o
 
 Behat tries hard to identify if your terminal supports colors or not, but
 sometimes it still fails. In such cases, you can force ``behat`` to
-use colors (or not) with the options ``--colors`` or ``--no-colors``,
+use colors (or not) with the options ``--ansi`` or ``--no-ansi``,
 respectively:
 
 .. code-block:: bash
 
-    $ behat --no-colors
+    $ behat --no-ansi
 
 Behat prints suite execution time information after each run. If you don't want
 this information, you can turn it off with the ``--no-time`` option:
