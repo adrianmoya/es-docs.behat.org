@@ -341,7 +341,7 @@ Afterwards, the feature context so far, will be this.
         }
     }
 
-Let's check, whether Behat recognizes our new definitions with ``php app/console behat -e test @AcmeDemoBundle --definitions``. The output should be.
+Let's check, whether Behat recognizes our new definitions with ``php app/console behat -e test @AcmeDemoBundle -dl``. The output should be.
 
 * ``Given /I have a category "([^"]*)"/``
 * ``Given /I have a product "([^"]*)"/``
