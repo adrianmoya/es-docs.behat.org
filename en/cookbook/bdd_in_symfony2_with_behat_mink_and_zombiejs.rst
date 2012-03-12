@@ -787,7 +787,7 @@ Now it's time to define our acceptance to the web application, we are going to c
 Those are the requirements for the new ``CatalogController`` to be created in ``src/Acme/DemoBundle/Controller/CatalogController.php``.
 
 Now, we will re-write them into a feature file describing the behaviors of the interface.
-At first, let's take a look into available definitions ``php app/console behat -e test @AcmeDemoBundle --definitions``.
+At first, let's take a look into available definitions ``php app/console behat -e test @AcmeDemoBundle -dl``.
 There are some more now, because we are now using the MinkContext. This context provides definitions for navigating a web page.
 
 The feature definition may look like this one in ``src/Acme/DemoBundle/Features/CatalogNavigation.feature``.
