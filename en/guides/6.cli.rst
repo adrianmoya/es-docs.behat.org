@@ -239,6 +239,7 @@ can do it with name or tags filters:
     $ behat --tags '@orm,@database'
     $ behat --tags 'ticket,723'
     $ behat --tags '@orm&&@fixtures'
+    $ behat --tags '~@javascript'
     $ behat --name 'number has'
 
 The first command will run only features or scenarios which have either the
@@ -250,5 +251,8 @@ The second command will run only features or scenarios which have either the
 The third command will run only features or scenarios with both the ``@orm``
 and the ``@fixtures`` tags.
 
-The fourth command will run only features and scenarios that contain ``number has``
+The forth command will run all features or scenarios except those, that marked
+with ``@javascript`` tag. In other terms, ``~`` means **excluding**.
+
+The fifth command will run only features and scenarios that contain ``number has``
 in their title.
