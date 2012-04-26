@@ -93,11 +93,13 @@ provides plugins for some major frameworks out there:
 
     bundle/index
 
-Behat API
----------
+Useful Resources
+----------------
 
-Read libraries API:
+Other useful resources for learning/using Behat:
 
+* `Cheat Sheet <http://blog.lepine.pro/wp-content/uploads/2012/03/behat-cheat-sheet-en.pdf>`_
+  - Behat and Mink Cheat Sheets by `Jean-François Lépine <http://blog.lepine.pro/>`_
 * `Behat API <http://docs.behat.org/behat-api/>`_ - Behat code API
 * `Gherkin API <http://docs.behat.org/gherkin-api/>`_ - Gherkin parser API
 
