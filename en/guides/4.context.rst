@@ -25,7 +25,7 @@ expected. That's it!
     {
         public function __construct(array $parameters)
         {
-            $this->useContext(new AnotherContext());
+            $this->useContext('subcontext_alias', new AnotherContext());
         }
 
         /** @BeforeFeature */
@@ -196,7 +196,7 @@ object, do so before passing it into ``useContext()``:
     {
         public function __construct(array $parameters)
         {
-            $this->useContext(new SubContext(array(
+            $this->useContext('subcontext_alias', new SubContext(array(
                 /* custom params */
             )));
         }
