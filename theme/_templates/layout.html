@@ -1,18 +1,15 @@
 {% extends "!layout.html" %}
 
-{% set css_files = css_files + ['_static/behat.css', 'http://fonts.googleapis.com/css?family=Lobster'] %}
+{% set css_files = css_files + ['_static/mink.css', 'http://fonts.googleapis.com/css?family=Lobster'] %}
 
 {% block content %}
     <header>
-        <a id="logo" href="http://behat.org">Behat</a>
-        <nav>
-            <ul>
-                <li><a href="http://behat.org">main</a></li>
-                <li class="active"><a href="http://docs.behat.org">docs</a></li>
-                <li><a href="http://pear.behat.org">pear</a></li>
-                <li><a href="https://github.com/Behat">github</a></li>
-            </ul>
-        </nav>
+        <a id="logo" href="http://mink.behat.org">Mink</a>
+        <div class="install body"> 
+            <a href='https://github.com/downloads/Behat/Mink/mink.phar' class='button phar'>mink.phar</a> 
+            <a href='https://github.com/Behat/Mink' class='button github'>View on GitHub</a> 
+            <a href='http://pear.behat.org' class='button pear'>View PEAR repo</a> 
+        </div>
     </header>
 
     <section class="docs">
@@ -26,7 +23,7 @@
             {% block body %}{% endblock %}
         </section>
 
-        {% if pagename != 'index' %}
+        {#% if pagename != 'index' %}
             <footer>
                 <nav>
                     {%- if prev %}
@@ -38,7 +35,7 @@
                     {%- endif %}
                 </nav>
             </footer>
-        {% endif %}
+        {% endif %#}
 
     </section>
 
