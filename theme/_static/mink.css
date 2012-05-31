@@ -173,6 +173,9 @@ body > header, body > section, body > footer {
   padding: 60px;
   margin: 0px auto;
 }
+body > header {
+  margin-top:20px;
+}
 body > header > nav {
   float: left;
   margin-top: 34px;
@@ -409,4 +412,40 @@ body > footer .sponsor a.knp {
 }
 strong {
     font-weight:bold !important;
+}
+
+.main-menu {
+  position:absolute;
+  top: -10px;
+  width: 820px;
+  list-style:none;
+  border-bottom:1px solid #c4c4c4;
+}
+
+.main-menu li {
+  float:left;
+  width:164px;
+  text-align:center;
+  padding:8px 0px;
+  border-top:5px solid #727272;
+}
+
+.main-menu li:hover {
+  border-color:#fff;
+}
+
+.main-menu li.active {
+  border-color:#272822;
+}
+
+.main-menu li a {
+  text-decoration:none;
+  color:#4f4f4f;
+  padding:0px 20px;
+  padding-bottom:22px;
+}
+
+.main-menu li.active a {
+  text-decoration:none !important;
+  color:#000 !important;
 }
