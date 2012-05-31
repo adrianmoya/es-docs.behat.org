@@ -435,7 +435,7 @@ strong {
 }
 
 .main-menu li.active {
-  border-color:#272822;
+  border-color:#000;
 }
 
 .main-menu li a {
