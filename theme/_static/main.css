@@ -154,13 +154,21 @@ hr {
 input, select {
   vertical-align: middle;
 }
-#logo {
+#logo-behat {
   content: '';
   text-indent: -9999px;
   float: left;
   width: 239px;
   height: 89px;
-  background: url(images/skel/logo.png);
+  background: url(images/skel/behat-logo.png);
+}
+#logo-mink {
+  content: '';
+  text-indent: -9999px;
+  float: left;
+  width: 239px;
+  height: 89px;
+  background: url(images/skel/mink-logo.png);
 }
 body {
   color: #b5b5b5;

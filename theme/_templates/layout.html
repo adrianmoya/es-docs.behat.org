@@ -4,9 +4,9 @@
 
 {% block content %}
     <header>
-        <a id="logo" href="http://behat.org">Behat</a>
+        <a id="logo-{{ logo_name }}" href="http://behat.org">{{ logo_name|capitalize }}</a>
         <ul class="main-menu">
-            <li class="active">
+            <li>
                 <a href="http://behat.org">main</a>
             </li>
             <li>
@@ -15,10 +15,10 @@
             <li>
                 <a href="http://extensions.behat.org">extensions</a>
             </li>
-            <li>
+            <li {% if 'behat-docs' == menu_section %}class="active"{% endif %}>
                 <a href="http://docs.behat.org">behat docs</a>
             </li>
-            <li>
+            <li {% if 'mink-docs' == menu_section %}class="active"{% endif %}>
                 <a href="http://mink.behat.org">mink docs</a>
             </li>
         </ul>
