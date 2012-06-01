@@ -75,6 +75,10 @@ Installing Mink
 Mink is a php 5.3 library that you'll use inside your test and feature suites.
 Before you begin, ensure that you have at least PHP 5.3.1 installed.
 
+Mink integration into Behat happens thanks to MinkExtension. Extension takes
+care of all the configuration and initialization of the Mink, leaving only fun
+parts to you.
+
 Method #1 (Composer)
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -86,140 +90,125 @@ Create ``composer.json`` file in the project root:
 
     {
         "require": {
-            "behat/behat": ">=2.2.2",
-            "behat/mink":  ">=1.3.2"
-        },
+            "behat/behat": "2.4@stable",
+            "behat/mink":  "1.4@stable",
+            "behat/mink-extension": "*",
 
-        "repositories": [
-            {
-                "type": "composer",
-                "url": "behat.org"
-            }
-        ],
+            "behat/mink-goutte-driver":     "*",
+            "behat/mink-selenium2-driver":  "*"
+        },
 
         "config": {
             "bin-dir": "bin/"
         }
     }
 
+.. note::
+
+    Note that we also installed two Mink drivers - goutte and
+    selenium2. That's because by default, Composer installation
+    of Mink doesn't include any driver - you should choose what
+    to use by yourself.
+
+    Easiest way to get started is to go with ``goutte`` and
+    ``selenium2`` drivers, but note that there's bunch of other
+    drivers available for Mink - read about them on Mink
+    documentation.
+
 Then download ``composer.phar`` and run ``install`` command:
 
 .. code-block:: bash
 
-    $ wget -nc http://getcomposer.org/composer.phar
+    $ curl http://getcomposer.org/installer | php
     $ php composer.phar install
 
-After that, you will be able to run Behat with:
+After that, you will be able to just run Behat with:
 
 .. code-block:: bash
 
-    $ bin/behat
+    $ bin/behat -h
 
 And this executable will already autoload all the needed classes
-in order to work with Mink through Behat.
+in order to **activate** MinkExtension through ``behat.yml``.
 
-Method #2 (PEAR)
-~~~~~~~~~~~~~~~~
-
-You can also install Mink through PEAR:
-
-.. code-block:: bash
-
-    $ pear channel-discover pear.behat.org
-    $ pear install behat/mink-beta
-
-Now, you can use Mink in your projects simply by including it:
-
-.. code-block:: php
-
-    require_once 'mink/autoload.php';
-
-Method #3 (PHAR)
-~~~~~~~~~~~~~~~~
-
-Also, you can use mink phar package:
-
-.. code-block:: bash
-
-    $ wget https://github.com/downloads/Behat/Mink/mink.phar
-
-Now you can require phar package in your project:
-
-.. code-block:: php
-
-    require_once 'mink.phar';
-
-``MinkContext`` for Behat requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Mink comes with ready to work Behat ``FeatureContext`` implementation. It's
-called ``MinkContext`` and it uses PHPUnit assertions internally, so you need
-to install latest PHPUnit in order to use bundled with Mink steps:
-
-.. code-block:: bash
-
-    $ pear channel-discover pear.phpunit.de
-    $ pear channel-discover components.ez.no
-    $ pear channel-discover pear.symfony-project.com
-    $ pear install phpunit/PHPUnit
-
-Using ``MinkContext`` in Behat
-------------------------------
-
-Mink comes with ``Behat\Mink\Behat\Context\MinkContext`` context class. You
-could either inherit or subcontext it (see :doc:`FeatureContext </guides/4.context>`
-chapter):
-
-.. code-block:: php
-
-    # features/bootstrap/FeatureContext.php
-    <?php
-
-    use Behat\Behat\Context\ClosuredContextInterface,
-        Behat\Behat\Context\BehatContext,
-        Behat\Behat\Exception\PendingException;
-
-    use Behat\Gherkin\Node\PyStringNode,
-        Behat\Gherkin\Node\TableNode;
-
-    // to use mink installed with PEAR:
-    // require_once 'mink/autoload.php';
-    // or, if you want to use phar from current dir:
-    // require_once __DIR__ . '/mink.phar';
-    // nothing required here if you installed mink with Composer!
-
-    class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
-    {
-    }
-
-Notice, that we've extended ``Behat\Mink\Behat\Context\MinkContext`` context
-class. This context comes bundled with bunch of very useful *web* steps. To
-see all available steps and to check, that Mink is included correctly - call:
-
-.. code-block:: bash
-
-    $ behat -dl
-
-If all works properly, you should see something like this:
-
-.. image:: /images/mink-definitions.png
-   :align: center
-
-Now, all navigation steps in Mink uses relative paths. In order to be able to
-make full URL's from relative paths, Mink should know about ``base_url`` value.
-And you can help Mink with it:
+Now lets activate it:
 
 .. code-block:: yaml
 
     # behat.yml
     default:
-      context:
-        parameters:
-          base_url: http://en.wikipedia.org/
+      extensions:
+        Behat\MinkExtension\Extension:
+          base_url:  'http://example.org'
+          goutte:    ~
+          selenium2: ~
 
-.. tip::
+You could check that extension is loaded by calling:
 
-    ``base_url`` should always end up with ``/``.
+.. code-block:: bash
+
+    $ behat -dl
+
+It should show you all predefined web steps as MinkExtension will provide
+default context for you (only if there's no context class provided).
+
+Method #2 (PHAR)
+~~~~~~~~~~~~~~~~
+
+Also, you can use Behat, Mink and MinkExtension as PHAR packages.
+
+Download Behat:
+
+.. code-block:: bash
+
+    $ wget https://github.com/downloads/Behat/Behat/behat.phar
+
+Download Mink:
+
+.. code-block:: bash
+
+    $ wget https://github.com/downloads/Behat/Mink/mink.phar
+
+.. code-block:: bash
+
+    $ wget https://github.com/downloads/Behat/MinkExtension/mink_extension.phar
+
+After that, you will be able to just run Behat with:
+
+.. code-block:: bash
+
+    $ php behat.phar -h
+
+Now lets activate ``MinkExtension``:
+
+.. code-block:: yaml
+
+    # behat.yml
+    default:
+      extensions:
+        mink_extension.phar:
+          mink_loader: 'mink.phar'
+          base_url:    'http://example.org'
+          goutte:      ~
+          selenium2:   ~
+
+You could check that extension is loaded by calling:
+
+.. code-block:: bash
+
+    $ behat -dl
+
+It should show you all predefined web steps as MinkExtension will provide
+default context for you (only if there's no context class provided).
+
+``MinkContext`` for Behat requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``MinkExtension`` comes with ready to work Behat ``Context`` implementation.
+It's called ``MinkContext`` and it is used by default where there is not custom
+context provided. That's why ``behat -dl`` shows you step definitions even
+when you haven't created custom ``FeatureContext`` class or event ``features``
+folder.
 
 Writing your first Web Feature
 ------------------------------
@@ -255,42 +244,59 @@ We have two scenarios here:
 * *Searching for a page that does NOT exist* - describes, how Wikipedia
   searches for pages, that does not exist in Wikipedia index.
 
-Now, run your feature:
+As you might see, urls in scenarios are relative, so we should provide correct
+``base_url`` attribute in our ``behat.yml``:
+
+.. code-block:: yaml
+
+    # behat.yml
+    default:
+      extensions:
+        mink_extension.phar:
+          mink_loader: 'mink.phar'
+          base_url:    'http://en.wikipedia.org'
+          goutte:      ~
+
+Now, run your feature (if installed through Composer):
 
 .. code-block:: bash
 
     $ behat features/search.feature
+
+Or phar:
+
+.. code-block:: bash
+
+    $ php behat.phar features/search.feature
 
 You'll see output like this:
 
 .. image:: /images/mink-wikipedia-2-scenarios.png
    :align: center
 
-Test In-Browser - Sahi Session
-------------------------------
+Test In-Browser - `selenium2` Session
+-------------------------------------
 
-Ok. We've successfully tested wikipedia search and it works flawlessly. But
+Ok. We've successfully described wikipedia search and Behat tested it flawlessly. But
 what about search field autocompletion? It's done using JS and AJAX, so we
 can't use default headless session to test it - we need ``javascript`` session
-and Sahi browser emulator for that task.
+and Selenium2 browser emulator for that task.
 
-Sahi gives you ability to take full controll of real browser with clean
+Selenium2 gives you ability to take full controll of real browser with clean
 consistent proxy API. And Mink uses this API extensively in order to use same
 Mink API and steps to do **real** actions in **real** browser.
 
-All you need to do is install Sahi:
+All you need to do is install Selenium:
 
-1. Download and run the Sahi jar from the http://sahi.co.in/w/
-
-2. Run sahi proxy before your test suites (you can start this proxy during system startup):
+1. Download latest Selenium jar from the: http://seleniumhq.org/download/
+2. Run Selenium2 jar before your test suites (you can start this proxy during system startup):
 
    .. code-block:: bash
 
-        cd $YOUR_PATH_TO_SAHI/bin
-        ./sahi.sh
+        java -jar selenium-server-*.jar
 
 That's it. Now you should create specific scenario in order it to be runnable
-through Sahi:
+through Selenium:
 
 .. code-block:: gherkin
 
@@ -302,7 +308,7 @@ through Sahi:
 
 Now, we need to tell Behat and Mink to run this scenario in different session
 (with different browser emulator). Mink comes with special :doc:`hook </guides/3.hooks>`,
-that searches ``@javascript`` or ``@mink:sahi`` tag before scenario and switches
+that searches ``@javascript`` or ``@mink:selenium2`` tag before scenario and switches
 current Mink session to Sahi (in both cases). So, let's simply add this tag to
 our scenario:
 
@@ -326,9 +332,68 @@ And of course, you'll get:
 .. image:: /images/mink-wikipedia-2.5-scenarios.png
    :align: center
 
-That's because you haven't defined the ``Then I wait for the suggestion box to appear``
-step yet. But don't worry, Behat already suggested the regex and function snippets
-that you can use and Mink makes writing new steps easy:
+That's because you have used custom ``Then I wait for the suggestion box to appear``
+step, but not defined it. In order to do it, we will need to create our own
+``FeatureContext`` class (at last).
+
+Defining our own ``FeatureContext``
+-----------------------------------
+
+The easiest way to create context class is to ask Behat do it for you:
+
+.. code-block:: bash
+
+    $ behat --init
+
+This command will create ``features/bootstrap`` folder and
+``features/bootstrap/FeatureContext.php`` class for you.
+
+Now lets try to run our feature again (just to check that everything works):
+
+.. code-block:: bash
+
+    $ behat features/search.feature
+
+Oh. Now Behat tells us that all steps are undefined. What's happening here? It's
+simple, as we've created our own context class, MinkExtension now doesn't uses
+it's own bundled context class and Behat uses your very own ``FeatureContext``, which
+of course doesn't have those Mink steps **yet**. Let's add them.
+
+There's multiple ways to bring bundled with ``MinkExtension`` steps into your own
+context class. Simplest one is to use inheritance. Just extend your context from
+``Behat\MinkExtension\Context\MinkContext`` instead of base ``BehatContext``:
+
+.. code-block:: php
+    <?php
+
+    use Behat\Behat\Context\ClosuredContextInterface,
+        Behat\Behat\Context\TranslatedContextInterface,
+        Behat\Behat\Context\BehatContext,
+        Behat\Behat\Exception\PendingException;
+    use Behat\Gherkin\Node\PyStringNode,
+        Behat\Gherkin\Node\TableNode;
+
+    use Behat\MinkExtension\Context\MinkContext;
+
+    /**
+     * Features context.
+     */
+    class FeatureContext extends MinkContext
+    {
+    }
+
+To check that all ``MinkExtension`` steps are here again, run:
+
+.. code-block:: bash
+
+    $ behat -dl
+
+If all works properly, you should see something like this:
+
+.. image:: /images/mink-definitions.png
+   :align: center
+
+Finally, lets add our custom ``wait`` step to context:
 
 .. code-block:: php
 
@@ -344,7 +409,9 @@ that you can use and Mink makes writing new steps easy:
 
 That simple. We get current session and send JS command to wait (sleep) for 5
 seconds or until expression in second argument returns true. Second argument is
-simple jQuery instruction. Run feature again and:
+simple jQuery instruction.
+
+Run feature again and:
 
 .. image:: /images/mink-wikipedia-3-scenarios.png
    :align: center
