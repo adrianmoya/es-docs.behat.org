@@ -43,7 +43,7 @@ block tell Behat where to find your feature and bootstrap files:
     # behat.yml
     default:
         paths:
-            features:   '%%BEHAT_BASE_PATH%%'
+            features:   'features'
             bootstrap:  '%behat.paths.features%/bootstrap'
 
 * The ``features`` parameter defines where Behat will look for your ``*.feature``
@@ -54,26 +54,18 @@ block tell Behat where to find your feature and bootstrap files:
 
 .. tip::
 
-    Notice the ``%behat.paths.features%`` and ``%%BEHAT_BASE_PATH%%``
-    placeholders. These strings are predefined configuration variables and
-    constants, respectively, that you can use to build very flexible
-    configurations:
+    Notice the ``%behat.paths.features%`` placeholder. These strings are predefined
+    configuration variables, that you can use to build very flexible configurations.
 
-    * A **constant** is a placeholder that consists of upper-case letters and
-      starts/ends with ``%%``. Default constants are:
+    A **variable** is a placeholder that consists of lower-case letters and
+    starts/ends with a single ``%``. These variables are your current
+    configuration parameters, which you can use to nest configurations.
+    Usable variables are:
 
-        1. ``%%BEHAT_BASE_PATH%%`` - current base path (specified as
-           ``feature`` argument to Behat command).
-        2. ``%%BEHAT_WORK_PATH%%`` - current working path from which Behat was
-           called.
-        3. ``%%BEHAT_CONFIG_PATH%%`` - configuration file directory path.
-
-    * A **variable** is a placeholder that consists of lower-case letters and
-      starts/ends with a single ``%``. These variables are your current
-      configuration parameters, which you can use to nest configurations.
-      Usable variables are:
-
-        1. ``%behat.paths.features%`` - default or specified by you features path.
+      1. ``%behat.paths.base%`` - current working dir or configuration path (if
+         configuration file exists and loaded).
+      2. ``%behat.paths.features%`` - features path.
+      3. ``%behat.paths.bootstrap%`` - bootstrap path.
 
 Filters
 ~~~~~~~
@@ -226,13 +218,44 @@ To run each of these custom profiles, use the ``--profile`` option:
     behat --profile wip
     behat --profile ci
 
+Extensions
+----------
+
+The ``extensions`` block allows you to activate extensions for your suite
+or for specific proile of the suite:
+
+.. code-block:: yaml
+
+    # behat.yml
+    default:
+      extensions:
+        Behat\Symfony2Extension\Extension: ~
+
+    mink:
+      extensions:
+        mink-extension.phar:
+          base_url: http://domain.org
+
+    api:
+      extensions:
+        Behat\WebApiExtension\Extension:
+          base_url: http://api.domain.org
+
+In the example above, we activate 2 extensions depending on profile. ``mink`` profile
+will have activate ``MinkExtension`` and ``api`` profile will have ``WebApiExtension``,
+but both of them will also have ``Symfony2Extension`` activated as any profile always inherit
+from ``default`` profile.
+
+Extensions help you integrate Behat with frameworks and tools, that you might need
+to ease your test suite building.
+
 Imports
 -------
 
 The ``imports`` block allows you to share your feature suite configuration
 between projects and their test suites:
 
-.. code-block:: bash
+.. code-block:: yaml
 
     # behat.yml
     imports:

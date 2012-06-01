@@ -60,7 +60,7 @@ Create ``composer.json`` file in the project root:
 
     {
         "require": {
-            "behat/behat": ">=2.2.2"
+            "behat/behat": ">=2.4@stable"
         },
 
         "config": {
@@ -72,7 +72,7 @@ Then download ``composer.phar`` and run ``install`` command:
 
 .. code-block:: bash
 
-    $ wget -nc http://getcomposer.org/composer.phar
+    $ curl http://getcomposer.org/installer | php
     $ php composer.phar install
 
 After that, you will be able to run Behat with:
@@ -81,24 +81,7 @@ After that, you will be able to run Behat with:
 
     $ bin/behat
 
-Method #2 (PEAR)
-~~~~~~~~~~~~~~~~
-
-You can also install Behat through PEAR:
-
-.. code-block:: bash
-
-    $ pear channel-discover pear.symfony.com
-    $ pear channel-discover pear.behat.org
-    $ pear install behat/behat
-
-You can now execute Behat simply by running the ``behat`` command:
-
-.. code-block:: bash
-
-    $ behat
-
-Method #3 (PHAR)
+Method #2 (PHAR)
 ~~~~~~~~~~~~~~~~
 
 Also, you can use behat phar package:
@@ -113,7 +96,7 @@ Now you can execute Behat by simply running phar archive through ``php``:
 
     $ php behat.phar
 
-Method #4 (Git)
+Method #3 (Git)
 ~~~~~~~~~~~~~~~
 
 You can also clone the project with Git by running:
@@ -135,6 +118,27 @@ After that, you will be able to run Behat with:
 .. code-block:: bash
 
     $ bin/behat
+
+Method #4 (PEAR)
+~~~~~~~~~~~~~~~~
+
+.. note::
+
+    2.3.2 is currently the latest Behat version in PEAR
+
+You can also install Behat through PEAR:
+
+.. code-block:: bash
+
+    $ pear channel-discover pear.symfony.com
+    $ pear channel-discover pear.behat.org
+    $ pear install behat/behat
+
+You can now execute Behat simply by running the ``behat`` command:
+
+.. code-block:: bash
+
+    $ behat
 
 Basic Usage
 -----------
