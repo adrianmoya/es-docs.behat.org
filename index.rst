@@ -81,18 +81,6 @@ Learn specific solutions for specific needs:
     cookbook/intercepting_the_redirections
     cookbook/migrate_from_1x_to_20
 
-Frameworks Integration
-----------------------
-
-Behat can be used with any framework out there without the need for
-additional configuration, but to make your life even more fun, it
-provides plugins for some major frameworks out there:
-
-.. toctree::
-    :maxdepth: 1
-
-    bundle/index
-
 Useful Resources
 ----------------
 
