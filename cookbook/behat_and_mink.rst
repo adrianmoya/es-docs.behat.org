@@ -112,7 +112,7 @@ Create ``composer.json`` file in the project root:
 
     Easiest way to get started is to go with ``goutte`` and
     ``selenium2`` drivers, but note that there's bunch of other
-    drivers available for Mink - read about them on Mink
+    drivers available for Mink - read about them in Mink
     documentation.
 
 Then download ``composer.phar`` and run ``install`` command:
@@ -122,7 +122,7 @@ Then download ``composer.phar`` and run ``install`` command:
     $ curl http://getcomposer.org/installer | php
     $ php composer.phar install
 
-After that, you will be able to just run Behat with:
+After that, you will be able to run Behat with:
 
 .. code-block:: bash
 
@@ -139,18 +139,17 @@ Now lets activate it:
     default:
       extensions:
         Behat\MinkExtension\Extension:
-          base_url:  'http://example.org'
           goutte:    ~
           selenium2: ~
 
-You could check that extension is loaded by calling:
+You could check that extension is properly loaded by calling:
 
 .. code-block:: bash
 
     $ behat -dl
 
-It should show you all predefined web steps as MinkExtension will provide
-default context for you (only if there's no context class provided).
+It should show you all the predefined web steps as MinkExtension will
+automatically use bundled ``MinkContext`` if no user-defined context class found.
 
 Method #2 (PHAR)
 ~~~~~~~~~~~~~~~~
@@ -169,17 +168,20 @@ Download Mink:
 
     $ wget https://github.com/downloads/Behat/Mink/mink.phar
 
+Download MinkExtension:
+
 .. code-block:: bash
 
     $ wget https://github.com/downloads/Behat/MinkExtension/mink_extension.phar
 
-After that, you will be able to just run Behat with:
+Put them all in the same folder.
+After that, you will be able to run Behat with:
 
 .. code-block:: bash
 
     $ php behat.phar -h
 
-Now lets activate ``MinkExtension``:
+Now lets activate MinkExtension:
 
 .. code-block:: yaml
 
@@ -188,33 +190,38 @@ Now lets activate ``MinkExtension``:
       extensions:
         mink_extension.phar:
           mink_loader: 'mink.phar'
-          base_url:    'http://example.org'
           goutte:      ~
           selenium2:   ~
 
-You could check that extension is loaded by calling:
+.. note::
+
+    Behat extension name could be either of 3:
+
+    1. Class name (if class is autoloaded) - best way in Composer installation
+    2. PHAR file name
+    3. Relative path to script, that will return new extension instance
+
+You could check that extension is properly loaded by calling:
 
 .. code-block:: bash
 
     $ behat -dl
 
-It should show you all predefined web steps as MinkExtension will provide
-default context for you (only if there's no context class provided).
+It should show you all the predefined web steps as MinkExtension will
+automatically use bundled ``MinkContext`` if no user-defined context class found.
 
 ``MinkContext`` for Behat requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``MinkExtension`` comes with ready to work Behat ``Context`` implementation.
-It's called ``MinkContext`` and it is used by default where there is not custom
-context provided. That's why ``behat -dl`` shows you step definitions even
-when you haven't created custom ``FeatureContext`` class or event ``features``
-folder.
+MinkExtension comes bundled with ``MinkContext``, which will be used automatically
+by Behat as main context class if no user-defined context class found. That's why ``behat -dl``
+shows you step definitions even when you haven't created custom ``FeatureContext`` class or
+even ``features`` folder.
 
 Writing your first Web Feature
 ------------------------------
 
-Let's for example write a feature to test `Wikipedia <http://www.wikipedia.org/>`_
-search abilities:
+Let's write a feature to test `Wikipedia <http://www.wikipedia.org/>`_ search abilities:
 
 .. code-block:: gherkin
 
@@ -245,25 +252,25 @@ We have two scenarios here:
   searches for pages, that does not exist in Wikipedia index.
 
 As you might see, urls in scenarios are relative, so we should provide correct
-``base_url`` attribute in our ``behat.yml``:
+``base_url`` option for MinkExtension in our ``behat.yml``:
 
 .. code-block:: yaml
 
     # behat.yml
     default:
       extensions:
-        mink_extension.phar:
-          mink_loader: 'mink.phar'
-          base_url:    'http://en.wikipedia.org'
-          goutte:      ~
+        Behat\MinkExtension\Extension:
+          base_url:  'http://en.wikipedia.org'
+          goutte:    ~
+          selenium2: ~
 
 Now, run your feature (if installed through Composer):
 
 .. code-block:: bash
 
-    $ behat features/search.feature
+    $ bin/behat features/search.feature
 
-Or phar:
+Or phar version:
 
 .. code-block:: bash
 
@@ -309,7 +316,7 @@ through Selenium:
 Now, we need to tell Behat and Mink to run this scenario in different session
 (with different browser emulator). Mink comes with special :doc:`hook </guides/3.hooks>`,
 that searches ``@javascript`` or ``@mink:selenium2`` tag before scenario and switches
-current Mink session to Sahi (in both cases). So, let's simply add this tag to
+current Mink session to Selenium2 (in both cases). So, let's simply add this tag to
 our scenario:
 
 .. code-block:: gherkin
@@ -333,7 +340,7 @@ And of course, you'll get:
    :align: center
 
 That's because you have used custom ``Then I wait for the suggestion box to appear``
-step, but not defined it. In order to do it, we will need to create our own
+step, but not defined it yet. In order to do it, we will need to create our own
 ``FeatureContext`` class (at last).
 
 Defining our own ``FeatureContext``
@@ -354,16 +361,18 @@ Now lets try to run our feature again (just to check that everything works):
 
     $ behat features/search.feature
 
-Oh. Now Behat tells us that all steps are undefined. What's happening here? It's
-simple, as we've created our own context class, MinkExtension now doesn't uses
-it's own bundled context class and Behat uses your very own ``FeatureContext``, which
-of course doesn't have those Mink steps **yet**. Let's add them.
+Oh... Now Behat tells us that all steps are undefined. What's happening there?
 
-There's multiple ways to bring bundled with ``MinkExtension`` steps into your own
+As we've created our own context class, MinkExtension stopped using own bundled
+context class as main context and Behat uses your very own ``FeatureContext`` instead,
+which of course doesn't have those Mink steps **yet**. Let's add them.
+
+There's multiple ways to bring bundled with MinkExtension steps into your own
 context class. Simplest one is to use inheritance. Just extend your context from
 ``Behat\MinkExtension\Context\MinkContext`` instead of base ``BehatContext``:
 
 .. code-block:: php
+
     <?php
 
     use Behat\Behat\Context\ClosuredContextInterface,
