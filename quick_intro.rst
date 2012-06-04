@@ -119,27 +119,6 @@ After that, you will be able to run Behat with:
 
     $ bin/behat
 
-Method #4 (PEAR)
-~~~~~~~~~~~~~~~~
-
-.. note::
-
-    2.3.2 is currently the latest Behat version in PEAR
-
-You can also install Behat through PEAR:
-
-.. code-block:: bash
-
-    $ pear channel-discover pear.symfony.com
-    $ pear channel-discover pear.behat.org
-    $ pear install behat/behat
-
-You can now execute Behat simply by running the ``behat`` command:
-
-.. code-block:: bash
-
-    $ behat
-
 Basic Usage
 -----------
 
