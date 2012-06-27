@@ -30,7 +30,7 @@ all of your parameters under the ``default:`` root:
 
     # behat.yml
     default:
-        ...
+        #...
 
 Paths
 ~~~~~
@@ -43,8 +43,8 @@ block tell Behat where to find your feature and bootstrap files:
     # behat.yml
     default:
         paths:
-            features:   'features'
-            bootstrap:  '%behat.paths.features%/bootstrap'
+            features: features
+            bootstrap: %behat.paths.features%/bootstrap
 
 * The ``features`` parameter defines where Behat will look for your ``*.feature``
   files.
@@ -80,7 +80,7 @@ efficient for you to define them as parameters:
     # behat.yml
     default:
         filters:
-            tags:   '@wip'
+            tags: @wip
 
 These filter parameters (``name`` and ``tags``) accept the same strings as
 the Behat ``--name`` or ``--tags`` parameters do.
@@ -96,15 +96,15 @@ right for you:
     # behat.yml
     default:
         formatter:
-            name:                       'pretty'
+            name:                       pretty
             parameters:
                 decorated:              true
                 verbose:                false
                 time:                   true
-                language:               'en'
+                language:               en
                 output_path:            null
                 multiline_arguments:    true
-                ...
+                #...
 
 * ``name`` defines the default output formatter name to use for your features.
   You could write a class name here so Behat will use your custom class as the
@@ -129,10 +129,10 @@ styles (colors).
 
     default:
         formatter:
-            name:            'pretty'
+            name:               pretty
             parameters:
                 output_styles:
-                    comment: ['black', 'white', ['underscore']]
+                    comment: [ black, white, [ underscore ] ]
 
 this will force Behat to print comments (key of the style) with black foreground
 (first parameter), white background (second parameter) and as underscore (list of
@@ -169,9 +169,9 @@ class or provide useful parameters for the context constructor from your
     # behat.yml
     default:
         context:
-            class:          'Your\Custom\Context'
+            class:          Your\Custom\Context
             parameters:
-                base_url:   'http://test.mink.loc'
+                base_url:   http://test.mink.loc
 
 * ``class`` defines which class you want to use as the environment. This class
   should be accessible by Behat and implement ``Behat\Behat\Context\ContextInterface``.
@@ -192,24 +192,24 @@ look like this:
     # behat.yml
     default:
         context:
-            class:      'Your\Custom\Context'
+            class:      Your\Custom\Context
     wip:
         filters:
-            tags:       '@wip'
+            tags:       @wip
         formatter:
-            name:       'progress'
+            name:       progress
     ci:
         formatter:
-            name:        'junit'
+            name:       junit
             parameters:
-                output_path: '/var/temp/junit'
+                output_path: /var/tmp/junit
 
 This file defines 2 additional profiles (additional to default). Every profile
 will use ``Your\Custom\Context`` as its environment object, but the ``wip``
 profile will run only scenarios with the ``@wip`` (work in progress) tag and
 will output them with the ``progress`` formatter. The ``ci`` profile will run
 all features and output them with the ``junit`` formatter to the
-``/var/temp/junit`` path.
+``/var/tmp/junit`` path.
 
 To run each of these custom profiles, use the ``--profile`` option:
 
@@ -259,8 +259,8 @@ between projects and their test suites:
 
     # behat.yml
     imports:
-        - 'some_installed_pear_package_or_lib/behat.yml'
-        - '/full/path/to/custom_behat_config.yml'
+        - some_installed_pear_package_or_lib/behat.yml
+        - /full/path/to/custom_behat_config.yml
 
 All files from the ``imports`` block will be loaded by Behat and merged into
 your ``behat.yml`` config.

@@ -116,10 +116,10 @@ In ``app/autoload.php`` add these namespaces to be registered:
 .. code-block:: php
 
     $loader->registerNamespaces(array(
-        // ..
+        // ...
 
         'Behat\Gherkin' => __DIR__.'/../vendor/behat/gherkin/src',
-        'Behat\Behat'   => __DIR__.'/../vendor/behat/behat/src',
+        'Behat\Behat' => __DIR__.'/../vendor/behat/behat/src',
         'Behat\BehatBundle' => __DIR__.'/../vendor/bundles',
     ));
 
@@ -129,7 +129,7 @@ Finally, tell the ``AppKernel``, to register the ``BehatBundle`` to the test env
 
     public function registerBundles()
     {
-        // ..
+        // ...
 
         if ('test' === $this->getEnvironment()) {
             $bundles[] = new Behat\BehatBundle\BehatBundle();
@@ -230,7 +230,6 @@ Behat will pass the matches in their respective order to the method defining the
      */
     public function iHaveACategory($name)
     {
-    
     }
 
 The ``@Given`` (``@When`` and ``@Then``) annotations are recognized by Behat, for more information on this topic, review the `more about steps`_ section of the quick intro.
@@ -733,10 +732,9 @@ After running the ``./bin/vendors install`` command line, we register the new na
 
         // previously added
         'Behat\Gherkin' => __DIR__.'/../vendor/behat/gherkin/src',
-        'Behat\Behat'   => __DIR__.'/../vendor/behat/behat/src',
+        'Behat\Behat' => __DIR__.'/../vendor/behat/behat/src',
         'Behat\BehatBundle' => __DIR__.'/../vendor/bundles',
-
-        'Behat\Mink'       => __DIR__.'/../vendor/behat/mink/src',
+        'Behat\Mink' => __DIR__.'/../vendor/behat/mink/src',
         'Behat\MinkBundle' => __DIR__.'/../vendor/bundles',
     ));
 
@@ -746,7 +744,7 @@ The MinkBundle, like the BehatBundle will only be loaded in test environment in 
 
     public function registerBundles()
     {
-        // ..
+        // ...
 
         if ('test' === $this->getEnvironment()) {
             $bundles[] = new Behat\BehatBundle\BehatBundle();
@@ -874,7 +872,8 @@ At first, we need the data, we want to be displayed: the categories. Those will 
 
     $categories = $this->getDoctrine()
         ->getRepository('AcmeDemoBundle:Category')
-        ->findAll();
+        ->findAll()
+    ;
 
 Now, we need a template, to display the data at ``src/Acme/DemoBundle/Resources/views/Catalog/categories.html.twig``.
 Our scenario defines a container with the id ``category-list`` containing the category names.
@@ -1055,7 +1054,7 @@ This will initialize the ``ZombieDriver`` for ``Mink``, but leave the default se
 .. code-block:: yaml
 
     mink:
-        base_url:   http://your-app.dev/app_test.php
+        base_url: http://your-app.dev/app_test.php
         default_session: symfony
         zombie: ~
 

@@ -91,13 +91,11 @@ Create ``composer.json`` file in the project root:
     {
         "require": {
             "behat/behat": "2.4@stable",
-            "behat/mink":  "1.4@stable",
+            "behat/mink": "1.4@stable",
             "behat/mink-extension": "*",
-
-            "behat/mink-goutte-driver":     "*",
+            "behat/mink-goutte-driver": "*",
             "behat/mink-selenium2-driver":  "*"
         },
-
         "config": {
             "bin-dir": "bin/"
         }
@@ -137,16 +135,16 @@ Now lets activate it:
 
     # behat.yml
     default:
-      extensions:
-        Behat\MinkExtension\Extension:
-          goutte:    ~
-          selenium2: ~
+        extensions:
+            Behat\MinkExtension\Extension:
+                goutte: ~
+                selenium2: ~
 
 You could check that extension is properly loaded by calling:
 
 .. code-block:: bash
 
-    $ behat -dl
+    $ bin/behat -dl
 
 It should show you all the predefined web steps as MinkExtension will
 automatically use bundled ``MinkContext`` if no user-defined context class found.
@@ -187,11 +185,11 @@ Now lets activate MinkExtension:
 
     # behat.yml
     default:
-      extensions:
-        mink_extension.phar:
-          mink_loader: 'mink.phar'
-          goutte:      ~
-          selenium2:   ~
+        extensions:
+            mink_extension.phar:
+                mink_loader: mink.phar
+                goutte: ~
+                selenium2: ~
 
 .. note::
 
@@ -205,7 +203,7 @@ You could check that extension is properly loaded by calling:
 
 .. code-block:: bash
 
-    $ behat -dl
+    $ bin/behat -dl
 
 It should show you all the predefined web steps as MinkExtension will
 automatically use bundled ``MinkContext`` if no user-defined context class found.
@@ -258,11 +256,11 @@ As you might see, urls in scenarios are relative, so we should provide correct
 
     # behat.yml
     default:
-      extensions:
-        Behat\MinkExtension\Extension:
-          base_url:  'http://en.wikipedia.org'
-          goutte:    ~
-          selenium2: ~
+        extensions:
+            Behat\MinkExtension\Extension:
+                base_url: http://en.wikipedia.org
+                goutte: ~
+                selenium2: ~
 
 Now, run your feature (if installed through Composer):
 
@@ -326,13 +324,13 @@ our scenario:
       Given I am on "/wiki/Main_Page"
       When I fill in "search" with "Behavior Driv"
       And I wait for the suggestion box to appear
-      Then I should see "Behavior Driven Development"
+      Then I should see "Behavior-driven development"
 
 Now run your feature again:
 
 .. code-block:: bash
 
-    $ behat features/search.feature
+    $ bin/behat features/search.feature
 
 And of course, you'll get:
 
@@ -350,7 +348,7 @@ The easiest way to create context class is to ask Behat do it for you:
 
 .. code-block:: bash
 
-    $ behat --init
+    $ bin/behat --init
 
 This command will create ``features/bootstrap`` folder and
 ``features/bootstrap/FeatureContext.php`` class for you.
@@ -359,7 +357,7 @@ Now lets try to run our feature again (just to check that everything works):
 
 .. code-block:: bash
 
-    $ behat features/search.feature
+    $ bin/behat features/search.feature
 
 Oh... Now Behat tells us that all steps are undefined. What's happening there?
 
@@ -395,7 +393,7 @@ To check that all ``MinkExtension`` steps are here again, run:
 
 .. code-block:: bash
 
-    $ behat -dl
+    $ bin/behat -dl
 
 If all works properly, you should see something like this:
 
@@ -444,7 +442,7 @@ Voila!
 
           @javascript @insulated
           Scenario: isolated scenario
-            ...
+            #...
 
 Going further
 -------------
