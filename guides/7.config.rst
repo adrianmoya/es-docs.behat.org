@@ -80,7 +80,7 @@ efficient for you to define them as parameters:
     # behat.yml
     default:
         filters:
-            tags: @wip
+            tags: "@wip"
 
 These filter parameters (``name`` and ``tags``) accept the same strings as
 the Behat ``--name`` or ``--tags`` parameters do.
