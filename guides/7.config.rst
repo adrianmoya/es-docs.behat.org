@@ -195,7 +195,7 @@ look like this:
             class:      Your\Custom\Context
     wip:
         filters:
-            tags:       @wip
+            tags:       "@wip"
         formatter:
             name:       progress
     ci:
