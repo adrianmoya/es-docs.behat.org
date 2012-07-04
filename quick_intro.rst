@@ -60,9 +60,8 @@ Create ``composer.json`` file in the project root:
 
     {
         "require": {
-            "behat/behat": ">=2.4@stable"
+            "behat/behat": "2.4.*@stable"
         },
-
         "config": {
             "bin-dir": "bin/"
         }
