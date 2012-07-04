@@ -90,11 +90,11 @@ Create ``composer.json`` file in the project root:
 
     {
         "require": {
-            "behat/behat": "2.4@stable",
-            "behat/mink": "1.4@stable",
+            "behat/behat": "2.4.*@stable",
+            "behat/mink": "1.4.*@stable",
             "behat/mink-extension": "*",
             "behat/mink-goutte-driver": "*",
-            "behat/mink-selenium2-driver":  "*"
+            "behat/mink-selenium2-driver": "*"
         },
         "config": {
             "bin-dir": "bin/"
