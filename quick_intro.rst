@@ -62,6 +62,7 @@ Create ``composer.json`` file in the project root:
         "require": {
             "behat/behat": "2.4.*@stable"
         },
+        "minimum-stability": "dev",
         "config": {
             "bin-dir": "bin/"
         }
@@ -436,12 +437,12 @@ in a format called Gherkin. Each feature file follows a few basic rules:
     In other words, instead of writing ``Feature``, ``Scenario`` or ``Given``,
     you can use your native language by configuring Behat to use one of its
     many supported languages.
-    
+
     To check if your language is supported and to see the available keywords,
     run:
-    
+
     .. code-block:: bash
-    
+
         $ behat --story-syntax --lang YOUR_LANG
 
     Supported languages include (but are not limited to) ``fr``, ``es``, ``it``
@@ -542,7 +543,7 @@ A few pointers:
         }
 
 In the same way, any step that does *not* throw an exception will be seen
-by Behat as "passing". 
+by Behat as "passing".
 
 You can read more about step definitions in ":doc:`/guides/2.definitions`" guide.
 

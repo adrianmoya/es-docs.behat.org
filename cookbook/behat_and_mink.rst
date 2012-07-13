@@ -96,6 +96,7 @@ Create ``composer.json`` file in the project root:
             "behat/mink-goutte-driver": "*",
             "behat/mink-selenium2-driver": "*"
         },
+        "minimum-stability": "dev",
         "config": {
             "bin-dir": "bin/"
         }
