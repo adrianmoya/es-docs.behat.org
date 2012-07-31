@@ -204,7 +204,7 @@ You could check that extension is properly loaded by calling:
 
 .. code-block:: bash
 
-    $ bin/behat -dl
+    $ php behat.phar -dl
 
 It should show you all the predefined web steps as MinkExtension will
 automatically use bundled ``MinkContext`` if no user-defined context class found.
