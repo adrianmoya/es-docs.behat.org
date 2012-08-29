@@ -75,6 +75,21 @@ Then download ``composer.phar`` and run ``install`` command:
     $ curl http://getcomposer.org/installer | php
     $ php composer.phar install
 
+.. note::
+
+    Composer uses GitHub zipball service by default and this
+    service is known for outages from time to time. If you get
+
+    .. code-block:: bash
+
+        The ... file could not be downloaded (HTTP/1.1 502 Bad Gateway)
+
+    during installation, just use ``--prefer-source`` option:
+
+    .. code-block:: bash
+
+        $ php composer.phar install --prefer-source
+
 After that, you will be able to run Behat with:
 
 .. code-block:: bash
