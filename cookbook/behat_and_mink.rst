@@ -1,9 +1,9 @@
 Developing Web Applications with Behat and Mink
 ===============================================
 
-You can use Behat to describe anything, that you can describe in business
-logic. It's tools, gui applications, web applications. Most interesting part is
-web applications. First, behavioral testing already exists in web world -
+You can use Behat to describe anything that you can describe in business
+logic. It's tools, gui applications, web applications. The most interesting part 
+is web applications. First, behavioral testing already exists in the web world -
 it's called *functional* or *acceptance* testing. Almost all popular
 frameworks and languages provide functional testing tools. Today we'll talk
 about how to use Behat for functional testing of web applications.
@@ -11,14 +11,13 @@ about how to use Behat for functional testing of web applications.
 Understanding Mink
 ------------------
 
-One of the most important parts in the web is a browser. Browser is the window,
-through which web application users interact with application and other users.
-User is always talking with web application through browser application.
+One of the most important parts in the web is a browser. A browser is the window
+through which web application users interact with the application and other users.
 
-So, in order to test web application, we should transform user actions into
-steps and expectations - with Behat it's quite simple already. And next part
-is much harder - do this actions and test expectations. How to programmatically
-do things like this:
+So, in order to test our web application, we should transform user actions into
+steps and expected oucomes - with Behat that's quite simple really. The next part
+is much harder - run these actions and test against the expected outcome. How to 
+programmatically do things like this:
 
 .. code-block:: gherkin
 
@@ -33,7 +32,7 @@ Now the real problem. We have 2 completely different type of solutions:
 * *Headless browser emulators* - browser emulators, that can be executed fully
   without GUI through console. Such emulators can do HTTP request and emulate
   browser applications on high level (HTTP stack), but on lower level (JS, CSS)
-  they are totally limited. But they are much faster than real browsers, cuz
+  they are totally limited. But they are much faster than real browsers, because
   you don't need to parse CSS or execute JS in order to open pages or click
   links with them.
 
@@ -46,12 +45,12 @@ Now the real problem. We have 2 completely different type of solutions:
 The problem is we need both these emulator type in order to do successful
 functional testing. Because both these tools are quite limited at some parts,
 but succeed on others. For example, you can't use in-browser emulators for all
-tests in your application, cuz this makes your tests become very slow. Also, you
-can't do AJAX with headless browser.
+tests in your application, because this makes your tests become very slow. Also, 
+you can't do AJAX with headless browser.
 
 You should use them both. But there comes a problem - these are very different
 tools and they have much different API. Use both those API limits us very much
-and in case of Behat, this problem become even worse, cuz now you have single:
+and in case of Behat, this problem become even worse, because now you have single:
 
 .. code-block:: gherkin
 
