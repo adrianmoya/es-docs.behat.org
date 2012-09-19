@@ -15,7 +15,7 @@ One of the most important parts in the web is a browser. A browser is the window
 through which web application users interact with the application and other users.
 
 So, in order to test our web application, we should transform user actions into
-steps and expected oucomes - with Behat that's quite simple really. The next part
+steps and expected outcomes - with Behat that's quite simple really. The next part
 is much harder - run these actions and test against the expected outcome. How to 
 programmatically do things like this:
 
@@ -24,7 +24,7 @@ programmatically do things like this:
     Given I am on "/index.php"
 
 You'll need something to simulate browser application. Scenario steps would
-simulate user and browser emulator would simulate browser with wich user
+simulate user and browser emulator would simulate browser with which user
 interacts in order to talk with web application.
 
 Now the real problem. We have 2 completely different type of solutions:
@@ -37,9 +37,9 @@ Now the real problem. We have 2 completely different type of solutions:
   links with them.
 
 * *In-browser emulators* - this emulators works with real browsers, taking
-  full controll of them and using them as zombies for their testing needs. This
-  way, you'll have standart fully-configured real browser, which you will be
-  able to controll. CSS styling, JS and AJAX execution - all supported out of
+  full control of them and using them as zombies for their testing needs. This
+  way, you'll have standard fully-configured real browser, which you will be
+  able to control. CSS styling, JS and AJAX execution - all supported out of
   the box.
 
 The problem is we need both these emulator type in order to do successful
@@ -287,7 +287,7 @@ what about search field autocompletion? It's done using JS and AJAX, so we
 can't use default headless session to test it - we need ``javascript`` session
 and Selenium2 browser emulator for that task.
 
-Selenium2 gives you ability to take full controll of real browser with clean
+Selenium2 gives you ability to take full control of real browser with clean
 consistent proxy API. And Mink uses this API extensively in order to use same
 Mink API and steps to do **real** actions in **real** browser.
 

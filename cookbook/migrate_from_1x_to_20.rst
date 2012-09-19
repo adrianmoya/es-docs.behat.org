@@ -53,7 +53,7 @@ The easiest way to migrate is to move this code into
 
 As you might see, your ``someInitialVar`` become an instance variable and
 ``closureFunc()`` just an instance method. You should move all your variables
-and methods carefuly, changing all ``$world`` to ``$this`` in closure methods.
+and methods carefully, changing all ``$world`` to ``$this`` in closure methods.
 
 It might be very hard and annoying work, especially on large projects. So, as
 you might expect, you have another option:

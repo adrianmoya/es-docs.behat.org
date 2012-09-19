@@ -464,7 +464,7 @@ in a format called Gherkin. Each feature file follows a few basic rules:
     and, of course, the english pirate dialect ``en-pirate``.
 
     Keep in mind, that any language, different from ``en`` should be explicitly
-    marked with ``# language: ...`` comment at the begining of your
+    marked with ``# language: ...`` comment at the beginning of your
     ``*.feature`` file:
 
     .. code-block:: gherkin

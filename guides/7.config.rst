@@ -222,7 +222,7 @@ Extensions
 ----------
 
 The ``extensions`` block allows you to activate extensions for your suite
-or for specific proile of the suite:
+or for specific profile of the suite:
 
 .. code-block:: yaml
 
