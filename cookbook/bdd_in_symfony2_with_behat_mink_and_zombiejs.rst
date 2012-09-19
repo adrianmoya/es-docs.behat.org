@@ -992,7 +992,7 @@ The controller will gain a new method.
         }
     
         /**
-         * @Route("/catagories/{name}", name="_catalog_category_content")
+         * @Route("/categories/{name}", name="_catalog_category_content")
          * @Template()
          */
         public function categoryContentAction($name)
