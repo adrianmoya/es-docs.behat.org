@@ -48,7 +48,7 @@ block tell Behat where to find your feature and bootstrap files:
 
 
 * The ``features`` parameter defines where Behat will look for your ``*.feature``
-  files.
+  files. The given directory will be scanned recursivly.
 
 * The ``bootstrap`` parameter defines the directory from which Behat will
   automatically load all ``*.php`` files.
