@@ -77,6 +77,7 @@ Learn specific solutions for specific needs:
 
     cookbook/behat_and_mink
     cookbook/migrate_from_1x_to_20
+    cookbook/using_spin_functions
 
 Useful Resources
 ----------------
