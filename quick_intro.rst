@@ -1,60 +1,61 @@
-Quick Intro to Behat
+Intro Rápida a Behat
 ====================
 
-Welcome to Behat! Behat is a tool that makes `behavior driven development`_
-(BDD) possible. With BDD, you write human-readable stories that describe
-the behavior of your application. These stories can then be auto-tested against
-your application. And yes, it's as cool as it sounds!
+Bienvenido a Behat! Behat es una herramienta que hace posible `behavior driven development`_
+(BDD). Con BDD, tu escribes historias en lenguaje natural que describen el comportamiento de 
+tu aplicación. Estas historias pueden ser auto-probadas contra el sistema. Y si, es tan 
+bueno como suena!
 
-For example, imagine you've been hired to build the famous ``ls`` UNIX command.
-A stakeholder may say to you:
+Por ejemplo, imagina que has sido contratado para construir el famoso comando UNIX ``ls``.
+
+Un interesado podría decirte:
 
 .. code-block:: gherkin
 
-    Feature: ls
-      In order to see the directory structure
-      As a UNIX user
-      I need to be able to list the current directory's contents
+    Característica: ls
+      Para ver la estructura de directorio
+      Como un usuario UNIX
+      Necesito ser capaz de listar el contenido del directorio actual
 
-      Scenario: List 2 files in a directory
-        Given I am in a directory "test"
-        And I have a file named "foo"
-        And I have a file named "bar"
-        When I run "ls"
-        Then I should get:
+      Escenario: Listar 2 archivos en un directorio
+        Dado que estoy en un directorio "test"
+        Y tengo un archivo llamado "foo"
+        Y tengo un archivo llamado "bar"
+        Cuando ejecuto "ls"
+        Entonces debería obtener:
           """
           bar
           foo
           """
 
-In this tutorial, we'll show you how Behat can execute this simple story
-as a test that verifies that the ``ls`` commands works as described.
+En este tutorial, te mostraremos como Behat puede ejecutar esta simple historia
+como una prueba que verifica que el comando ``ls`` trabaja como se describe.
 
-That's it! Behat can be used to test anything, including web-related behavior
-via the `Mink`_ library.
-
-.. note::
-
-    If you want to learn more about the philosophy of testing the "behavior"
-    of your application, see `What's in a Story?`_
+Eso es todo! Behat puede ser usado para probar cualquier cosa, incluyendo comportamiento
+relacionado a la web a través de la librería `Mink`_.
 
 .. note::
 
-    Behat was inspired by Ruby's `Cucumber`_ project.
+    Si quieres aprender más acerca de la filosofía de probar el "comportamiento"
+	de tu aplicación, lee `¿Qué hay en una historia?`_
 
-Installation
-------------
+.. note::
 
-Behat is an executable that you'll run from the command line to execute your
-stories as tests. Before you begin, ensure that you have at least PHP 5.3.1
-installed.
+    Behat esta inspirado en el proyecto `Cucumber`_ de Ruby.
 
-Method #1 (Composer)
+Instalación
+-----------
+
+Behat es un ejecutable que usarás en la línea de comando para ejecutar tus
+historias como pruebas. Antes de comenzar, asegurate de que tienes al menos
+PHP 5.3.1 instalado.
+
+Metodo #1 (Composer)
 ~~~~~~~~~~~~~~~~~~~~
 
-The simplest way to install Behat is through Composer.
+La manera más simple de instalar Behat es a través de Composer.
 
-Create ``composer.json`` file in the project root:
+Crea un archivo ``composer.json`` en la raíz del proyecto:
 
 .. code-block:: js
 
@@ -68,7 +69,7 @@ Create ``composer.json`` file in the project root:
         }
     }
 
-Then download ``composer.phar`` and run ``install`` command:
+Luego descarga ``composer.phar`` y ejecuta el comando ``install``:
 
 .. code-block:: bash
 
@@ -77,69 +78,69 @@ Then download ``composer.phar`` and run ``install`` command:
 
 .. note::
 
-    Composer uses GitHub zipball service by default and this
-    service is known for outages from time to time. If you get
+    Composer utiliza el servicio de zipball de GitHub por defecto y este 
+	servicio es conocido por sus fallas de vez en cuando. Si obtienes
 
     .. code-block:: bash
 
         The ... file could not be downloaded (HTTP/1.1 502 Bad Gateway)
 
-    during installation, just use ``--prefer-source`` option:
+    durante la instalación, simplemente usa la opción ``--prefer-source``:
 
     .. code-block:: bash
 
         $ php composer.phar install --prefer-source
 
-After that, you will be able to run Behat with:
+Despues de eso, podrás ejecutar Behat con:
 
 .. code-block:: bash
 
     $ bin/behat
 
-Method #2 (PHAR)
+Metodo #2 (PHAR)
 ~~~~~~~~~~~~~~~~
 
-Also, you can use behat phar package:
+Tambien puedes usar el paquete phar de behat:
 
 .. code-block:: bash
 
     $ wget https://github.com/downloads/Behat/Behat/behat.phar
 
-Now you can execute Behat by simply running phar archive through ``php``:
+Ahora puedes ejecutar Behat simplemente usando el archivo phar con ``php``:
 
 .. code-block:: bash
 
     $ php behat.phar
 
-Method #3 (Git)
+Metodo #3 (Git)
 ~~~~~~~~~~~~~~~
 
-You can also clone the project with Git by running:
+Tambien puedes clonar el proyecto con Git ejecutando:
 
 .. code-block:: bash
 
     $ git clone git://github.com/Behat/Behat.git && cd Behat
     $ git submodule update --init
 
-Then download ``composer.phar`` and run ``install`` command:
+Luego descarga ``composer.phar`` y ejecuta el comando ``install``:
 
 .. code-block:: bash
 
     $ wget -nc http://getcomposer.org/composer.phar
     $ php composer.phar install
 
-After that, you will be able to run Behat with:
+Luego de eso, podrás ejecutar Behat con:
 
 .. code-block:: bash
 
     $ bin/behat
 
-Basic Usage
------------
+Uso Básico
+----------
 
-In this example, we'll rewind several decades and pretend we're building
-the original UNIX ``ls`` command. Create a new directory and setup behat
-inside that directory:
+En este ejemplo, retrocederemos varias decadas y pretendamos que estamos 
+construyendo el comando original de UNIX ``ls``. Crea un nuevo directorio
+y configura Behat dentro de ese directorio:
 
 .. code-block:: bash
 
@@ -147,46 +148,47 @@ inside that directory:
     $ cd ls_project
     $ behat --init
 
-The ``behat --init`` will create a ``features/`` directory with some basic
-things to get your started.
+El comando ``behat --init`` creará un directorio ``features/`` con algunas cosas
+básicas para que comiences.
 
-Define your Feature
-~~~~~~~~~~~~~~~~~~~
+Define tu característica
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Everything in Behat always starts with a *feature* that you want to describe
-and then implement. In this example, the feature will be the ``ls`` command,
-which can be thought of as one feature of the whole UNIX system. Since the
-feature is the ``ls`` command, start by creating a ``features/ls.feature``
-file:
+Todo en Behat siempre comienza con una *característica* que quieres describir
+y luego implementar. En este ejemplo, la característica será el comando ``ls``,
+que puede ser pensado como una característica del sistema UNIX completo. Como la
+característica es el comando ``ls``, comienza por crear un archivo ``features/ls.feature``:
 
 .. code-block:: gherkin
 
     # features/ls.feature
-    Feature: ls
-      In order to see the directory structure
-      As a UNIX user
-      I need to be able to list the current directory's contents
+	#language es
+    Característica: ls
+      Para ver la estructura de directorio
+      Como usuario UNIX
+      Necesito ser capaz de listar el contenido del directorio actual
 
-Every feature starts with this same format: a line naming the feature, followed
-by three lines that describe the benefit, the role and the feature itself.
-And while this section is required, its contents aren't actually important
-to Behat or your eventual test. This section is important, however, so that
-each feature is described consistently and is readable by other people.
+Cada característica comienza con este mismo formato: una línea nombrando la característica,
+seguida de tres líneas que describen el beneficio, el rol y la característica misma. 
+Y mientras esta sección es requerida, su contenido no es realmente importante para 
+Behat o tu prueba eventual. Esta sección es importante, sin embargo, de manera que cada
+característica sea descrita consistentemente y legible por otras personas. Es importante notar
+que como estamos usando el lenguaje español, la primera linea debe incluir el comentario
+``#language es``.
 
-Define a Scenario
-~~~~~~~~~~~~~~~~~
+Define un Escenario
+~~~~~~~~~~~~~~~~~~~
 
-Next, add the following scenario to the end of the ``features/ls.feature``
-file:
+Luego, añade el siguiente escenario al final del archivo ``features/ls.feature``:
 
 .. code-block:: gherkin
 
-    Scenario: List 2 files in a directory
-      Given I am in a directory "test"
-      And I have a file named "foo"
-      And I have a file named "bar"
-      When I run "ls"
-      Then I should get:
+    Escenario: Listar 2 archivos en un directorio
+      Dado que estoy en un directorio "test"
+      Y tengo un archivo llamado "foo"
+      Y tengo un archivo llamado "bar"
+      Cuando ejecuto "ls"
+      Entonces debería obtener:
         """
         bar
         foo
@@ -194,38 +196,38 @@ file:
 
 .. tip::
 
-    The special ``"""`` syntax seen on the last few lines is just a special
-    syntax for defining steps on multiple lines. Don't worry about it too
-    much for now.
+    La sintáxis especial ``"""`` que se ve en las ultimas líneas es solo una 
+	forma de definir pasos en multiples líneas. No te preocupes por ella por
+	ahora.
 
-Each feature is defined by one or more "scenarios", which explain how that
-feature should act under different conditions. This is the part that will
-be transformed into a test. Each scenario always follows the same basic format:
-
-.. code-block:: gherkin
-
-    Scenario: Some description of the scenario
-      Given [some context]
-      When [some event]
-      Then [outcome]
-
-Each part of the scenario - the *context*, the *event*,  and the *outcome* -
-can be extended by adding the ``And`` or ``But`` keyword:
+Cada carcaterística es definida por uno o más "escenarios", los cuales explican como
+esa característica debe actuar bajo diferentes circunstancias. Esta es la parte que va
+a ser transformada en una prueba. Cada escenario sigue siempre el mismo formato basico:
 
 .. code-block:: gherkin
 
-    Scenario: Some description of the scenario
-      Given [some context]
-        And [more context]
-       When [some event]
-        And [second event occurs]
-       Then [outcome]
-        And [another outcome]
-        But [another outcome]
+    Escenario: Alguna descripción del escenario
+      Dado [algo de contexto]
+      Cuando [algún evento]
+      Entonces [un resultado]
 
-There's no actual difference between, ``Then``, ``And`` ``But`` or any of
-the other words that start each line. These keywords are all made available
-so that your scenarios are natural and readable.
+Cada parte del escenario - el *contexto*, el *evento*, y el *resultado* - puede ser
+extendido añadiendo la palabra clave ``Y`` o ``Pero``:
+
+.. code-block:: gherkin
+
+    Escenario: Alguna descripción del escenario
+          Dado [algo de contexto]
+	         Y [más contexto]
+        Cuando [algún evento]
+		     Y [segundo evento ocurre]
+      Entonces [un resultado]
+	         Y [otro resultado]
+		  Pero [otro resultado]
+
+No existe diferencia entre ``Entonces``, ``Y``, ``Pero``, o alguna de las otras
+palabras que comienzan cada linea. Estas palabras claves están disponibles 
+para que tus escenarios sean naturales y legibles.
 
 Executing Behat
 ~~~~~~~~~~~~~~~

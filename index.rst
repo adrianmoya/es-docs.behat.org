@@ -1,58 +1,50 @@
-Behat Documentation
-===================
 
-Behat is an open source behavior driven development framework for PHP 5.3 & 5.4.
-What's *behavior driven development* you ask? It's the idea that you start
-by writing human-readable sentences that describe a feature of your application
-and how it should work.
+Documentación de Behat
+======================
 
-For example, imagine you're about to create the famous UNIX ``ls`` command.
-Before you begin, you describe how the feature should work:
+Behat es una herramienta opensource de desarrollo guiado por comportamiento para PHP 5.3 & 5.4. Te preguntas qué es desarrollo guiado por comportamiento? Es la idea de comenzar por escribir sentencias legibles por humanos que describen una característica de tu aplicación y como debería funcionar.
+
+Por ejemplo, imagina que estas por crear el famoso comando ``ls`` de UNIX. 
+Antes de comenzar, describes como esta característica debería funcionar:
 
 .. code-block:: gherkin
 
-    Feature: ls
-      In order to see the directory structure
-      As a UNIX user
-      I need to be able to list the current directory's contents
 
-      Scenario:
-        Given I am in a directory "test"
-        And I have a file named "foo"
-        And I have a file named "bar"
-        When I run "ls"
-        Then I should get:
-          """
-          bar
-          foo
-          """
+    Característica: ls
+       Para de ver la estructura de directorio
+       Como un usuario UNIX
+       Yo necesito ser capaz de listar el contenido del directorio actual.
 
-As a developer, your work is done as soon as you've made the ``ls`` command
-behave as described in the *Scenario*.
+       Escenario:
+	 Dado que estoy en el directorio "test"
+	 Y tengo un archivo llamado "foo"
+	 Y tengo un archivo llamado "bar"
+	 Cuando ejecuto el comando "ls"
+	 Entonces debería obtener:
+	   """
+	   bar
+	   foo
+	   """
+Como desarrollador, tu trabajo está terminado tan pronto como hagas que el comando ``ls`` se comporte como está descrito en el *Escenario*.
 
-Now, wouldn't it be cool if something could read this sentence and use it to
-actually run a test against the ``ls`` command? Hey, that's exactly what Behat
-does! As you'll see, Behat is easy to learn, quick to use, and will put the
-fun back into your testing.
+Ahora, no sería genial si algo pudiese leer esta sentencia y usarla para ejecutar una prueba contra el comando ``ls``? Hey, eso es exactamente lo que hace Behat! Como veras, Behat es fácil de aprender, rápido de usar, y traerá de vuelta la diversión a tus pruebas. 
 
 .. note::
 
-    Behat was inspired by Ruby’s Cucumber project, especially its syntax
-    (called Gherkin).
+    Behat fue inspirado en el proyecto Cucumber de Ruby, especialmente su sintaxis (llamada Gherkin).
 
-Quick Intro
------------
+Introducción Rápida
+-------------------
 
-To become *Behat'er* in 20 minutes, just dive into the quick-start guide and
-enjoy!
+Para convertirte en un Behat'er en 20 minutos, sumérgete en la guía rápida y disfruta!
 
 .. toctree::
     :maxdepth: 2
 
     quick_intro
 
-Guides
-------
+Guías
+-----
 
 Learn Behat with the topical guides:
 
@@ -67,8 +59,8 @@ Learn Behat with the topical guides:
     guides/6.cli
     guides/7.config
 
-Cookbook
---------
+Recetas
+-------
 
 Learn specific solutions for specific needs:
 
@@ -79,23 +71,23 @@ Learn specific solutions for specific needs:
     cookbook/migrate_from_1x_to_20
     cookbook/using_spin_functions
 
-Useful Resources
-----------------
+Recursos Útiles
+---------------
 
-Other useful resources for learning/using Behat:
+Otros recursos útiles para aprender/usar Behat:
 
 * `Cheat Sheet <http://blog.lepine.pro/wp-content/uploads/2012/03/behat-cheat-sheet-en.pdf>`_
   - Behat and Mink Cheat Sheets by `Jean-François Lépine <http://blog.lepine.pro/>`_
 * `Behat API <http://docs.behat.org/behat-api/>`_ - Behat code API
 * `Gherkin API <http://docs.behat.org/gherkin-api/>`_ - Gherkin parser API
 
-More about Behavior Driven Development
---------------------------------------
+Más acerca de Desarrollo Guiado por Comportamiento
+--------------------------------------------------
 
 Once you're up and running with Behat, you can learn more about behavioral
 driven development via the following links. Though both tutorials are specific
 to Cucumber, Behat shares a lot with Cucumber and the philosophies are one
 and the same.
 
-* `Dan North's "What's in a Story?" <http://dannorth.net/whats-in-a-story/>`_
+* `"¿Qué hay en una historia?" de Dan North (Traducido por Adrian Moya) <http://adrianmoya.com/2012/08/que-hay-en-una-historia/>`_
 * `Cucumber's "Backgrounder" <https://github.com/cucumber/cucumber/wiki/Cucumber-Backgrounder>`_
