@@ -1,71 +1,70 @@
-Writing Features - Gherkin Language
-===================================
+Escribiendo Características - Lenguaje Gherkin
+==============================================
 
-Behat is a tool to test the behavior of your application, described in special
-language called Gherkin. Gherkin is a `Business Readable, Domain Specific Language <http://martinfowler.com/bliki/BusinessReadableDSL.html>`_
-created especially for behavior descriptions. It gives you the ability to
-remove logic details from behavior tests.
+Behat es una herramienta para probar el comportamiento de tu aplicación, descrito
+es un lenguaje especial llamado Gherkin. Gherkin es un `Lenguaje Específico de Dominio, Legible por el negocio <http://martinfowler.com/bliki/BusinessReadableDSL.html>`_
+creado específicamente para descripciones de comportamiento. Te da la habilidad de
+ocultar detalles de la lógica de las pruebas de comportamiento.
 
-Gherkin serves two purposes: serving as your project's documentation and
-automated tests. Behat also has a bonus feature: it talks back to you using
-real, human language telling you what code you should write.
+Gherkin sirve dos propósitos: como documentación de tu proyecto y
+como pruebas automatizadas. Behat tambien tiene una característica adicional: 
+te habla de vuelta usando lenguaje real, humano, diciéndote que código debes escribir.
 
-If you're still new to Behat, jump into the :doc:`/quick_intro` first, then
-return here to learn more about Gherkin.
+Si estás comenzando con Behat, salta a la :doc:`/quick_intro` primero, y luego
+retorna aqui para aprender más acerca de Gherkin.
 
-Gherkin Syntax
---------------
+Sintáxis Gherkin
+----------------
 
-Like YAML or Python, Gherkin is a line-oriented language that uses indentation
-to define structure. Line endings terminate statements (called steps) and either
-spaces or tabs may be used for indentation. (We suggest you use spaces for
-portability.) Finally, most lines in Gherkin start with a special keyword:
+Al igual que YAML o Python, Gherkin es un lenguaje orientado a lineas, que usa la indentación para
+definir la estructura. Los finales de lineas terminan las frases (llamadas pasos) y tanto espacios
+como tabuladores pueden usarse para indentar (Sugerimos que uses espacios por portabilidad).
+Finalmente, la mayoría de las lineas en Gherkin comienzan con una palabra especial:
 
 .. code-block:: gherkin
+    #language: es
 
-    Feature: Some terse yet descriptive text of what is desired
-      In order to realize a named business value
-      As an explicit system actor
-      I want to gain some beneficial outcome which furthers the goal
+    Característica: breve texto descriptivo de lo que se desea
+      De manera de lograr un valor de negocio nombrado
+      Como un actor explícito del sistema
+      Yo quiero ganar alguna salida beneficiosa que apoye al objetivo
     
-      Scenario: Some determinable business situation
-        Given some precondition
-          And some other precondition
-         When some action by the actor
-          And some other action
-          And yet another action
-         Then some testable outcome is achieved
-          And something else we can check happens too
-    
-      Scenario: A different situation
+      Escenario: Alguna situación de negocio determinada
+           Dado alguna precondición
+              Y alguna otra precondición
+         Cuando alguna acción por el actor
+              Y alguna otra acción
+              Y otra acción más
+       Entonces alguna salida que puede ser probada es alcanzada
+              Y algo más que podemos chequear sucede también
+
+     Escenario: Una situación diferente
           ...
 
-The parser divides the input into features, scenarios and steps. Let's walk
-through the above example:
+El parser divide la entrada en características, escenarios y pasos. Vamos a recorrer el ejemplo
+de arriba:
 
-1. ``Feature: Some terse yet descriptive text of what is desired`` starts
-   the feature and gives it a title. Learn more about features in the
-   "`Features`_" section.
+1. ``Característica: breve texto descriptivo de lo que se desea`` comienza la
+   característica y le dá un título. Aprende más acerca de características en la
+   sección "`Características`_".
 
-2. Behat does not parse the next 3 lines of text. (In order to... As an...
-   I want to...). These lines simply provide context to the people
-   reading your feature, and describe the business value derived from the
-   inclusion of the feature in your software.
+2. Behat no parsea las próximas 3 líneas de texto. (De manera de... Como un...Yo quiero...).
+   Estas lineas simplemente proveen contexto a las personas leyendo tu característica, y describe
+   el valor de negocio derivado de la inclusión de la característica en tu software.
 
-3. ``Scenario: Some determinable business situation`` starts the scenario,
-   and contains a description of the scenario. Learn more about scenarios in
-   the "`Scenarios`_" section.
+3. ``Escenario: Alguna situación de negocio determinada`` comienza el escenario,
+   y contiene una descripción del escenario. Aprende más acerca de los escenarios
+   en la sección "`Escenarios`_".
 
-4. The next 7 lines are the scenario steps, each of which is matched to
-   a regular expression defined elsewhere. Learn more about steps in the
-   "`Steps`_" section.
+4. Las próximas 7 lineas son los pasos del escenario, y cada uno coincide con una
+   expresión regular definida en otro lugar. Aprende más de los pasos en la
+   sección "`Pasos`_".
 
-5. ``Scenario: A different situation`` starts the next scenario, and so on.
+5. ``Escenario: Una situación diferente`` comienza el siguiente escenario, y asi en adelante.
 
-When you're executing the feature, the trailing portion of each step (after
-keywords like ``Given``, ``And``, ``When``, etc) is matched to
-a regular expression, which executes a PHP callback function. You can read more
-about steps matching and execution in :doc:`/guides/2.definitions`.
+Cuando estas ejecutando la característica, la porción del final de cada paso (luego de palabras
+claves como ``Dado``, ``Y``, ``Cuando``, etc) coincide con una expresión regular, que ejecuta una llamada
+a una función de PHP. Puedes leer más acerca de las coincidencias de pasos y la ejecución en :doc:`/guides/2.definitions`.
 
 Features
 --------
